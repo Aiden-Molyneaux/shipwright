@@ -1,0 +1,413 @@
+# DECISIONS.md — Package 1 (Foundations: lean doc graph + starter-kit + lifecycle playbook)
+
+What was chosen, assumed, deliberately deferred, and what needs the owner's input. The deliverable
+lives in [`starter-kit/`](starter-kit/). Later packages (skills, testing kit, dashboard) should
+append their own sections to this file.
+
+## What I chose
+
+- **The doc set (8 living docs + generated dashboard):** `00-INDEX` · `product-spec` ·
+  `api-contract` *(deletable)* · `ui-requirements` · `design-system` · `CONVENTIONS` · `roadmap` ·
+  `decisions` · `open-questions`, plus generated `HEALTH.md`. That's 9 with a backend, 8 without —
+  inside the "~8" target. What got cut from InGame's ~15: `testing-strategy` (folded to a
+  CONVENTIONS "Discipline" section; the testing kit package can re-add a doc if it earns it),
+  `design-process` + `component-map` + `SCREEN-STATUS` (folded into `design-system` §5 and
+  `ui-requirements` §2), `ui-design-requirements`/`design-spec` split (merged — the split only pays
+  when a second design agent owns the design-spec), per-file `decisions/` (→ one append-only log;
+  InGame's numbered-file collisions and cross-file greps argue for a single file at starter scale),
+  `road-to-market` + `implementation-plan` (→ one `roadmap`).
+- **Acceptance criteria live inline**: per surface in `ui-requirements` §3 (with an inherited
+  always-on set in §1 to prevent restating lifecycle/a11y criteria 20 times), per phase in
+  `roadmap` §3, per task in the CONVENTIONS DoD. This is the "define the quality bar explicitly"
+  leg of the philosophy.
+- **SCREEN-STATUS is reborn as `ui-requirements` §2** with columns Surface/State/Implements-from/
+  AC/Spec/Contract — same tripwire mechanic (converged-but-unformalized = tracked debt), one file
+  fewer, and the health check parses it by column name.
+- **The health check is config-free**: it derives the doc register from 00-INDEX §1 itself (any
+  row with a backticked `.md` path + a `**vX.Y**` cell is registered), so deleting `api-contract.md`
+  + its row needs no script edit. Added a fourth check InGame doesn't have: a **placeholder scan**
+  (`{{…}}` in living docs) that keeps health red until Day-One scaffolding is actually finished —
+  this makes "scaffold complete" a gate instead of a vibe.
+- **Placeholders are `{{TOKEN}}`-style** and the scaffold rule is "fill it or delete the line" —
+  deletion is explicitly part of the design (backend-less apps drop the contract file, CONVENTIONS
+  rules 2–4, the Contract column).
+- **`decisions.md` gains a `[LOCK]` marker** for owner-signed, painful-to-reverse entries — the
+  generalization of InGame's 0046 gate-G-A pattern without a decisions-directory ceremony.
+- **The lifecycle playbook is 7 stages (0–6)** with a uniform row contract (entry · produces ·
+  guardrail · owner gate · DoD · dashboard), and the reviewer trio referenced generically
+  (Burt-class / Parvati-class / Murr-class) since the skills ship in a later package. Arc C
+  (Release) and Arc D (Live) are real stages with light inline templates (a release checklist and
+  a live-ops digest), not separate docs.
+- **AGENTS.md is a thin mirror of CLAUDE.md** (the InGame pattern) and carries the **no-skill-harness
+  fallback**: a manual equivalent for each guardrail (the health script runs anywhere; the three
+  reviews become documented manual walks). This satisfies the harness-portability requirement
+  without duplicating rule text.
+
+## What I assumed
+
+- Delivery location: `toolkit/` at the InGame repo root (untracked; not committed). The toolkit is
+  a separate product from InGame and should eventually move to its own repo — I put it here because
+  it's the session's working directory and later packages need a shared home.
+- The brainstorming skill's interactive gates were overridden by the brief's explicit latitude +
+  unattended operation (the skill's own instruction-priority rule); this file is the assumption
+  record it would otherwise have produced.
+- Health dashboard filename: `docs/HEALTH.md` (shorter than PROJECT-HEALTH.md; one dashboard, one
+  name). The register carries it so nobody hand-edits it.
+- The starter kit assumes a git repo + Node available for the health script (no other runtime
+  dependencies anywhere).
+
+## What I deliberately deferred
+
+- **Skill implementations** (reviewer trio, cognitive skills, /health wrapper) — Package(s) TBD;
+  the playbook + AGENTS.md reference them generically so nothing breaks when they land.
+- **Testing-kit depth** — CONVENTIONS holds the posture (risk-based, test-first on risk domains,
+  no coverage-chasing); the dedicated package decides whether that grows back into a doc.
+- **Arc C/D depth** — store-specific checklists (App Store privacy labels, Play data safety),
+  monitoring stack choices, incident-response runbooks. The stage templates hold their place.
+- **Owner-dashboard package** — `HEALTH.md` is deliberately the only dashboard for now.
+- **A worked example** (the kit instantiated for a sample app) — valuable as a fixture/eval for the
+  skills package; premature before the skills exist.
+
+## Needs owner input
+
+1. **Where the toolkit lives long-term** — ✅ **RULED (2026-07-03): its own repo, `shipwright`**
+   (`C:personalshipwright`, GitHub `Aiden-Molyneaux/shipwright`). *(Originally: uncommitted at
+   `toolkit/` in InGame.)*
+2. **The merged `ui-requirements`** is the one real structural bet away from InGame's proven shape
+   (InGame keeps design-requirements and design-spec separate because two different agents own
+   them). If the toolkit should support a dedicated design agent as a first-class role, the split
+   should come back — say the word and it's a small change.
+3. **Single-file `decisions.md`** trades InGame's per-decision files for lighter ceremony; at ~50+
+   decisions the file gets long. Acceptable, or prefer per-file from the start?
+
+---
+
+# Package 2 — The reviewer trio (burt · parvati · murr) + britch + the SKILL template
+
+Deliverable: [`skills/`](skills/) — `burt/`, `parvati/`, `murr/`, `britch/`, `_TEMPLATE/SKILL.md`,
+and `README.md` (the lane table + install + "how to write a new reviewer skill"). Package-1 files
+updated to wire them in (starter-kit README ×3, lifecycle-playbook trio + Stage-0 entry,
+CLAUDE.md self-verify rule).
+
+## What I chose
+
+- **Burt and Parvati are ported, not copied.** Everything InGame-specific became a read of the
+  project's own doc graph: Burt's hardcoded F-01..F-09/type-scale/token text → "read
+  `design-system.md` §1–§5 and cite *those* rules"; his `preflight.sh` → an in-skill recipe for
+  **deriving the grep gauntlet from the §3 token table + the §1 never-list** (a static script
+  can't be portable when the rules are per-project; the derivation rule can). Parvati's
+  milestone-DoD/SCREEN-STATUS/review-notes references → `roadmap.md` §3 + `ui-requirements.md`
+  §2/§3 (the AC now live inline, so she gained "the surface AC" as an explicit fourth reference).
+  Kept verbatim because they're the earned lessons: candidates-not-findings, presence-is-not-
+  placement, the coherence axis (sanity-check counts), default-to-EXPECTED, run-inline-because-
+  subagents-can't-see-images, report-not-edit + fix-then-re-run.
+- **Murr's design** anchors on the brief's bar ("would have caught a hardly-works,
+  hard-to-refactor rubber-stamped sprint") with three mechanisms: **(1)** a mandatory **concrete
+  failure scenario** per runtime finding ("fails when X → Y" — no scenario, no finding; it demotes
+  to debt or dies), **(2)** the **anti-rubber-stamp law** — a SOUND verdict must enumerate the
+  attack surfaces actually probed, and "probed clean" may list only what was attacked, **(3)**
+  **a diff-only review is invalid** — call sites must be opened (that's where races and violated
+  assumptions live). Checklist priority: 7 runtime families (edge cases → null/undefined → races →
+  error handling → 4xx-not-500 → authz → contract fidelity) before 2 refactorability families
+  (coupling, dead code), plus a **test-honesty step** (can the test fail? does the mock hide the
+  claimed bug class?) — the rubber stamp is usually the test suite. Severity ladder: 🔴/🟠/🟡 +
+  🧹 debt (refactorability, never outranks runtime) + 🤔 owner-call.
+- **Britch** (per the owner's rename instruction) generalizes the `validate-idea` command
+  (`~/.claude/commands/validate-idea.md`) into a house-style skill: kept the five-question
+  interrogation, weakest-assumption naming, Kill/Sharpen/Proceed, "the real point," and the
+  PROCEED kill-criteria; stripped the Aiden/Versaterm-specific context to a generic "cite the
+  owner's past failure pattern when on record"; added the crisp trigger boundary (task-type: an
+  owner weighing a NEW build; anti-scope: features in an existing project → the change protocol),
+  an **unattended mode** (interrogate the written brief; unanswered questions push toward
+  SHARPEN), and the handoff (a PROCEED's real-point + kill criteria seed `product-spec.md` §1 and
+  the first `decisions.md` entry).
+- **The template is annotated, not blank** — `_TEMPLATE/SKILL.md` explains each section's job
+  inline; the 7 house rules (lane-first, trigger-dense description + negative scope, authority
+  order, step-0 method, adversarial self-check, fixed report + verified-clean, explicit anti-
+  scope) live in `skills/README.md` beside the lane table.
+- **Britch installs user-scoped** (`~/.claude/skills/`), the trio project-scoped
+  (`<repo>/.claude/skills/`) — he runs before a repo exists.
+
+## What I assumed
+
+- "Rename validate-idea to Britch" meant: include the generalized skill in this package under
+  that name. I did **not** touch the owner's personal `~/.claude/commands/validate-idea.md`.
+- The harness-fallback requirement is satisfied by (a) each SKILL.md being an executable
+  checklist a non-skill harness can be pointed at directly, and (b) the starter kit's AGENTS.md
+  manual-equivalents section — no separate fallback scripts (Burt's grep gauntlet is derived
+  per-project, so a static script would be wrong).
+- Parvati keeps her name (the brief's trio is Burt · Parvati · Murr; only validate-idea was
+  renamed).
+
+## Deferred / needs owner input
+
+- **No cognitive-skill family yet** (the "make Opus think to the bar by default" leg) — that read
+  as a later package; the template + house rules are ready for it.
+- **No eval fixtures** (a deliberately-broken mockup/diff per reviewer to prove each catches its
+  seed miss — the bad-PR-corpus idea). Recommended as part of the worked-example package.
+- Whether Murr should also be wired as the project's `/code-review` replacement or run alongside
+  the built-in — owner's call at first real use.
+
+---
+
+# Package 3 — The acceptance-criteria spine (ac-author + acceptance-walkthrough)
+
+Deliverable: [`skills/ac-author/`](skills/ac-author/SKILL.md) +
+[`skills/acceptance-walkthrough/`](skills/acceptance-walkthrough/SKILL.md), plus the AC namespace
+and the two standing behaviors wired through the starter kit (00-INDEX §3, ui-requirements §1/§3,
+roadmap §3, CONVENTIONS DoD, lifecycle-playbook intro/Stage-2/Stage-4, AGENTS.md fallbacks,
+skills/README.md, starter-kit README). Health check re-verified after the template edits.
+
+## What I chose
+
+- **AC get their own stable-ID namespace (as recommended): `AC-<SCOPE>-n`** — scope = a surface
+  slug declared in its §3 header (`AC-COL-3`), a phase (`AC-P2-1`), or `GLOBAL` (the inherited
+  always-on set). Scoped-not-global numbering keeps numbering local (parallel tracks don't collide
+  the way a single `AC-NNN` counter would) and makes the ID self-locating. Same laws as behavior
+  IDs: append-only, greppable (criterion ↔ walkthrough step ↔ E2E flow name), every AC cites the
+  behavior ID it verifies. Registered in 00-INDEX §3 as a second namespace riding the first.
+- **Storage stays inline** (per the brief): `- [ ] **AC-<SCOPE>-n** — do X → expect Y (SPEC-ID)`
+  checkbox lines in the owning doc — no new file, doc count unchanged. The inherited set became
+  `AC-GLOBAL-1..4` so surfaces stop restating lifecycle/confirm/a11y/DS criteria.
+- **ac-author is an *author*, not a reviewer** — the one skill so far allowed to edit the doc
+  graph, and only under the change protocol (version bump, changelog, register cell, §2 AC
+  column). Its core is the six craft laws (observable · binary · one-behavior · cites-spec-ID ·
+  unhappy-paths-included · phase-honest) plus two kill-tests per criterion ("could this pass with
+  the feature broken?" / "could two reviewers disagree?") and a completeness pass against the
+  states board + contract. Guardrail kept hard: it never specs-by-AC — unspecced behavior goes to
+  open-questions first.
+- **acceptance-walkthrough splits per-criterion into GUIDED vs AUTOMATED** — mechanical,
+  regression-worthy criteria become E2E flows *named for the AC IDs they demonstrate* (the
+  testing-strategy "thin E2E" cap respected: automate what re-fires at later gates, not
+  everything); taste/device-feel/real-money stay guided **always** (the InGame §11 insight: gates
+  exist precisely where automation is blind). Judgment prompts are staged as ☆ lines with **no AC
+  ID** — mixing taste into criteria poisons both. Automated legs run before the sitting; an
+  automated FAIL blocks booking the owner's time.
+- **Failure semantics:** a FAIL is a flag routed back to the build lanes; **the gate does not pass
+  with open FAILs unless the owner waives — and a waiver is a `decisions.md` entry naming the AC
+  ID.** Pass/fail is recorded per criterion, giving gates an audit trail.
+- **The two behaviors got teeth, not just prose:** (1) surfaced-work-verifies-first went into the
+  CONVENTIONS **DoD line** ("the touched surface's AC self-verified (parvati); an AC you can't yet
+  meet is declared, never silently skipped") — the DoD is what every task is held to; (2)
+  offer-the-walkthrough went into the playbook as a standing behavior + into the G-4.n gate row
+  itself, so the gate *is* the walkthrough rather than having one available.
+
+## What I assumed
+
+- Endpoint AC live in the **delivering phase's** roadmap block (citing endpoint + spec ID) rather
+  than a third storage location in api-contract — the contract already owns shapes/codes; a
+  separate per-endpoint AC section would duplicate it. Revisit if API-only phases become common.
+- The E2E tool is project-chosen (Maestro is the worked example, not a requirement) — the skill
+  binds flows to AC IDs by *naming convention*, which survives any tool swap.
+- Surface slugs are declared in the §3 block header (`### 3.1 Collection (\`COL\`)`) rather than a
+  new §2 table column — keeps the health check's §2 parser untouched.
+
+## Deferred / needs owner input
+
+- **Health-check enforcement of AC** (e.g. red when a ✅-AC column row's §3 block contains no
+  `AC-<slug>` lines) — deliberately left out to keep the script's parsing simple; the §2 AC column
+  + parvati already carry the tripwire. Add it if the pilot shows the column being ticked
+  dishonestly.
+- **A walkthrough-results ledger** (where past sittings accumulate) — currently "keep the script
+  for the next re-fire" + the decisions entry on pass/waiver; a dedicated file felt like a ninth
+  doc without proven need. The dashboard package may want to surface last-gate results instead.
+
+## Owner-directed amendment (same session): the two-pass model
+
+The first cut had ac-author running once, at converge — the owner correctly flagged that AC
+should *lead* design, not trail it. Amended across ac-author (new "Two passes" section + method
+step 0), the playbook Stage 2 Produces (per-surface order: brief + pass-1 behavioral AC → drafts
+judged against them at the pick → converge → pass-2 presentation-borne AC appended → frozen),
+ui-requirements §3 intro, and skills/README. The rule as encoded: **pass 1 (behavioral, from
+spec+contract) exists before any draft and is the bar the drafts are picked against; pass 2 (at
+converge) only absorbs what the settled design legitimately added — never inverted, or the
+drawing defines the bar it's measured by.**
+
+---
+
+# Package 4 — The cognitive-skill family (ui-craft · spec-elicitation · failure-first)
+
+Deliverable: [`skills/_TEMPLATE/COGNITIVE-SKILL.md`](skills/_TEMPLATE/COGNITIVE-SKILL.md) (the
+class template), [`skills/ui-craft/`](skills/ui-craft/SKILL.md) (the required flagship),
+[`skills/spec-elicitation/`](skills/spec-elicitation/SKILL.md) (+ `references/question-banks.md`)
+and [`skills/failure-first/`](skills/failure-first/SKILL.md) (the two exemplars), the class
+section + roster in `skills/README.md`, and playbook/README/AGENTS wiring.
+
+## What I chose
+
+- **The trigger-boundary mechanism** (the latitude item): three parts, encoded in the template
+  and every member. (1) **Artifact-anchored triggers** — a cognitive skill loads when the next
+  output IS an instance of its artifact ("about to design a screen"), never on topic keywords
+  ("the user mentioned UI"); the test each skill carries: *is the next output an instance of the
+  artifact?* (2) an explicit **quiet-list** in every description naming the adjacent activities
+  it must NOT load for (reviewing → the reviewer's lane; debugging → the debugging discipline;
+  discussing/planning → nothing). (3) **deference laws** that make misfires cheap even when they
+  happen: the project's docs outrank the skill, and it adds no process — so a wrongly-loaded
+  cognitive skill can't derail work, only pad it.
+- **The class laws:** inline-and-silent (better work, not checklist narration; trade-offs named
+  in the receipt; below-bar work declared, never silent) · project-docs-outrank-generic-craft
+  (so cognitive skills never fight burt/the CONVENTIONS) · **reviewer pairing** as the quality
+  mechanism — ui-craft↔burt, failure-first↔murr, stated in both directions: "if the reviewer
+  would flag it, the cognitive skill should have prevented it."
+- **ui-craft** holds both bars at once per the brief: the app-agnostic senior-designer set
+  (hierarchy/one-primary-action, affordance, 44pt/48dp targets, the full state matrix as the #1
+  generalist omission, motion-with-purpose, cognitive load incl. the low-frequency three-week
+  re-learn test, an accessibility floor, platform conventions) AND the project's aesthetic
+  profile — with the profile's bold/conventional split treated as law ("novelty spent on
+  wayfinding is the signature junior move").
+- **Exemplar picks:** `spec-elicitation` (owed — the owner commissioned its design last turn:
+  five moves, question banks + baseline surface taxonomy in a references file, the coverage
+  ledger in `docs/planning/spec-ledger.md`, ledger-driven nudges, "the map has no unexplored
+  rooms" exit) and `failure-first` (highest-leverage for the build phase and the natural
+  murr-upstream, completing the pairing symmetry). Deliberately NOT built: the rest of the
+  shortlist — data-modeling, api-contract-design, accessibility-deep, performance — stamped from
+  the template when a pilot shows the need, per the anti-goal of skills that auto-load too
+  broadly.
+- **Naming convention formalized:** person names = summoned colleagues (reviewers/gates);
+  craft names = ambient cognitive skills (nobody needs to remember a name for them to fire).
+
+## What I assumed
+
+- spec-elicitation belongs to the cognitive class (a conversation harness, not a reviewer) and
+  is project-scoped — it works a repo's doc graph and ledger.
+- Its ledger lives at `docs/planning/spec-ledger.md` as working state OUTSIDE the 8-doc graph
+  (no 00-INDEX register row — it's scratch, not truth; the durable output is the spec + inbox).
+- ui-craft covers the accessibility *floor*; a dedicated accessibility-deep member remains on
+  the shortlist rather than bloating the flagship.
+
+## Deferred / needs owner input
+
+- The four shortlist members (data-modeling · api-contract-design · accessibility-deep ·
+  performance) — stamp on demand from the template.
+- Whether spec-elicitation should also fire during Stage 6 live-ops feature waves (it says
+  "reloads whenever a later discovery reopens spec territory" — pilot will show if that trigger
+  is crisp enough).
+
+---
+
+# Package 5 — Sturdy-legs testing kit
+
+Deliverable: [`testing-kit/`](testing-kit/) (README + 5 files: `defineRoute.ts` ·
+`authz-coverage.test.ts` · `concurrency.ts` · `pg-harness.ts` · `destructive-guard.ts`), the
+[`starter-kit/docs/testing-strategy.md`](starter-kit/docs/testing-strategy.md) template (doc #9),
+murr's anti-padding tripwire, and the health check's risk-ID coverage line — all verified
+(register sync green with the new row; coverage line dormant with no tests, and correctly
+reporting "2/3 tagged — missing: SYS-02" in an active-path scratch test).
+
+## What I chose
+
+- **testing-strategy rejoins the graph as doc #9** (Package 1 had folded it into CONVENTIONS and
+  explicitly deferred this call to this package). The brief demands a real template; a §3 the
+  health check can machine-read needs a stable home; and backend-less apps keep it too (client
+  testing still applies — only the kit's *code* is backend-only). Register row added; the
+  config-free health check picked it up with zero script changes.
+- **The kit is ported code with the mechanism as the contract.** `defineRoute` and
+  `destructive-guard` are near-verbatim generalizations of InGame's (they were already generic —
+  InGame-isms like F30/SYS-07/G-C comments became toolkit language); `pg-harness` extracts the
+  repeated beforeAll/afterAll block from InGame's six integration slices into `startTestDb({
+  migrate })`; `concurrency` codifies the Promise.all race pattern into `race()` +
+  `expectOneWinner()` — which asserts the under-appreciated third clause from InGame's suite:
+  **zero 500s** (the race loser must be a handled, typed refusal). Stack-swappability = each file
+  header states the mechanism as a spec + names its single swap seam (`mountRoutes` for the
+  framework; the container class for the DB; plain-Error asserts for the runner).
+- **The honesty chain, stated as architecture** (testing-kit README): (1) `defineRoute` — can't
+  *define* an unguarded route (boot-time throw; kept InGame's `crossPrincipal` read-side flag,
+  not just `mutates`); (2) `authz-coverage.test.ts` — can't *merge* a phantom guard (registry
+  ids diffed against the suite source); (3) **murr** — the named test must be *honest* (mechanics
+  can't read intent; the last mile is the reviewer). This mirrors InGame's lint architecture with
+  the lint layer replaced by a portable template test.
+- **Murr's anti-padding tripwire = four named patterns**, each with a tell:
+  constant-asserted-against-itself · trivial restatements · mock-echo · cross-layer duplication —
+  plus the severity twist that matters: padding is 🧹 delete-it debt, **except on a §3 risk
+  domain, where a padded test masquerading as required coverage is 🟠 major** (it satisfies the
+  coverage grep while guarding nothing — worse than absent).
+- **Risk-ID coverage is a presence line, never a % gate** (per the brief): the health check
+  extracts spec-ID tokens from testing-strategy §3 (excluding OQ-/AC-/D- namespaces), greps all
+  `*.test.*`/`*.spec.*` files, and reports per-ID gaps as 🟠 info — with two honest dormant
+  states (§3 unfilled · no test files yet) so it never nags before P1.
+
+## What I assumed
+
+- The kit lives as a third sibling package (`toolkit/testing-kit/`), installed at P1 per the
+  roadmap (whose P1 exit now also requires the destructive guard **seen firing once** — a guard
+  nobody has watched fire is a hope; InGame's G-C insight, generalized).
+- InGame's rule-4 CI lint (inventory-diff as a lint with bad-PR fixtures) is intentionally
+  simplified to a template *test* for portability; a project can graduate it to a lint later.
+- The "test-audit findings" study item was best served by the live suite itself (defineRoute,
+  the F36 races, gate G-E's atomic-rollback test) — those patterns are what got generalized.
+
+## Deferred / needs owner input
+
+- **The bad-fixture corpus** (a deliberately-padded test per tripwire pattern + a meta-test that
+  murr/the lint rejects it — InGame's F22 self-test idea) — again deferred to the worked-example
+  package, where it doubles as the reviewer eval set.
+- Client-side test helpers (RTL harness, component-test conventions) — the kit is API-side where
+  InGame's validated patterns live; client patterns should be extracted once the pilot builds
+  screens.
+- Whether the authz-coverage test should also *fail on* authzTest ids whose test never makes an
+  actor-B request (detectable heuristically: the id's `it` block contains no second-actor setup)
+  — left to murr for now; a heuristic that false-positives would erode trust in the mechanism.
+
+---
+
+# Package 6 — The Owner dashboard (lifecycle cockpit)
+
+Deliverable: [`dashboard/`](dashboard/) — `server.mjs` (dep-free Node: adapter-based doc-graph
+read layer + the trace engine + mockup/doc serving) + `index.html` (single-file UI: Pre-dev /
+In-dev / Post-dev / ID-trace tabs) + README. Registered in InGame's `.claude/launch.json` as
+`dashboard` (port 8791). **Verified live against InGame's real graph**, not just built: header
+detects M3 from the branch + 🟢 from PROJECT-HEALTH; Pre-dev renders the vision, 6 personas
+(Curator★), the M0–M8 strip, and an Owner Decision Ledger of 11 PENDING owner calls with their
+blocking stages; In-dev finds the M3 acceptance suite (0/54 boxes), the Up-next queue, and the
+full surface table with working mockup links; Post-dev shows the 7 stubs; the trace endpoint
+fans CARD-15 across spec(6)→api(1)→design(7)→mockup(33)→code(2)→test(1)→decision(17); mockup
+serving works and path traversal is blocked. Four parse bugs found-and-fixed during live
+verification (leading-`#` titles, leading-dash queue items, decisions README.md sorting first,
+"gated" matching the stage regex).
+
+## What I chose
+
+- **Stack: dependency-free Node + one static HTML file** — the house pattern (health-check.mjs,
+  standalone mockups). No npm install, no build step, runs the week it ships (`node
+  toolkit/dashboard/server.mjs`). A framework buys nothing at this size and costs the
+  clone-and-run property.
+- **The dashboard is a pure READ of the doc graph** — no database, no own state, never writes.
+  The docs remain the single truth; this is their human-readable projection (the brief's
+  "human-readable counterpart to the Claude-first doc graph", taken literally). Refresh = re-parse.
+- **Generic read layer via two auto-detected adapters** (`ingame` when SCREEN-STATUS.md exists,
+  else `starter`) — one adapter object per layout, every parser reads through it; a third layout
+  is a third object. Parsers are individually best-effort so one odd doc never blanks the cockpit.
+- **Owner Decision Ledger = a projection, not a new file.** PENDING is derived from open OQs
+  whose text signals an owner ruling (owner/gate/bless/ratify) + the blocking stage extracted
+  (M3, G-D, gate-3…); DECIDED is the decisions log. No new doc to maintain — the ledger can never
+  drift from the inbox because it IS the inbox, filtered. (Found 11 real pending owner calls in
+  InGame on first run — the panel earned its place immediately.)
+- **Single-ID trace as a live grep, not an index** — walks the project per request (skipping
+  node_modules etc.), buckets hits by path into the canonical order spec→api→design→mockup→code→
+  test→decision. No index to go stale; repo-scale cost is negligible. The `(→ metric)` tail
+  arrives when post-dev JSON exists.
+- **Post-dev stubs wired by file-drop contract:** `.dashboard/<panel>.json` — any flat JSON
+  lights the panel. That keeps Arc C/D "provisional but real": the adapter seam is defined now,
+  the exporters (Sentry, analytics, store) arrive with their stages.
+- **Current-phase heuristic:** `.dashboard/config.json` override → git branch (`m3`→M3) → unknown.
+
+## What I assumed
+
+- InGame's `.claude/launch.json` gains the `dashboard` entry (small, additive, and it's how the
+  owner + agent tooling will actually run it). Everything else stays in `toolkit/`.
+- Raw-doc links (`/doc/<path>`) serve markdown as plain text for now — "readable render" is done
+  by the panels; a full markdown renderer in the raw view is polish, not spine.
+- The In-dev "walkthrough status" reads checkbox progress from the phase's acceptance/build doc
+  (InGame: `m3-acceptance-suite.md`) — the acceptance-walkthrough skill's scripts are markdown
+  checklists, so this works for both layouts without a new format.
+
+## Deferred / needs owner input
+
+- **Preview screenshots wedged** (known environment quirk) and headless-Edge raced the model
+  fetch — visual verification is by accessibility snapshot + DOM evals, which prove structure
+  and data but not pixels. Worth one manual look at http://localhost:8791 (server left running).
+- Post-dev exporters (the scripts that produce `.dashboard/*.json` from Sentry/PostHog/store
+  APIs) — Arc C/D work, stubbed by design per the brief.
+- Auto-refresh / file-watching (it re-parses per request; a `watch` mode is trivial later).
+- The trace's `code` bucket currently keys on `apps/|src/|packages/` — revisit if a project uses
+  a different source layout (make it part of the adapter).
