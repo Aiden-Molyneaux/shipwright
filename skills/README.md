@@ -34,6 +34,16 @@ The two standing behaviors they encode (also written into the playbook + CONVENT
 **(1)** nothing surfaces to the owner until its AC are self-verified (burt/parvati/murr enforce
 per layer); **(2)** at every owner gate, the agent offers the walkthrough unprompted.
 
+## The QA loop — doctor-nick
+
+Neither a reviewer nor a cognitive skill: **doctor-nick** is the *process* skill for the QA lane.
+Reviewers judge the work; doctor-nick keeps the *workflow to reach the work* cheap — the lessons
+ladder (capture in `docs/qa-runbook.md` → **twice = automate** into the dev supervisor's
+read-only `doctor` verb → stable invariants become CLAUDE.md law) plus three enforcement rules
+(preflight `up`+`doctor` · doctor-then-runbook-then-investigate when workflow-blocked · a retro
+line in every QA receipt). Parvati's screenshot-capture preflight points here; the supervisor
+contract (`up`/`status`/`doctor`) lives in the starter-kit CLAUDE.md QA-loop section.
+
 ## The cognitive class — think-smarter skills
 
 The third class: skills that **upgrade the thinking while the work happens**. Where reviewers
