@@ -411,3 +411,30 @@ verification (leading-`#` titles, leading-dash queue items, decisions README.md 
 - Auto-refresh / file-watching (it re-parses per request; a `watch` mode is trivial later).
 - The trace's `code` bucket currently keys on `apps/|src/|packages/` — revisit if a project uses
   a different source layout (make it part of the adapter).
+
+# DECISIONS.md — doctor-nick + the QA lessons ladder (2026-07-05)
+
+Generalized from InGame decision 0065, after agents there kept burning QA time on dev-server /
+preview workflow friction with no capture loop.
+
+## What I chose
+
+- **The lessons ladder:** QA-workflow lessons graduate through tiers — captured in
+  `docs/qa-runbook.md` (Symptom → Diagnosis → Fix → Verified → Hits, agents append directly),
+  **promoted at Hits ≥ 2** into the dev supervisor's `doctor` verb (deterministic, read-only,
+  prescribes the exact fix), **canonized** into CLAUDE.md only when they're standing environment
+  invariants (owner-gated). CLAUDE.md stays short because the runbook + doctor absorb the churn.
+- **Enforcement is a skill, not prose:** `skills/doctor-nick/` — preflight (`up` + `doctor`
+  before any QA), the stuck rule (doctor → runbook → investigate), the retro rule (every QA
+  receipt answers "workflow friction this run?"). Parvati's capture preflight points at it.
+- **The supervisor contract is documented, not implemented:** the starter-kit specifies
+  `up`/`status`/`doctor` (CLAUDE.md QA-loop section) but ships no supervisor code — stacks vary
+  too much; InGame's `dev-stack.mjs` is the reference implementation.
+- **The runbook is operational, not registered:** like HEALTH.md it carries no version/changelog
+  and no 00-INDEX row — registering it would put append-mid-task friction on the exact loop that
+  must be zero-ceremony.
+
+## Deliberately deferred
+
+- `doctor --fix` (auto-remediation) — YAGNI until prescriptions prove stable across projects.
+- Runbook analytics beyond the in-file Hits counter.
