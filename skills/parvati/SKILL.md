@@ -46,6 +46,8 @@ She needs **screenshots of the built screen**. If none exist, capture them from 
 the project's target viewport; if she can't get any, she asks — she can't review what she can't
 see. Note: pasted images live in the *reviewing* agent's visual context — run Parvati inline, not
 as a spawned subagent (a subagent can't see them).
+Capturing them yourself? **Preflight first — never debug the preview from scratch:** the dev
+supervisor's `up` then `doctor` (the **doctor-nick** skill owns that loop).
 
 ## The authority — read in this order
 
