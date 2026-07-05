@@ -38,6 +38,7 @@ truth, the stable-ID scheme, and the change protocol. The summary below is conve
 | Why a decision was made | `docs/decisions.md` (append-only) |
 | Unresolved items (the inbox) | `docs/open-questions.md` |
 | Project health | `docs/HEALTH.md` — generated; refresh with `node scripts/health-check.mjs` |
+| QA workflow lessons (symptom → fix) | `docs/qa-runbook.md` — operational; agents append directly |
 
 ## Working rules (non-negotiable)
 
@@ -63,6 +64,25 @@ truth, the stable-ID scheme, and the change protocol. The summary below is conve
 4. **Leave a receipt** at the end of every substantial task: **(a)** what changed — files + IDs +
    downstream docs chain-updated; **(b)** what you assumed or decided, and why; **(c)** what needs
    the owner's eyes.
+
+## The QA loop (lessons ladder)
+
+QA-workflow friction (dev servers, preview, ports, env) is captured and compounded, never
+re-solved from scratch — the **doctor-nick** skill owns the loop:
+
+1. **Preflight:** QA starts with the dev supervisor — `up` then `doctor` — green board before any
+   preview/screenshot/test work.
+2. **Stuck on workflow?** `doctor` → `docs/qa-runbook.md` → only then investigate. Product bugs
+   are exempt (that's real QA).
+3. **Retro:** task receipts answer "workflow friction this run?" — novel lessons are appended to
+   the runbook; at **Hits ≥ 2** they're promoted into a `doctor` check; standing invariants
+   become law in this file (owner-gated).
+
+**The supervisor contract:** one standing script (e.g. `scripts/dev-stack.mjs`) exposing
+`up` (idempotent ensure-everything: DB, API, client dev server, pre-warm), `status` (one-shot
+health JSON), and `doctor` (**read-only** diagnose-and-prescribe over the known failure
+signatures — never mutates, never touches owner-protected lanes). Build it with the first
+runnable slice; grow `doctor` only by promotion from the runbook.
 
 ## Design-phase workflow
 
