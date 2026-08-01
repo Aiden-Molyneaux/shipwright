@@ -57,7 +57,9 @@ wrong thing:
 0. **Identify the target.** The working agent names the new/changed file(s); otherwise
    `git diff --name-only` + untracked `git status --short`, scoped to `docs/design/mockups/**`.
 1. **Pre-flight (mechanical).** Build a grep gauntlet **from the §3 token table** and run it over
-   the file. The standing nets — adapt values to the project's tokens:
+   the file — the harness template is `scripts/preflight.sh` (reusable plumbing; replace the
+   ADAPT nets with the project's tokens). The standing nets — adapt values to the project's
+   tokens:
    - **Type ladder:** `font-size:` / `font:` values NOT on the §3 ladder (watch substring traps —
      a leading space or `\b` so 8px doesn't match inside 18px).
    - **Off-token color:** hex/rgb literals not in the §3 table; any token the §2 rules restrict
@@ -72,7 +74,9 @@ wrong thing:
    confirm each by reading the line.
 2. **Rule-by-rule.** Read the file and walk §2's foundation rules one by one, then §5 (does the
    screen compose from the locked component names, or reinvent near-dupes?), then §4 (are the
-   lifecycle states drawn on a states board?), then the hygiene rules. For each finding capture:
+   lifecycle states drawn on a states board?), then the hygiene rules — the layered pass
+   structure is `references/audit-checklist.md` (a template: instantiate its layers with the
+   project's values). For each finding capture:
    **rule · `file:line` · the offending value · the exact fix · severity**.
 3. **Thorough mode (optional).** For a high-stakes screen (an owner gate, a converge), fan out one
    sub-auditor per layer (foundation rules · type · tokens/fonts · components · lifecycle ·
