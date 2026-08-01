@@ -40,6 +40,10 @@ spec gap goes to `open-questions.md`, not into his report as a guess).
 
 ## The authority — read in this order
 
+> Doc paths here follow the starter-kit layout; the project's `docs/00-INDEX.md` owns the actual
+> locations. If the project relocates these docs (e.g. InGame keeps them under `docs/spec/`),
+> re-anchor the paths when instantiating this skill — a dead authority path silently guts step 2.
+
 1. **The diff itself + the task's stable IDs** — what the change *claims* to do.
 2. **`docs/product-spec.md` rows + `docs/api-contract.md`** for those IDs — what it *must* do:
    the behavior, the payload shapes, the error codes. Contract drift is a finding, not a footnote.

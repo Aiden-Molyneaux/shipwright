@@ -107,6 +107,14 @@ Stage 6.
 `britch` runs *before* a repo exists, so it belongs in your **user** scope
 (`~/.claude/skills/britch/`) rather than per-project.
 
+**Tailor on copy — re-anchor the doc paths.** Every SKILL.md cites authority docs by starter-kit
+path (`docs/product-spec.md`, `docs/roadmap.md`, `docs/testing-strategy.md`, …). The target
+project's `docs/00-INDEX.md` owns the real locations — if it relocates or renames them (InGame
+keeps specs under `docs/spec/`, its roadmap is `road-to-market.md`), update the copied skill's
+paths and any project-convention terms (phase → milestone, etc.). A skill with dead authority
+paths fails silently: the reviewer skips the doc instead of erroring. This is how murr first
+shipped into InGame with paths pointing at nothing (caught 2026-08-01).
+
 **Harness note:** skills are a Claude Code mechanism. Harnesses that don't support them (OpenCode,
 Codex, etc. — they read `AGENTS.md` instead) get the manual fallback: each SKILL.md's method is a
 self-contained checklist an agent can be pointed at directly ("read `.claude/skills/murr/SKILL.md`
