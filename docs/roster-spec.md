@@ -1,6 +1,6 @@
 # Agent roster spec
 
-Status: reviewed (step #416, 2026-10-13). Once approved, the templates are built from it
+Status: approved by Aiden (step #416, 2026-10-13). The templates are built from it
 (#417 Sigmund, #418 the four agents) and the review lessons fold into Murr and Parvati (#419).
 
 The roster is five members that every codebase carries in the same shape. Shipwright holds the
