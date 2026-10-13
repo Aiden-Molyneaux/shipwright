@@ -1,6 +1,6 @@
 # Agent roster spec
 
-Status: draft for review (step #416, 2026-10-13). Once approved, the templates are built from it
+Status: reviewed (step #416, 2026-10-13). Once approved, the templates are built from it
 (#417 Sigmund, #418 the four agents) and the review lessons fold into Murr and Parvati (#419).
 
 The roster is five members that every codebase carries in the same shape. Shipwright holds the
@@ -43,8 +43,8 @@ Parvati `file:line` before acting on it, and spot-checks the files Moh names.
 Sigmund is the front door for all change work in the repo: fixes, tweaks, features, refactors,
 "the X page looks wrong". Even a one-line fix runs through him, because the lifecycle is the
 point, not the ceremony. Negative scope: pure questions about the codebase, operating the deployed
-app, work in other repos, and pre-build stage work the lifecycle playbook already routes (see
-open question 2).
+app, work in other repos, and Stages 1 to 3 of the lifecycle playbook (spec, design, plan), which
+keep the playbook's own routing.
 
 ### Phases
 
@@ -110,7 +110,7 @@ The generic rules are fixed in the template. The two lists they reference are pr
   list** (§4).
 - **Moh is never overridden upward.** Judgment goes to the main session.
 - **Parvati stays on Sonnet.** Her safeguard is listing every state first, not a bigger model.
-- **Fable** only when the owner asks (open question 3).
+- **Fable** only when the owner asks.
 
 Every override is named, with its reason, in the receipt (phase 7). A tracked session also logs
 it on its step.
@@ -157,6 +157,17 @@ cad-dev-loop's Sev (§5).
 In both, the wrapper overrides the skill's "run inline" note (she captures her own screenshots),
 opens every interactive state at every viewport, and lists the states she could not reach.
 
+**Calling them yourself.** Every member works without Sigmund.
+
+- Any of the four agents: name it in a request ("have Moh find every caller of X", "get Murr on
+  this diff") or @-mention it. It runs as a subagent on its pinned model and hands back a report.
+- Murr and Parvati can also run inline, because their method lives in a skill: `/murr` or
+  `/parvati` loads it into the current session, on that session's model. Use it to watch the
+  review happen; use the agent when only the report matters.
+- Sev and Moh have no skill, so there is no `/sev` or `/moh`. Running them inline would just be
+  the main session doing the work itself.
+- `/sigmund` loads Sigmund. cad-dev-loop's is always `/cad-dev-loop:sigmund`.
+
 ## 4. Edit points per project
 
 What a project fills in when it adopts the templates. Each template marks these sections the same
@@ -194,8 +205,11 @@ cad-dev-loop (vps-claude-skills) stays as it is. Same names, different scope:
 in every repo, beside a project's own `sigmund`. Its description triggers on generic phrases
 ("drive this to done", "what's next on this task"). Shipwright's description should name the
 repo ("change work in this repo") and leave Jira, tickets and ledgers out, so a non-Versaterm
-repo routes to the local one. Worth one test after #417 lands: ask "drive this to done" in
-InThink and see which loads.
+repo routes to the local one. cad-dev-loop stays enabled everywhere (Aiden, 2026-10-13), so the
+description is the only guard. The collision touches loose phrasing only: agents and skills are
+separate namespaces (Sigmund dispatching `sev` can never reach cad-dev-loop's Sev skill), and a
+handoff that names Sigmund in its first line loads the local one on purpose. Worth one test after
+#417 lands: ask "drive this to done" in InThink and see which loads.
 
 ## 6. Where the templates live in Shipwright
 
@@ -212,14 +226,13 @@ InThink and see which loads.
 Rollout to InThink, InProgress and InGame goes through each project's own session, from the
 templates, never by copying over their edited files (order in r218).
 
-## 7. Open questions for Aiden
+## 7. Review decisions (Aiden, 2026-10-13)
 
-1. **Parvati's mode in the template default.** Recommend isolated build as the default (safe with
-   parallel sessions), shared preview as the documented alternative.
-2. **Does Sigmund cover pre-build stage work?** Recommend: Sigmund covers any change to the
-   repo's code, from Stage 4 on. Stages 1 to 3 (spec, design, plan) keep the playbook's own
-   routing (spec-elicitation, ac-author, burt), since Sigmund's lifecycle assumes code exists.
-3. **Fable.** InThink allows it to break a tie on a design call; InProgress only on request.
-   Recommend "only when the owner asks", the stricter of the two.
-4. **Moh and `omitClaudeMd`.** Recommend `true`: Moh needs the repo map in his own file, not the
-   house rules, and it keeps him cheap.
+1. **Parvati's default mode:** isolated build; shared preview is the documented alternative.
+2. **Sigmund before Stage 4:** no. Sigmund covers code changes from Stage 4 on. Stages 1 to 3
+   (spec, design, plan) keep the playbook's own routing (spec-elicitation, ac-author, burt), since
+   Sigmund's lifecycle assumes code exists.
+3. **Fable:** only when the owner asks.
+4. **Moh's `omitClaudeMd`:** `true`. His own file carries the short repo map; the house rules
+   never change a lookup's answer.
+5. **cad-dev-loop:** left as is, enabled in every repo.
