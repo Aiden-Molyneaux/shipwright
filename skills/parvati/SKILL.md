@@ -44,10 +44,28 @@ mockup-diff.
 
 She needs **screenshots of the built screen**. If none exist, capture them from the running app at
 the project's target viewport; if she can't get any, she asks — she can't review what she can't
-see. Note: pasted images live in the *reviewing* agent's visual context — run Parvati inline, not
-as a spawned subagent (a subagent can't see them).
+see. Note: pasted images live in the *reviewing* agent's visual context, so with pasted screenshots run
+Parvati inline, not as a spawned subagent (a subagent can't see them). The `parvati` agent wrapper
+(Shipwright `agents/`) is the exception: it captures its own screenshots in one of the modes below.
 Capturing them yourself? **Preflight first — never debug the preview from scratch:** the dev
 supervisor's `up` then `doctor` (the **doctor-nick** skill owns that loop).
+
+## Modes [edit]
+
+How Parvati reaches the running app. A project keeps one; the agent wrapper for it is in
+Shipwright's `agents/`.
+
+- **Isolated build** (the default): she builds the branch into a scratch folder, runs it on a
+  port from her lane with scratch data, seeds it through the API, and drives it with Playwright.
+  This is what lets parallel sessions review at once without sharing one preview.
+- **Shared preview**: a dev pair the owner keeps running on reserved ports. She drives it with the
+  Claude Browser tools, signs in with an in-page fetch, and never starts servers.
+
+In both modes, before opening the app, she lists every interactive state the screen has (each
+menu, popover, picker, tab, toggle, confirm stage and toast; the keyboard path to each; where
+focus lands after each closes), from the diff when there is one. She opens each state at every
+viewport: {{VIEWPORTS}}. A state she could not reach goes at the top of the report with the
+reason. A screen reviewed only at rest is a partial review and is labelled as one.
 
 ## The authority — read in this order
 
@@ -67,10 +85,18 @@ The DoD is the arbiter, so never skip it.
 5. **`docs/open-questions.md`** — known gaps already filed; report those as *"known — OQ-xxx"*,
    not fresh surprises.
 
+### Design authority [edit]
+
+A project without the doc graph (no roadmap DoD, no `ui-requirements.md`, no states board)
+measures against {{DESIGN_AUTHORITY}} and the request the screen was meant to satisfy. Items 1 to
+4 above then read that way; item 5 is the project's own list of known gaps, if it has one. With no
+phase DoD, "owed now" means "part of the request": an element the request implies and the screen
+lacks is a flag; an element nobody asked for is expected; a visual gap is polish.
+
 ## The method
 
 0. **Identify the screen + the current phase**, gather the authorities, get the screenshots.
-1. **Enumerate the expected elements first** — the *union* of what the mockup shows, what the
+1. **Enumerate the expected elements and states first** (the states per Modes above) — the *union* of what the mockup shows, what the
    DoD/AC promise, and what the contract feeds the screen. Build this checklist *before* looking
    hard at the screenshot, so you audit against the design, not react to what happens to render.
 2. **Check each element against the screenshot** on four axes:
@@ -120,6 +146,7 @@ UNPOLISHED are POLISH.
 **Verdict:** <n> 🚩 flag · <m> ✅ expected · <k> 🎨 polish
 **Measured against:** the P<N> DoD · <surface> AC · <states board> · <endpoints>
 **Reviewed from:** <the screenshot(s)>
+**Not reached:** <states she could not open, and why> | none
 
 ## 🚩 Flag (owed at P<N>)
 - **<element>** — <bucket> — <what's wrong> → <fix>. Cite: mockup <ref> · DoD/AC/contract <ref>.
