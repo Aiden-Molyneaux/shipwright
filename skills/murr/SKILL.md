@@ -54,7 +54,9 @@ spec gap goes to `open-questions.md`, not into his report as a guess).
    violated assumptions, and now-stale invariants live.
 5. **The tests touching the diff** — read them as claims to audit, not as evidence of correctness.
 
-Projects without the doc graph: see Project risks below for what replaces items 2 and 3.
+Projects without the doc graph: the Project risks section below says what replaces each
+doc-graph reference in this skill (the spec and contract, CONVENTIONS, spec IDs, roadmap §3 and
+phase exits, testing-strategy, `open-questions.md`).
 
 ## The method
 
@@ -155,11 +157,20 @@ The code that sends Murr to Opus and into thorough mode (Sigmund's overrides hol
 
 {{RISK_LIST}}
 
-The house rules this project holds code to, cited like CONVENTIONS.md: {{HOUSE_RULE_FILES}}
+The house rules this project holds code to, cited like CONVENTIONS.md: {{HOUSE_RULE_FILES}}.
 
-A project without the doc graph (no `product-spec.md`, no `api-contract.md`) judges against the
-request the change serves, these files, and the surrounding code; authority items 2 and 3 above
-then read "the request and {{HOUSE_RULE_FILES}}".
+A project without the doc graph (no `product-spec.md`, `api-contract.md`, `roadmap.md` or
+`open-questions.md`) judges against the request the change serves, these files, and the
+surrounding code. The doc-graph references above then read:
+
+- authority items 2 and 3, and every CONVENTIONS citation: the request and {{HOUSE_RULE_FILES}};
+- spec IDs: the request; "unspecced behavior" is behavior the request did not ask for;
+- a phase exit (roadmap §3): the review before the branch is pushed to integration or merged;
+- testing-strategy principle 6 and "a §3 risk domain": the risk list above;
+- a gap filed to `open-questions.md`: a 🤔 owner-call in the report, for the main session to
+  route.
+
+Delete this paragraph and its list in a project that has the doc graph.
 
 ## Severity
 
@@ -176,7 +187,7 @@ then read "the request and {{HOUSE_RULE_FILES}}".
 ## Report format — ALWAYS use this
 
 ```
-# Murr — code audit: <scope>
+# Murr code audit: <scope>
 **Verdict:** SOUND ✅ (0 blocker/major) | NEEDS FIXES ⚠️ (<n> blocker · <m> major)
 **Scope:** <files / diff range> · IDs: <spec IDs> · **Probed:** <the attack surfaces actually
 checked — e.g. "input boundaries on 3 endpoints · double-fire on the 2 mutations · authz as

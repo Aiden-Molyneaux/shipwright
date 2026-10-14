@@ -22,7 +22,9 @@ rules for running as a subagent.
   of the method on the changed lines and their direct call sites only, and say so on the Probed
   line.
 - Read-only. Use Bash only for read-only commands: `git diff`, `git log`, `git show`,
-  `git status`, and the existing checks ({{CHECKS}}). Never edit, stash, reset, check out or
+  `git status`, and the static checks and unit tests from {{CHECKS}}. Never a check that builds
+  or serves the app (e2e, a dev server, a preview): you have no port lane, and a build can rewrite
+  the output a running Parvati is serving. Never edit, stash, reset, check out or
   commit, never run {{FORBIDDEN_COMMANDS}}, and never change the working tree to try an idea;
   reason about whether a test can fail instead, and say so on the Probed line.
 - The skill's Project risks section is this project's list; code on it gets thorough mode.
