@@ -51,6 +51,11 @@
 | `{{FORBIDDEN_COMMANDS}}` | Commands no agent runs (deploy, installers, destructive SQL) | Sev, Murr wrapper, both Parvati wrappers |
 | `{{SESSION_RHYTHM}}` | When a session cuts and what a clean point is, for projects that cut sessions | Sigmund "Across the session" |
 | `{{HANDOFF}}` | What a handoff holds and where it is saved | Sigmund "Across the session" |
+| `{{PREFLIGHT}}` | The commands that bring the environment up and check it before running-app work, per mode (live install, isolated build) | doctor-nick Preflight (added 2026-10-14, #431) |
+| `{{DOCTOR_COMMAND}}` | The read-only doctor: what it probes, and that it prints the fix and exits non-zero on a blocking red | doctor-nick ladder |
+| `{{KNOWN_ISSUES_FILE}}` | The known-issues log's path (the starter kit's `docs/qa-runbook.md`) | doctor-nick ladder, triage step 3, log section |
+| `{{RUNBOOK}}` | The triage table: symptom, first probe, where the fix lives | doctor-nick Runbook |
+| `{{PROTECTED_LANES}}` | What Doctor Nick never stops, restarts or edits, and which fixes wait for the owner | doctor-nick Boundaries |
 
 ## File structure
 

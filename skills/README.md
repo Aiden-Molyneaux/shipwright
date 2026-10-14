@@ -34,15 +34,23 @@ The two standing behaviors they encode (also written into the playbook + CONVENT
 **(1)** nothing surfaces to the owner until its AC are self-verified (burt/parvati/murr enforce
 per layer); **(2)** at every owner gate, the agent offers the walkthrough unprompted.
 
-## The QA loop — doctor-nick
+## The environment doctor — doctor-nick (Doctor Nick)
 
-Neither a reviewer nor a cognitive skill: **doctor-nick** is the *process* skill for the QA lane.
-Reviewers judge the work; doctor-nick keeps the *workflow to reach the work* cheap — the lessons
-ladder (capture in `docs/qa-runbook.md` → **twice = automate** into the dev supervisor's
-read-only `doctor` verb → stable invariants become CLAUDE.md law) plus three enforcement rules
-(preflight `up`+`doctor` · doctor-then-runbook-then-investigate when workflow-blocked · a retro
-line in every QA receipt). Parvati's screenshot-capture preflight points here; the supervisor
-contract (`up`/`status`/`doctor`) lives in the starter-kit CLAUDE.md QA-loop section.
+Neither a reviewer nor a cognitive skill: **doctor-nick** is the *process* skill for a broken
+environment, and since 2026-10-14 a roster template like Sigmund (`[edit]` sections,
+`{{PLACEHOLDER}}` edit points). Reviewers judge the work; Doctor Nick keeps the *environment the
+work runs in* cheap to fix: a project-filled **preflight**, a **runbook** that triages by symptom,
+and a **known-issues log** (the starter kit's `docs/qa-runbook.md`) that grows each time an issue
+is solved. The ladder: capture on the first hit → **twice = automate** into the project's
+read-only `doctor` → stable invariants become CLAUDE.md law (owner-gated). Three rules: preflight
+before any running-app work · doctor, runbook, log, then investigate when blocked · an
+"environment friction this run?" line in every receipt. He runs inline, so he has no agent
+wrapper. Parvati's capture preflight and Sigmund's verify and deploy phases point here; the
+supervisor contract (`up`/`status`/`doctor`) lives in the starter-kit CLAUDE.md QA-loop section.
+
+| Skill | Looks at | Does | Never touches |
+|---|---|---|---|
+| **doctor-nick** | the **environment** (servers, ports, installs, locks, deploys, the test runner) | triage by symptom, fix, log the issue, propose a doctor check at Hits ≥ 2 | product bugs, judging the work, the doctor's code or any skill or agent file mid-triage |
 
 ## The cognitive class — think-smarter skills
 
@@ -99,7 +107,7 @@ playbook's routing; Sigmund covers code changes from Stage 4 on.
 
 | Skill | Does | Dispatches |
 |---|---|---|
-| **sigmund** | one change end to end: clarify → branch → plan → build → verify → review → ship to integration → present → merge on go-ahead; names where the superpowers skills fit inside those phases | **sev** (build), **moh** (lookup), **murr** (code), **parvati** (screen) from [`agents/`](../agents/README.md) |
+| **sigmund** | one change end to end: clarify → branch → plan → build → verify → review → ship to integration → present → merge on go-ahead; names where the superpowers skills fit inside those phases | **sev** (build), **moh** (lookup), **murr** (code), **parvati** (screen) from [`agents/`](../agents/README.md); loads **doctor-nick** inline when the environment breaks |
 
 Projects adopt him by copying `sigmund/SKILL.md` and filling its `[edit]` sections (the edit
 points are listed in `docs/roster-build-plan.md`), then adding one line to their CLAUDE.md:
@@ -119,6 +127,7 @@ gates live there."* The spec is [`docs/roster-spec.md`](../docs/roster-spec.md).
   spec-elicitation/SKILL.md   (+ references/)
   failure-first/SKILL.md
   sigmund/SKILL.md            (+ agents/ → .claude/agents/, see agents/README.md)
+  doctor-nick/SKILL.md        (+ the project's known-issues file, e.g. docs/qa-runbook.md)
 ```
 
 `britch` runs *before* a repo exists, so it belongs in your **user** scope

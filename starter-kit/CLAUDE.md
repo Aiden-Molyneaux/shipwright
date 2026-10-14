@@ -77,7 +77,7 @@ re-solved from scratch — the **doctor-nick** skill owns the loop:
    preview/screenshot/test work.
 2. **Stuck on workflow?** `doctor` → `docs/qa-runbook.md` → only then investigate. Product bugs
    are exempt (that's real QA).
-3. **Retro:** task receipts answer "workflow friction this run?" — novel lessons are appended to
+3. **Retro:** task receipts answer "environment friction this run?" — novel lessons are appended to
    the runbook; at **Hits ≥ 2** they're promoted into a `doctor` check; standing invariants
    become law in this file (owner-gated).
 
