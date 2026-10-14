@@ -25,6 +25,13 @@ The guardrail skills (design audit, app-parity review, code review) are Claude C
 harness without them, run the equivalent manually and say so in your receipt:
 
 - **Doc health:** `node scripts/health-check.mjs` (same script the skill wraps).
+- **Change facilitation:** read `.claude/skills/sigmund/SKILL.md` and walk its phases 0 to 8 in
+  order for the change: clarify, branch, plan, build, verify, review, ship to integration,
+  present and wait, merge on go-ahead only.
+- **Building from a plan:** read `.claude/agents/sev.md` and build exactly what the plan says;
+  stop at any question; never commit.
+- **Lookups:** read `.claude/agents/moh.md`: answer with `file:line` references and say what you
+  searched and did not find.
 - **Design audit:** walk `docs/design-system.md` §2 foundation rules against the changed mockup,
   rule by rule, citing file:line for each finding.
 - **App parity:** compare the running screen against its `*-states.html` board + its

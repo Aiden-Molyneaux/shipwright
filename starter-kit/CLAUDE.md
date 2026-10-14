@@ -50,6 +50,9 @@ truth, the stable-ID scheme, and the change protocol. The summary below is conve
    not a quiet edit.
 3. **Capture, don't lose:** mid-task ideas/questions → append to `docs/open-questions.md`.
 4. **Reference behavior by ID** — don't restate it. **Commit messages name the IDs touched.**
+5. **Change work runs through Sigmund** (`.claude/skills/sigmund/`). Routing, overrides and the
+   ship gates live there. A handoff for change work says "Run this through Sigmund" in its first
+   line, after the model line.
 
 ## Every task: grounded, healthy, receipted
 

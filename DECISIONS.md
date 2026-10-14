@@ -438,3 +438,45 @@ preview workflow friction with no capture loop.
 
 - `doctor --fix` (auto-remediation) — YAGNI until prescriptions prove stable across projects.
 - Runbook analytics beyond the in-file Hits counter.
+
+# Package 7 — The roster (sigmund + agents/) (2026-10-14)
+
+Built from `docs/roster-spec.md` (approved 2026-10-13) and `docs/roster-build-plan.md`. Sources:
+InThink's Spez skill and its murr/parvati wrappers, InProgress's CLAUDE.md routing and its four
+agents, and the review lessons from InProgress's routing pilot.
+
+## What I chose
+
+- **One facilitator skill, four agent wrappers, same shape in every project.** Sigmund holds the
+  lifecycle, the model routing and the overrides, so a project's CLAUDE.md keeps one line and
+  orchestrator or research sessions never load routing they don't use.
+- **Names:** Sigmund (was Spez in InThink, CLAUDE.md Roles/Routing in InProgress), Sev (was
+  implementer), Moh (was explorer), Murr (was code-reviewer in InProgress; kept over Ellie because
+  InThink and InGame already use him), Parvati (was screen-reviewer). cad-dev-loop keeps its own
+  Sigmund and Sev; ours name the repo and leave Jira, tickets and ledgers out, so the description
+  is the only guard against the trigger collision.
+- **Edit points as `{{UPPER_SNAKE}}` in `[edit]` sections,** the starter kit's convention, so an
+  adopting project can grep for what it still has to fill.
+- **Parvati ships as two wrapper files,** one per mode (isolated build by default), rather than one
+  file with two frontmatters: a template that is valid as copied beats one that needs surgery.
+- **Superpowers stays the method inside the phases** (Aiden, 2026-10-14): brainstorming in phase
+  0, writing-plans in phase 2, subagent-driven-development in phase 3, requesting-code-review in
+  phase 5, finishing-a-development-branch in phase 8. Sigmund owns the lifecycle around them.
+- **No em dashes in the new templates.** InProgress's test suite forbids them in every file, and
+  the templates are copied verbatim. The pre-existing murr and parvati skills keep theirs;
+  projects with the guard strip them on copy.
+
+## What I assumed
+
+- Claude Code loads `skills:` in agent frontmatter (InThink's wrappers rely on it) and reads
+  `omitClaudeMd`, `effort` and `maxTurns` as the spec's table uses them.
+- `/sigmund` resolves to the project's skill and `/cad-dev-loop:sigmund` to the plugin's; a loose
+  phrase ("drive this to done") is the only case where the two compete.
+
+## Deferred / needs owner input
+
+- The trigger-collision test (spec §5): in a project that has both Sigmunds, ask "drive this to
+  done" and see which loads. Runs after the first adoption (InProgress).
+- A per-project checklist script for adoption (grep for `{{`, frontmatter shape). Greps in the
+  build plan cover it for now.
+- InGame: the wrappers and Sigmund beside its existing skills, after InThink and InProgress.
