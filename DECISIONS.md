@@ -549,10 +549,9 @@ project to adopt does not hit the same things.
   the report, for the main session to route). Fill points were not added: the substitutions are
   the same for every project without the doc graph, so prose is enough and the placeholder list
   stays as it is.
-- **Parvati's preflight is conditional.** The skill runs Doctor Nick's Preflight where the
-  project has adopted him, otherwise confirms the app answers. Both wrappers say their Setup is
-  the preflight; the isolated one confirms its server answers before driving it and reports a
-  failed start instead of debugging the build.
+- **Parvati's wrappers own their preflight.** Both say their Setup is the preflight; the isolated
+  one confirms its server answers before driving it and reports a failed start instead of
+  debugging the build. The skill's own preflight line is left to the Doctor Nick port.
 - **Murr runs no check that builds or serves the app.** His wrapper reuses `{{CHECKS}}`, which
   in a UI project includes e2e. He has no port lane, and a build can rewrite output a running
   Parvati is serving, so the wrapper now limits him to static checks and unit tests.

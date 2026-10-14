@@ -47,11 +47,10 @@ the project's target viewport; if she can't get any, she asks — she can't revi
 see. Note: pasted images live in the *reviewing* agent's visual context, so with pasted screenshots run
 Parvati inline, not as a spawned subagent (a subagent can't see them). The `parvati` agent wrapper
 (Shipwright `agents/`) is the exception: it captures its own screenshots in one of the modes below.
-Capturing them yourself? **Preflight first, and never debug the preview from scratch.** Where the
-project has adopted the **doctor-nick** skill (`.claude/skills/doctor-nick/SKILL.md`), run its
-Preflight section, which names the project's commands; otherwise confirm the app answers before
-you drive it. A wrapper's Setup section may name its own check instead. If it stays red, stop and
-report the output as a blocker: environment triage runs in the main session, not inside a review.
+Capturing them yourself? **Preflight first, and never debug the preview from scratch:** run the
+Preflight section of the **doctor-nick** skill (`.claude/skills/doctor-nick/SKILL.md`), which
+names the project's commands. If it stays red, stop and report the doctor's output as a blocker:
+Doctor Nick's triage runs in the main session, not inside a review.
 
 ## Modes [edit]
 
