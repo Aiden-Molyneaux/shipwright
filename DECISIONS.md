@@ -524,3 +524,43 @@ InGame's `doctor-nick` skill and decision 0065, by way of the generic skill abov
 - A propose-only retro loop over the roster itself is #432, not this package.
 - InGame and InThink adopt the template through their own sessions; InProgress first, on
   `roster-plan`.
+
+# Package 7b — Roster template fixes from InProgress's adoption (2026-10-14)
+
+InProgress copied the roster from `24dabdb` on its `roster-plan` branch and fixed the copies
+locally (its commits `c8a58fb` and `39864da`). These are the template-side fixes, so the next
+project to adopt does not hit the same things.
+
+## What I chose
+
+- **Moh's description is double-quoted.** It holds ": ", which a plain YAML scalar cannot, and
+  an agent whose frontmatter fails to parse never loads. Shipwright has no test suite, so the
+  check lives where adopters run it: a grep in `agents/README.md`'s install list, beside the
+  `{{` grep. The plan's frontmatter constraint says the same.
+- **Sigmund's boundary with the playbook is worded for any project.** The description and the
+  anti-scope named "Stages 1 to 3 (spec, design, plan)" as fixed text, which read as if Sigmund
+  never plans, against phase 2 where he owns the plan. Both now say "the project-level spec,
+  design and architecture work that comes before a change"; the playbook stages are a
+  parenthetical where the project follows the playbook, the anti-scope bullet is marked
+  `[edit]`, and both say a change's own plan is his.
+- **Murr and Parvati say what replaces each doc-graph reference.** Their `[edit]` sections
+  already covered the spec, contract and DoD; they now also map CONVENTIONS, spec IDs, roadmap
+  §3 and phase exits, testing-strategy and `open-questions.md` (a gap becomes an owner-call in
+  the report, for the main session to route). Fill points were not added: the substitutions are
+  the same for every project without the doc graph, so prose is enough and the placeholder list
+  stays as it is.
+- **Parvati's preflight is conditional.** The skill runs Doctor Nick's Preflight where the
+  project has adopted him, otherwise confirms the app answers. Both wrappers say their Setup is
+  the preflight; the isolated one confirms its server answers before driving it and reports a
+  failed start instead of debugging the build.
+- **Murr runs no check that builds or serves the app.** His wrapper reuses `{{CHECKS}}`, which
+  in a UI project includes e2e. He has no port lane, and a build can rewrite output a running
+  Parvati is serving, so the wrapper now limits him to static checks and unit tests.
+- **Small things.** The `{{REPO_MAP}}` and murr's `{{HOUSE_RULE_FILES}}` fill sites end the
+  sentence themselves. Murr's and Parvati's report headings lose their em dash, so a project
+  that strips em dashes no longer gets a heading with two colons.
+
+## Deferred / needs owner input
+
+- Sigmund's roster paragraph and phase 4 still name Doctor Nick as fixed text; a project that
+  has not adopted him edits phase 4 (it is `[edit]`) and the paragraph by hand.

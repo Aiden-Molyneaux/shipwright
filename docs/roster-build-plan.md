@@ -20,7 +20,7 @@
 - **Edit points** are `{{UPPER_SNAKE}}` placeholders. Each sits in a section whose heading ends in `[edit]`, or in a frontmatter description. The names are fixed below; a task uses only these, spelled exactly, so an adopting project can grep for them and a check can count them.
 - Frontmatter pins full model IDs (`claude-sonnet-5-5`, `claude-haiku-5-5`). Aliases (`haiku`, `sonnet`, `opus`, `fable`) appear only in override prose.
 - New prose uses the roster's names. The old names (explorer, implementer, code-reviewer, screen-reviewer, Spez) appear only in the DECISIONS entry's "Was" column.
-- Frontmatter descriptions are single-line `description:` values in the agent files (Claude Code reads them as one string) and folded `description: >-` blocks in skills, matching the existing files.
+- Frontmatter descriptions are single-line `description:` values in the agent files (Claude Code reads them as one string), double-quoted when they hold ": " (a plain YAML scalar cannot; added 2026-10-14 after InProgress's adoption found Moh's) and folded `description: >-` blocks in skills, matching the existing files.
 - Commit messages follow the log: `feat(skills): …`, `feat(agents): …`, `docs: …`. Each ends with `Co-Authored-By: Claude <model of the committing session> <noreply@anthropic.com>`.
 - Checks run from the repo root in Git Bash. Define once per shell: `EMDASH=$(printf '\xe2\x80\x94')`.
 
@@ -29,7 +29,7 @@
 | Placeholder | Means | Lands in |
 |---|---|---|
 | `{{PROJECT}}` | The project's name | every description, Sigmund's title, Moh's opening line |
-| `{{REPO_MAP}}` | One paragraph: the main directories and what lives in each | Sev "Before writing code", Moh's opening line |
+| `{{REPO_MAP}}` | One paragraph: the main directories and what lives in each, without a closing period (the template ends the sentence) | Sev "Before writing code", Moh's opening line |
 | `{{HOUSE_RULE_FILES}}` | The files whose rules apply to code (`CLAUDE.md`, `web/CLAUDE.md`, `CONVENTIONS.md`) | Sev, `murr` skill Project risks |
 | `{{EXCLUDED_DIRS}}` | Directories a lookup skips (`dist`, `.build`, worktrees) | Moh |
 | `{{OWNER_PORTS}}` | Ports the owner's own servers use; agents never touch them | Sigmund verify, Sev ports, both Parvati wrappers |

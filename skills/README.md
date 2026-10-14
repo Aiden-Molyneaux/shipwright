@@ -102,8 +102,9 @@ Stage 6.
 
 A fourth class with one member. **sigmund** is not a reviewer and not a cognitive skill: he is the
 lifecycle for one change, loaded into the main session, and he holds the model routing and the
-overrides that used to sit in a project's CLAUDE.md. Stages 1 to 3 (spec, design, plan) keep the
-playbook's routing; Sigmund covers code changes from Stage 4 on.
+overrides that used to sit in a project's CLAUDE.md. Stages 1 to 3 (spec, design, architecture
+lock) keep the playbook's routing; Sigmund covers code changes from Stage 4 on, including the
+written plan for each one.
 
 | Skill | Does | Dispatches |
 |---|---|---|
