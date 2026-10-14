@@ -233,7 +233,8 @@ handoff that names Sigmund in its first line loads the local one on purpose. Wor
 - `skills/doctor-nick/SKILL.md`: the existing QA-loop skill, rebuilt as a roster template
   (2026-10-14, #431). No agent wrapper: he runs in the session that hit the problem.
 - `skills/retro/SKILL.md`: the propose-only retro over the roster (2026-10-14, #432). Sigmund
-  gains a Workflow notes `[edit]` section that feeds it.
+  gains a Workflow notes `[edit]` section that feeds it. Its worked example is
+  `docs/retro-worked-example.md`, kept out of the template so adopting projects do not load it.
 - `DECISIONS.md` gets one entry per template package, as usual.
 
 Rollout to InThink, InProgress and InGame goes through each project's own session, from the

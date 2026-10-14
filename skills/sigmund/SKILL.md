@@ -93,45 +93,30 @@ on them. Never write "all tests pass" without the command output behind it.
 
 ## Workflow notes [edit]
 
-The workflow is the set of files that steer sessions rather than the product: agent and skill
-files, the project's `CLAUDE.md`, hooks, and the check commands. When it gets in the way, Sigmund
-writes one line about it and carries on. Five kinds count:
+When the workflow (agent and skill files, `CLAUDE.md`, hooks, check commands) gets in the way,
+Sigmund writes one line and carries on. Kinds: **misfire** (a rule fires wrongly or cites
+something gone), **dispatch** (a run fails or is wasted: turn limit, wrong model, thin brief, an
+agent that does not load), **miss** (a reviewer passes what is caught later), **lie** (a check's
+definition is wrong: it tests nothing, runs the wrong files, needs a port it was not given), and
+**defect** (a reviewer or the owner finds a defect in a workflow file; a reviewer-found friction
+is `defect` whatever else it is).
 
-- **misfire:** a rule fires where it should not, or points at something that is gone (a hook that
-  cites a removed `CLAUDE.md` section);
-- **dispatch:** a dispatch fails or wastes its run (a turn limit, the wrong model, a brief missing
-  what the agent needed, an agent that does not load);
-- **miss:** a reviewer passes something that a later reviewer, a check or the owner catches;
-- **lie:** a check reports green or red for a reason other than the code (it tests nothing, runs
-  the wrong files, or was told to run without the port it needs);
-- **defect:** a Murr or Parvati finding lands in a workflow file.
+    workflow note [<key>] <kind>: <what happened> · <cost, or none measured> · <fixed locally | open>
 
-The line, one per friction:
-
-    workflow note [<key>] <kind>: <what happened, one clause> · <what it cost> · <fixed locally | open>
-
-`<key>` names the workflow file or rule (`agents/murr.md`, `CLAUDE.md Routing`, `hook
-context-nudge`), the same key every time, so the retro can group notes across sessions. Where the
-line goes and how a repeat is noticed:
+`<key>` is the workflow file's repo path, plus `#<section>` for a rule inside it
+(`.claude/agents/murr.md`, `CLAUDE.md#Routing`). Where the line goes:
 
 {{WORKFLOW_NOTES}}
 
-A note costs one line and nothing else. It rides on a write the session already makes (the next
-tracker brief, the receipt) and never gets its own turn, read, search or dispatch. Write it when
-the friction happens, not from memory at wrap-up. No friction, no note, and no "none" line.
+Cost: one line. Hold it until the next write the session makes anyway, the receipt at the
+latest; never a turn, read, search or dispatch of its own, and no "none" line. Sigmund never looks
+for earlier notes: spotting repeats is the retro's job. A broken environment is Doctor Nick's; a
+check whose definition is wrong is a note, even when the runner's output is nonsense. A fix inside
+the change's scope is still made, and the note still written (`fixed locally`): the template the
+file came from may carry the same line. Outside the change's scope the note is the whole response.
 
-A broken environment is Doctor Nick's, not a workflow note: a server that will not start goes to
-his known-issues log. A check whose definition is wrong (it passes on an environment that cannot
-run it, it skips what it names) is a workflow note.
-
-A small fix inside the change's scope is still made where it is found, as the review fix it is;
-the note is written anyway, marked `fixed locally`, because the template the file came from may
-carry the same defect. Outside the change's scope, the note is the whole response: Sigmund does
-not edit a workflow file the owner did not ask him to change.
-
-**Retro triggers.** A note whose key already has one, a `defect` note, or the close of a pilot
-window means the retro (`.claude/skills/retro/`) is due. Sigmund names the trigger in the receipt
-and proposes the retro as its own session. He never runs it mid-change.
+**Retro trigger.** A `defect` note makes the retro (`.claude/skills/retro/`) due. Sigmund names it
+in the receipt and proposes the retro as a session of its own; he never runs it mid-change.
 
 ## Phase 0: intake and clarify
 
@@ -182,7 +167,8 @@ small UI changes ship on check evidence and the owner's eye; do not build harnes
 
 UI verification starts with Doctor Nick's preflight. A check that fails on the environment rather
 than the code (an install, a lock, a port, a server that won't start, a runner that reports
-nonsense) goes to Doctor Nick before anyone investigates it.
+nonsense) goes to Doctor Nick before anyone investigates it. A check whose definition is wrong
+is a workflow note instead (Workflow notes, above).
 
 ## Phase 5: review
 

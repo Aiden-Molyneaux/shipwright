@@ -539,24 +539,34 @@ going to Shipwright by hand.
 - **Two parts.** Capture lives in Sigmund: a `## Workflow notes [edit]` section, one receipt item
   and one anti-scope line. Analysis lives in a new template, `skills/retro/SKILL.md`. Capture has
   to be nearly free in every session; analysis is rare and can afford to read.
-- **One line per friction, keyed.** `workflow note [<key>] <kind>: <what> · <cost> · <fixed
-  locally | open>`, with five kinds: misfire, dispatch, miss, lie, defect. The key names the
-  workflow file or rule, so a repeat is a string match. A note rides on a write the session
-  already makes (InProgress: the next scribe brief), never gets its own read or dispatch, and
-  there is no "none" line. Where it goes is one edit point, `{{WORKFLOW_NOTES}}`, shared with
-  the retro.
+- **One line per friction, keyed.** `workflow note [<key>] <kind>: <what> · <cost, or none
+  measured> · <fixed locally | open>`, with five kinds: misfire, dispatch, miss, lie, defect (a
+  reviewer- or owner-found friction is `defect` whatever else it is). The key is the file's repo
+  path plus `#<section>` for a rule, and `{{WORKFLOW_FILES}}` lists each one, so a repeat is a
+  string match. A note is held until a write the session already makes (InProgress: the next
+  scribe brief; no tracker: one appended line in a file), the receipt at the latest; it never
+  gets its own read, search or dispatch, and there is no "none" line. Where it goes is one edit
+  point, `{{WORKFLOW_NOTES}}`, shared with the retro. The Sigmund section is kept to about 25
+  lines because every change session reads it.
 - **A local fix still writes the note.** The four review findings were fixed on the branch, which
   is right; the note is what carries the lesson to the template the file came from.
 - **Environment friction stays with Doctor Nick.** A server that will not start goes to his
-  known-issues log; a check whose definition is wrong is a workflow note. The two loops share the
-  ladder's shape and not their files.
-- **Trigger, not schedule.** A repeated key, a `defect` note, a pilot window closing, or the
-  owner asking. Sigmund names the trigger in his receipt and proposes the retro as its own
-  session; he never runs it mid-change.
+  known-issues log; a check whose definition is wrong is a workflow note, even when the runner's
+  output is nonsense. Sigmund's verify phase and Doctor Nick's Boundaries both carry that
+  tie-break. Doctor Nick's "retro rule" keeps its name; the retro skill's description names it
+  as out of scope.
+- **Trigger, not schedule.** A second note on a key since its last ruling, a `defect` note, a
+  pilot window closing, or the owner asking. Sigmund names only the `defect` trigger, in his
+  receipt, and proposes the retro as its own session; he never looks for repeats (that would cost
+  a read per note) and never runs it mid-change. The retro's description does not load on
+  Sigmund's receipt, so it cannot start inside the change session.
 - **Inputs cheapest first.** Notes, pilot log, the cost report, then transcripts through
-  superpowers' `diagnosing-superpowers`, at most three sessions per retro, and only where the
-  rest does not explain a session. The retro hands that skill a written problem statement so its
-  intake is one confirmation.
+  superpowers' `diagnosing-superpowers`, at most one session per retro unless the owner asks,
+  and only where the rest does not explain a session. That skill always runs all seven analysts
+  and writes its own report, so the retro states its cost first, hands it a written problem
+  statement, and cites its findings.
+- **The worked example lives in `docs/retro-worked-example.md`,** not in the template, so
+  adopting projects do not load InProgress's history in every retro.
 - **Every proposal names its home.** Template, fill, or both; `{{WORKFLOW_FILES}}` maps each
   project workflow file to the template it came from so the retro can grep for the same line.
   The adversarial self-check kills one-offs, proposals that cost more per session than the

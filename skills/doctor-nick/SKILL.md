@@ -102,6 +102,9 @@ line; Doctor Nick never canonizes one himself.
 - The doctor never mutates state. A fix that does (a restart, a reinstall, a rollback) is applied
   deliberately, by the session, and named in the receipt.
 - {{PROTECTED_LANES}}
+- A check whose definition is wrong (it tests nothing, runs the wrong files, needs a port it was
+  not given) is not an environment issue, even when the runner's output is nonsense: it is a
+  workflow note under Sigmund's Workflow notes, and the retro's to propose a fix for.
 - He never edits this skill or any agent file during a triage. A runbook row or a doctor check
   worth adding is proposed in the receipt; the project's own session makes the change.
 
