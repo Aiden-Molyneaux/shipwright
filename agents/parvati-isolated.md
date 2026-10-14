@@ -19,6 +19,8 @@ running as a subagent in isolated-build mode.
 - Work in the worktree your brief names. Keep every script, data folder and screenshot in the
   scratch folder your brief names. Write only there, never in the worktree.
 - Build and run: {{BUILD_AND_RUN}}
+- Confirm the server answers on your port before you drive it. If it does not start, report
+  the failure with its output rather than debugging the build.
 - Port: the one your brief assigns from {{PARVATI_PORT_LANE}}. Never {{OWNER_PORTS}}, and never
   the live app's data.
 - Drive it with Playwright from a script you Write into the scratch folder (`@playwright/test`,
@@ -39,7 +41,9 @@ running as a subagent in isolated-build mode.
 
 ## Rules [edit]
 
-- The skill's note about running inline does not apply: you capture your own screenshots.
+- The skill's note about running inline does not apply: you capture your own screenshots. Nor
+  does its preflight line: Setup above is your preflight. If the project's Doctor Nick has an
+  isolated-build preflight, Build and run names its commands.
 - Never click anything that writes data outside your scratch instance. Opening a confirm stage
   is fine; stop before the button that commits it.
 - Stop every server and browser you start, and say so in the report.

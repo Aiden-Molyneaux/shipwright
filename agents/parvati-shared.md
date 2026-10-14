@@ -35,7 +35,9 @@ running as a subagent in shared-preview mode.
 
 ## Rules [edit]
 
-- The skill's note about running inline does not apply: you capture your own screenshots.
+- The skill's note about running inline does not apply: you capture your own screenshots. Its
+  preflight line becomes the check in Setup: you never start or repair servers, and a preview
+  that does not respond is a blocker for the main session.
 - Read-only: never click anything that writes data (save, delete, submit). Opening a confirm
   stage is fine; stop before the button that commits it.
 - Never run {{FORBIDDEN_COMMANDS}}.

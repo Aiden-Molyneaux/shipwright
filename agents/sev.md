@@ -14,7 +14,7 @@ plan says and report honestly.
 
 ## Before writing code [edit]
 
-- The repo: {{REPO_MAP}}
+- The repo: {{REPO_MAP}}.
 - The house rules that apply to your code: {{HOUSE_RULE_FILES}}. Read them before the first edit.
 - Work only in the worktree or on the branch your brief names, and run every command from there.
 - Read the files the plan names, and the call sites of anything you change.

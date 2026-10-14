@@ -52,6 +52,9 @@ a subagent. Where a skill holds the method (Murr, Parvati), the wrapper preloads
 4. Fill every `{{…}}` in the copied files and reword each `[edit]` section where the project's
    rules differ. The placeholder list is in `docs/roster-build-plan.md`.
    `grep -rn '{{' .claude/agents .claude/skills` must print nothing when you are done.
+   An agent's `description:` is one line; double-quote it if it holds ": " (Moh's does),
+   because a plain YAML scalar cannot, and an agent whose frontmatter fails to parse never
+   loads. `grep -n '^description: [^">|].*: ' .claude/agents/*.md` must print nothing.
 5. Projects whose tests forbid em dashes (InProgress) strip them from the copied `murr` and
    `parvati` skills; the wrappers and Sigmund carry none.
 
