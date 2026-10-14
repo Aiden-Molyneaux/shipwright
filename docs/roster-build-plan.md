@@ -56,6 +56,14 @@
 | `{{KNOWN_ISSUES_FILE}}` | The known-issues log's path (the starter kit's `docs/qa-runbook.md`) | doctor-nick ladder, triage step 3, log section |
 | `{{RUNBOOK}}` | The triage table: symptom, first probe, where the fix lives | doctor-nick Runbook |
 | `{{PROTECTED_LANES}}` | What Doctor Nick never stops, restarts or edits, and which fixes wait for the owner | doctor-nick Boundaries |
+| `{{WORKFLOW_NOTES}}` | Where a workflow note goes, the exact line a session writes there, and how a repeated key is noticed (the same value in both files) | Sigmund Workflow notes, retro Inputs (added 2026-10-14, #432) |
+| `{{RETRO_TRIGGERS}}` | The project's triggers beyond the four the template lists, or "none" | retro Triggers |
+| `{{PILOT_LOG}}` | Where the pilot log lives and what it records, or "none" | retro Inputs |
+| `{{COST_REPORT}}` | The command that prices the window's sessions, or "none" | retro Inputs |
+| `{{TRANSCRIPTS}}` | Where the project's session transcripts live | retro Inputs |
+| `{{WORKFLOW_FILES}}` | Each workflow file (agents, skills, CLAUDE.md, hooks, check scripts) and the Shipwright template it was adopted from, or "project-only" | retro Inputs and method step 4 |
+| `{{PROPOSALS_HOME}}` | Where the retro saves its proposal files | retro method steps 0 and 7 |
+| `{{APPROVAL}}` | How the retro asks the owner to approve each proposal | retro method step 7 |
 
 ## File structure
 

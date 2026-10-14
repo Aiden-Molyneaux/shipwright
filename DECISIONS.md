@@ -524,3 +524,60 @@ InGame's `doctor-nick` skill and decision 0065, by way of the generic skill abov
 - A propose-only retro loop over the roster itself is #432, not this package.
 - InGame and InThink adopt the template through their own sessions; InProgress first, on
   `roster-plan`.
+
+# Package 7b — The roster's retro loop (2026-10-14)
+
+Step #432. Aiden ruled on 2026-10-14 that the roster gets a self-improvement loop that is
+propose-only: no agent edits agent files on its own. The worked example is InProgress's roster
+review the same day, where an Opus reviewer found four majors in workflow files (Murr told to run
+e2e with no port, the context nudge citing a removed CLAUDE.md section, Moh's description invalid
+as YAML, non-change sessions losing the routing), all fixed locally, with template follow-ups
+going to Shipwright by hand.
+
+## What I chose
+
+- **Two parts.** Capture lives in Sigmund: a `## Workflow notes [edit]` section, one receipt item
+  and one anti-scope line. Analysis lives in a new template, `skills/retro/SKILL.md`. Capture has
+  to be nearly free in every session; analysis is rare and can afford to read.
+- **One line per friction, keyed.** `workflow note [<key>] <kind>: <what> · <cost> · <fixed
+  locally | open>`, with five kinds: misfire, dispatch, miss, lie, defect. The key names the
+  workflow file or rule, so a repeat is a string match. A note rides on a write the session
+  already makes (InProgress: the next scribe brief), never gets its own read or dispatch, and
+  there is no "none" line. Where it goes is one edit point, `{{WORKFLOW_NOTES}}`, shared with
+  the retro.
+- **A local fix still writes the note.** The four review findings were fixed on the branch, which
+  is right; the note is what carries the lesson to the template the file came from.
+- **Environment friction stays with Doctor Nick.** A server that will not start goes to his
+  known-issues log; a check whose definition is wrong is a workflow note. The two loops share the
+  ladder's shape and not their files.
+- **Trigger, not schedule.** A repeated key, a `defect` note, a pilot window closing, or the
+  owner asking. Sigmund names the trigger in his receipt and proposes the retro as its own
+  session; he never runs it mid-change.
+- **Inputs cheapest first.** Notes, pilot log, the cost report, then transcripts through
+  superpowers' `diagnosing-superpowers`, at most three sessions per retro, and only where the
+  rest does not explain a session. The retro hands that skill a written problem statement so its
+  intake is one confirmation.
+- **Every proposal names its home.** Template, fill, or both; `{{WORKFLOW_FILES}}` maps each
+  project workflow file to the template it came from so the retro can grep for the same line.
+  The adversarial self-check kills one-offs, proposals that cost more per session than the
+  friction did, and new rules where a rule already exists.
+- **Landing is not the retro's.** An approved template diff lands in Shipwright from a Shipwright
+  session with Murr's review, then reaches each project through its own session; a fill diff
+  runs through the project's Sigmund. Declined proposals are recorded against their key.
+- **Eight edit points** (`{{WORKFLOW_NOTES}}`, `{{RETRO_TRIGGERS}}`, `{{PILOT_LOG}}`,
+  `{{COST_REPORT}}`, `{{TRANSCRIPTS}}`, `{{WORKFLOW_FILES}}`, `{{PROPOSALS_HOME}}`,
+  `{{APPROVAL}}`), listed in `docs/roster-build-plan.md`.
+
+## What I assumed
+
+- The name `retro` is a craft name, like `failure-first`, because it loads on a trigger rather
+  than being summoned by name. A person name is Aiden's call.
+- InProgress's scribe can read a standing step's log to report a repeated key; its search tool
+  covers nodes and resources, not logs. The InProgress fill settles how.
+
+## Deferred / needs owner input
+
+- The InProgress fill (Sigmund's `{{WORKFLOW_NOTES}}` and the retro's eight points, with
+  `node scripts/session-cost.mjs` as its cost report and the #291 pilot log) is a follow-up
+  through InProgress's own session, after `roster-plan` lands.
+- InThink and InGame adopt the retro through their own sessions.
