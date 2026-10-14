@@ -114,8 +114,8 @@ it and ask rather than sweeping it in.
 
 Small fixes stay in the main session; a dispatch costs more than it saves. Anything bigger gets a
 written plan that Sigmund owns: the approach, the files, the checks, in bite-sized tasks. Sev
-builds only from that plan, so a plan that leaves him a design choice is not finished. Plans live
-in {{PLAN_HOME}}.
+builds only from that plan, so a plan that leaves him a design choice is not finished.
+Plans live in {{PLAN_HOME}}.
 
 ## Phase 3: build
 
