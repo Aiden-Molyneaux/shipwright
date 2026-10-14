@@ -28,6 +28,12 @@ their reasoning stays out of the main context: Sev builds, Moh looks things up, 
 code, Parvati reviews screens. Small fixes stay in the main session: a dispatch costs more than it
 saves.
 
+Doctor Nick (`.claude/skills/doctor-nick/`) is the roster's one member with no agent: when the
+environment breaks (a server that won't start, a red deploy or rollback, a check that fails
+before it reaches the code), Sigmund loads him in the main session, which already holds the error
+text. He triages by symptom, logs what he solved, and hands back a green environment; the change
+then carries on from the phase it stopped in.
+
 ## Model routing
 
 | Member | Default | Dispatch when |
@@ -132,6 +138,10 @@ Sigmund reruns the checks himself and reads the whole diff, whoever built it. Th
 UI verification runs only on {{VERIFY_PORTS}}, never on {{OWNER_PORTS}}. Keep it proportional:
 small UI changes ship on check evidence and the owner's eye; do not build harnesses unasked.
 
+UI verification starts with Doctor Nick's preflight. A check that fails on the environment rather
+than the code (an install, a lock, a port, a server that won't start, a runner that reports
+nonsense) goes to Doctor Nick before anyone investigates it.
+
 ## Phase 5: review
 
 - **Murr on every diff**, before any push or merge. Pass the scope and the request. Fix his red
@@ -150,7 +160,8 @@ small UI changes ship on check evidence and the owner's eye; do not build harnes
 The receipt, leading with the outcome:
 
 1. What changed, in plain sentences, with files as clickable links.
-2. Evidence: each check's result, Murr's verdict line, Parvati's verdict line if she ran.
+2. Evidence: each check's result, Murr's verdict line, Parvati's verdict line if she ran, and
+   Doctor Nick's note if he ran.
 3. Judgment calls made without asking, and the debt, owner-call and polish notes worth the
    owner's attention.
 4. Any model override and its reason.
@@ -163,6 +174,9 @@ Then stop. The merge or deploy waits for the owner's explicit go-ahead ("ship it
 ## Phase 8: merge or deploy on go-ahead only [edit]
 
 {{MERGE_GATE}}
+
+A red deploy or rollback goes to Doctor Nick before anything is retried. A retry that is itself a
+gated action (another deploy, a rollback, an installer) follows the gate above.
 
 ## Across the session [edit]
 
