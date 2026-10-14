@@ -32,6 +32,8 @@ harness without them, run the equivalent manually and say so in your receipt:
   stop at any question; never commit.
 - **Lookups:** read `.claude/agents/moh.md`: answer with `file:line` references and say what you
   searched and did not find.
+- **Retro:** read `.claude/skills/retro/SKILL.md` and walk its method against the workflow
+  notes; write the proposal file and ask; never edit a workflow file.
 - **Design audit:** walk `docs/design-system.md` §2 foundation rules against the changed mockup,
   rule by rule, citing file:line for each finding.
 - **App parity:** compare the running screen against its `*-states.html` board + its

@@ -17,6 +17,7 @@ are in r218 on #415 (`2026-10-13-agent-roster-decisions.md`).
 | **Murr** | Adversarial code review, runtime bugs first, then debt. | Thin agent wrapper + the `murr` skill | `claude-sonnet-5-5`, high | `.claude/agents/murr.md` + `.claude/skills/murr/` |
 | **Parvati** | A built screen against intent: Flag, Expected, Polish. | Thin agent wrapper + the `parvati` skill | `claude-sonnet-5-5`, medium | `.claude/agents/parvati.md` + `.claude/skills/parvati/` |
 | **Doctor Nick** | Triages a broken environment: preflight, a runbook by symptom, a known-issues log that grows with each fix. | Skill, loaded inline in the session that hit the problem; no wrapper | The session's own model | `.claude/skills/doctor-nick/SKILL.md` + the project's known-issues file |
+| **Retro** | Reads the workflow notes Sigmund logs, the pilot log, session cost and transcripts; proposes diffs to the workflow files. Propose-only. | Skill, in a session of its own, on a trigger; no wrapper | Main session on Opus 5.5, effort high | `.claude/skills/retro/SKILL.md` + the workflow notes' home |
 
 What each one never does:
 
@@ -35,6 +36,10 @@ What each one never does:
 - **Doctor Nick** never debugs a product bug, never logs a guess as a known issue, and never
   edits the doctor, his own skill or an agent file mid-triage: a new doctor check is a change and
   runs through Sigmund. (Added 2026-10-14, step #431.)
+- **Retro** never edits an agent, skill, hook, `CLAUDE.md` or check file, here or in Shipwright,
+  approved or not, and never runs on a schedule or inside a change. Each proposal waits for the
+  owner, lands as a change with Murr's review, and reaches each project through its own session.
+  (Added 2026-10-14, step #432, on the owner's ruling that the loop is propose-only.)
 
 Shared law, unchanged from the reviewer trio: reviewers report, the main session fixes. Subagent
 claims are not evidence. Sigmund reruns Sev's checks and reads the diff, opens every Murr and
@@ -227,6 +232,9 @@ handoff that names Sigmund in its first line loads the local one on purpose. Wor
   fallback for Sigmund, Sev and Moh.
 - `skills/doctor-nick/SKILL.md`: the existing QA-loop skill, rebuilt as a roster template
   (2026-10-14, #431). No agent wrapper: he runs in the session that hit the problem.
+- `skills/retro/SKILL.md`: the propose-only retro over the roster (2026-10-14, #432). Sigmund
+  gains a Workflow notes `[edit]` section that feeds it. Its worked example is
+  `docs/retro-worked-example.md`, kept out of the template so adopting projects do not load it.
 - `DECISIONS.md` gets one entry per template package, as usual.
 
 Rollout to InThink, InProgress and InGame goes through each project's own session, from the

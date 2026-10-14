@@ -114,6 +114,24 @@ points are listed in `docs/roster-build-plan.md`), then adding one line to their
 *"Change work runs through Sigmund (`.claude/skills/sigmund/`). Routing, overrides and the ship
 gates live there."* The spec is [`docs/roster-spec.md`](../docs/roster-spec.md).
 
+## The roster's retro: retro
+
+Sigmund writes a **workflow note** (one line, riding on a write the session already makes) when
+the workflow itself gets in the way: a rule that misfires, a dispatch that fails, a reviewer that
+misses something, a check that lies, a reviewer finding in a workflow file. **retro** reads those
+notes when they add up and proposes the fix. It is a roster template like Sigmund (`[edit]`
+sections, `{{PLACEHOLDER}}` edit points) and runs in a session of its own, on a trigger, never on
+a schedule: the same note key twice, a reviewer finding a defect in a workflow file, or a pilot
+window closing. Its inputs, cheapest first: the notes, the pilot log, the project's session cost
+report, and transcripts through superpowers' `diagnosing-superpowers` only where the rest do not
+explain a session. Each proposal names its home (the Shipwright template, the project's fill, or
+both), waits for the owner's approval, and lands as an ordinary change with Murr's review;
+template changes then reach each project through that project's own session.
+
+| Skill | Looks at | Does | Never touches |
+|---|---|---|---|
+| **retro** | the **workflow** (workflow notes, pilot log, session cost, transcripts; agents, skills, CLAUDE.md, hooks, checks) | groups the notes by key, finds each cause and its home, proposes the smallest diff, asks the owner | any workflow file, here or in Shipwright, approved or not; product code; the environment (Doctor Nick's) |
+
 ## Installing into a project
 
 ```
@@ -128,6 +146,7 @@ gates live there."* The spec is [`docs/roster-spec.md`](../docs/roster-spec.md).
   failure-first/SKILL.md
   sigmund/SKILL.md            (+ agents/ → .claude/agents/, see agents/README.md)
   doctor-nick/SKILL.md        (+ the project's known-issues file, e.g. docs/qa-runbook.md)
+  retro/SKILL.md              (+ the workflow notes' home, filled the same in sigmund)
 ```
 
 `britch` runs *before* a repo exists, so it belongs in your **user** scope

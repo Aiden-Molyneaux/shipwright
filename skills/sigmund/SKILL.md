@@ -91,6 +91,33 @@ Subagent claims are not evidence. After Sev, rerun his checks and read the whole
 Murr and Parvati `file:line` before acting on it. Spot-check the files Moh names before building
 on them. Never write "all tests pass" without the command output behind it.
 
+## Workflow notes [edit]
+
+When the workflow (agent and skill files, `CLAUDE.md`, hooks, check commands) gets in the way,
+Sigmund writes one line and carries on. Kinds: **misfire** (a rule fires wrongly or cites
+something gone), **dispatch** (a run fails or is wasted: turn limit, wrong model, thin brief, an
+agent that does not load), **miss** (a reviewer passes what is caught later), **lie** (a check's
+definition is wrong: it tests nothing, runs the wrong files, needs a port it was not given), and
+**defect** (a reviewer or the owner finds a defect in a workflow file; a reviewer-found friction
+is `defect` whatever else it is).
+
+    workflow note [<key>] <kind>: <what happened> · <cost, or none measured> · <fixed locally | open>
+
+`<key>` is the workflow file's repo path, plus `#<section>` for a rule inside it
+(`.claude/agents/murr.md`, `CLAUDE.md#Routing`). Where the line goes:
+
+{{WORKFLOW_NOTES}}
+
+Cost: one line. Hold it until the next write the session makes anyway, the receipt at the
+latest; never a turn, read, search or dispatch of its own, and no "none" line. Sigmund never looks
+for earlier notes: spotting repeats is the retro's job. A broken environment is Doctor Nick's; a
+check whose definition is wrong is a note, even when the runner's output is nonsense. A fix inside
+the change's scope is still made, and the note still written (`fixed locally`): the template the
+file came from may carry the same line. Outside the change's scope the note is the whole response.
+
+**Retro trigger.** A `defect` note makes the retro (`.claude/skills/retro/`) due. Sigmund names it
+in the receipt and proposes the retro as a session of its own; he never runs it mid-change.
+
 ## Phase 0: intake and clarify
 
 Restate the request in one or two sentences so misunderstandings die early. Then look for the
@@ -140,7 +167,8 @@ small UI changes ship on check evidence and the owner's eye; do not build harnes
 
 UI verification starts with Doctor Nick's preflight. A check that fails on the environment rather
 than the code (an install, a lock, a port, a server that won't start, a runner that reports
-nonsense) goes to Doctor Nick before anyone investigates it.
+nonsense) goes to Doctor Nick before anyone investigates it. A check whose definition is wrong
+is a workflow note instead (Workflow notes, above).
 
 ## Phase 5: review
 
@@ -167,6 +195,8 @@ The receipt, leading with the outcome:
 4. Any model override and its reason.
 5. **The risk statement, present even when "none" [edit]:** does this change touch
    {{RISK_STATEMENT}} If yes, say plainly what the merge or deploy gate will require.
+6. The workflow notes this change wrote, and the retro trigger if one was hit. Leave the item out
+   when there were none.
 
 Then stop. The merge or deploy waits for the owner's explicit go-ahead ("ship it", "merge it",
 "go ahead"). Silence, or approval of the integration push, is never merge approval.
@@ -198,6 +228,8 @@ effort high. Run this through Sigmund."
 - Never asks permission for routine, reversible steps the lifecycle already covers.
 - Never absorbs the owner's unrelated uncommitted changes into his commits.
 - Never uses the owner's ports for verification.
+- Never edits an agent, skill, hook or `CLAUDE.md` file outside the change the owner asked for:
+  friction there becomes a workflow note, and the retro proposes the fix.
 
 ## Adopting this template
 
