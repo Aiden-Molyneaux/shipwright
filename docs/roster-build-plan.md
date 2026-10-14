@@ -58,9 +58,9 @@
 | `{{PROTECTED_LANES}}` | What Doctor Nick never stops, restarts or edits, and which fixes wait for the owner | doctor-nick Boundaries |
 | `{{WORKFLOW_NOTES}}` | Where a workflow note goes and how the session writes it with a write it already makes (a tracker brief, or for a project with no tracker one appended line in a file), and who reads the home for repeats. The same value in both files | Sigmund Workflow notes, retro Inputs and outputs (added 2026-10-14, #432) |
 | `{{RETRO_TRIGGERS}}` | The project's triggers beyond the four the template lists, or "none" | retro Triggers |
-| `{{PILOT_LOG}}` | Where the pilot log lives and what it records, or "none" | retro Inputs |
+| `{{PILOT_LOG}}` | Where the pilot log lives and what it records, or "none" | retro Inputs and outputs |
 | `{{COST_REPORT}}` | The command that prices the window's sessions, or "none" | retro Inputs and outputs |
-| `{{TRANSCRIPTS}}` | Where the project's session transcripts live | retro Inputs |
+| `{{TRANSCRIPTS}}` | Where the project's session transcripts live | retro Inputs and outputs |
 | `{{WORKFLOW_FILES}}` | Each workflow file (agents, skills, CLAUDE.md, hooks, check scripts), its note key (the repo path, plus `#<section>` for a rule), and the Shipwright template it was adopted from, or "project-only" | retro Inputs and method step 4 |
 | `{{PROPOSALS_HOME}}` | Where the retro saves its proposal files | retro Inputs and outputs |
 | `{{APPROVAL}}` | How the retro asks the owner to approve each proposal | retro Inputs and outputs |

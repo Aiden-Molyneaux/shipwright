@@ -552,14 +552,16 @@ going to Shipwright by hand.
   is right; the note is what carries the lesson to the template the file came from.
 - **Environment friction stays with Doctor Nick.** A server that will not start goes to his
   known-issues log; a check whose definition is wrong is a workflow note, even when the runner's
-  output is nonsense. Sigmund's verify phase and Doctor Nick's Boundaries both carry that
-  tie-break. Doctor Nick's "retro rule" keeps its name; the retro skill's description names it
-  as out of scope.
-- **Trigger, not schedule.** A second note on a key since its last ruling, a `defect` note, a
-  pilot window closing, or the owner asking. Sigmund names only the `defect` trigger, in his
-  receipt, and proposes the retro as its own session; he never looks for repeats (that would cost
-  a read per note) and never runs it mid-change. The retro's description does not load on
-  Sigmund's receipt, so it cannot start inside the change session.
+  output is nonsense. Sigmund's verify phase, Doctor Nick's description and his Boundaries all
+  carry that tie-break. Doctor Nick's "retro rule" keeps its name.
+- **Trigger, not schedule.** A second note on a key, a `defect` note, a pilot window closing, or
+  the owner asking. A `watch` ruling keeps its note in the count; `proposed` and `no change`
+  clear it. Ruling lines take their own prefix (`workflow ruling [<key>] ...`) so they never
+  count as notes. Sigmund names only the `defect` trigger, in his receipt, and proposes the retro
+  as its own session; he never looks for repeats (that would cost a read per note) and never runs
+  it mid-change. The owner, or whoever the notes' fill names, reads the home for repeats at each
+  pilot or phase close. The retro's description lists only its invocation phrases, not its
+  triggers, so it cannot start inside the change session.
 - **Inputs cheapest first.** Notes, pilot log, the cost report, then transcripts through
   superpowers' `diagnosing-superpowers`, at most one session per retro unless the owner asks,
   and only where the rest does not explain a session. That skill always runs all seven analysts

@@ -25,8 +25,9 @@ only when asked, at 54% of the session's cost.
 
     workflow note [.claude/agents/code-reviewer.md] dispatch: hit the 40-turn limit, reported when asked · 54% of the session's cost · open
 
-One hit, no repeat: a watch, not a proposal. A second note on that key after the ruling would
-make raising `maxTurns`, or splitting the pass, a proposal with two sessions of cost behind it.
+One hit, no repeat: a watch, not a proposal. A watch keeps its note in the count, so the next
+note on that key is the second, and would make raising `maxTurns`, or splitting the pass, a
+proposal with two sessions of cost behind it.
 
 In the event, the template follow-ups went to Shipwright by hand the same day. With the retro in
 place they would arrive as one proposal file, approved per item.

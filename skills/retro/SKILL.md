@@ -2,16 +2,12 @@
 name: retro
 description: >-
   The retro reviews how the roster itself is working in this repo ({{PROJECT}}) and proposes
-  diffs to its workflow files: agents, skills, CLAUDE.md, hooks, check commands. It runs on a
-  trigger, never on a schedule: the same workflow note key logged twice since its last ruling, a
-  reviewer or the owner finding a defect in a workflow file, or a pilot window closing. Use it
-  when the owner says "run a retro", "retro on the roster", "why does this keep happening to the
-  agents", or starts a session for a retro Sigmund proposed. It reads the workflow notes, the
-  pilot log, the session cost report and, where those do not explain a session, its transcript.
-  It proposes; it never edits a workflow file, and every proposal waits for the owner's approval.
-  Do NOT use it inside a change session, for a product bug (systematic-debugging), a broken
-  environment (Doctor Nick), reviewing a diff (Murr), Doctor Nick's environment-friction retro
-  rule, or for landing a proposal it already made (that is a change, made by another session).
+  diffs to its workflow files: agents, skills, CLAUDE.md, hooks, check commands. It proposes and
+  never edits. Use it only in a session started for a retro: the owner says "run a retro", "retro
+  on the roster", "why does this keep happening to the agents", or starts a retro Sigmund
+  proposed. Do NOT use it inside a change session, for a product bug (systematic-debugging), a
+  broken environment (Doctor Nick), reviewing a diff (Murr), or for landing a proposal it already
+  made (that is a change, made by another session).
 ---
 
 # Retro: the roster's propose-only improvement loop for {{PROJECT}}
@@ -29,14 +25,17 @@ project through that project's own session. (Owner ruling, 2026-10-14: no agent 
 files on its own.)
 
 It runs in a session of its own (Opus 5.5, effort high), never inside a change: it reads a lot.
-Its only writes are the proposal file and one ruling line per key in the notes' home.
+Its only writes are the proposal file, one ruling line per key in the notes' home, and the
+report the diagnosis skill writes for itself (method step 3).
 
 ## Triggers [edit]
 
 Any one of these makes a retro due. The owner starts it.
 
-1. **Repeat:** a second note on the same key since that key's last ruling. Sigmund never looks
-   for repeats; whoever reads the notes' home spots them, and step 1 confirms.
+1. **Repeat:** a second note on the same key. A `watch` ruling keeps its note, so the key's next
+   note is the second; a `proposed` or `no change` ruling clears the count, so the next note is
+   the first. Sigmund never looks for repeats: the owner, or whoever input 1 names, reads the
+   notes' home at each pilot or phase close, and step 1 confirms.
 2. **Defect:** a reviewer or the owner finds a defect in a workflow file, even one fixed on the
    spot. The fix covered this project; the template it came from may carry the same line.
 3. **Pilot close:** a pilot of a routing or workflow change reaches the end of its window.
@@ -64,8 +63,8 @@ Read the inputs in this order, cheapest first. Stop when the cause is clear.
    The window runs from the last proposal file in the proposals home, or the pilot's start, to
    now. List the sessions in it.
 1. **Group the notes** for the window by key. For each key: the notes, their kinds, what each
-   cost, fixed locally or open, and any earlier ruling (it carries forward; a key ruled on needs a
-   new note after the ruling to come back).
+   cost, fixed locally or open, and any earlier ruling (it carries forward and counts as Triggers
+   1 says: a `watch` keeps its note in the count, `proposed` and `no change` clear it).
 2. **Read the cost** for the window's sessions. Look for what notes cannot show: a session far
    above its peers, one dispatch taking most of a session's cost, an override that did or did not
    pay for itself, fix rounds that repeat.
@@ -96,8 +95,9 @@ Read the inputs in this order, cheapest first. Stop when the cause is clear.
    - A proposal that adds a rule where one already exists is about why that rule did not fire.
    - Prefer tightening or deleting text over adding it, and a check over a rule.
 7. **Write, ask, stop.** Save the proposal file to the proposals home, write one ruling line per
-   key to the notes' home (proposed, watch or no change) so the next retro starts there, and ask
-   the owner as input 7 says. Nothing else happens in this session.
+   key to the notes' home so the next retro starts there, and ask the owner as input 7 says.
+   Nothing else happens in this session. The ruling line has its own prefix, so no one counts it
+   as a note: `workflow ruling [<key>] <proposed | watch | no change>: <one line> · <proposal file>`.
 
 ## After approval (not the retro's work)
 
