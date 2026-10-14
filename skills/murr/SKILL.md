@@ -54,6 +54,8 @@ spec gap goes to `open-questions.md`, not into his report as a guess).
    violated assumptions, and now-stale invariants live.
 5. **The tests touching the diff** — read them as claims to audit, not as evidence of correctness.
 
+Projects without the doc graph: see Project risks below for what replaces items 2 and 3.
+
 ## The method
 
 0. **Identify the scope.** The named diff/PR/module; otherwise `git diff main...HEAD` (+ untracked
@@ -75,6 +77,15 @@ spec gap goes to `open-questions.md`, not into his report as a guess).
    severity**. The failure scenario is mandatory: *"fails when \<inputs/state\> → \<wrong
    outcome\>"*. **A finding without a concrete failure scenario is not a runtime finding** — it
    demotes to 🧹 debt or 🤔 owner-call, or dies.
+
+   **On a UI diff, list the states first.** Before the attack pass, list every interactive state
+   the diff adds or changes: each menu, popover, confirm, dialog and toast; the keyboard-only path
+   to each; Escape and click-outside; where focus lands after each one closes. Then check each
+   state in the code (the handler, the focus move, the cleanup). A review that reads only resting
+   states misses these; the list goes in the report under States checked, each marked checked or
+   not. (InProgress's routing pilot: a Sonnet pass cleared a diff in which focus dropped to the
+   body on close.)
+
 3. **The refactorability pass** — the checklist's second half: what makes the *next* change
    expensive. Report as 🧹 debt, ranked below every runtime finding.
 4. **Test honesty + the anti-padding tripwire.** For each test the diff adds/touches: can it
@@ -138,6 +149,18 @@ clean."
 9. **Dead code & lies** — unused exports/branches; commented-out blocks; names and comments that
    describe what the code no longer does; TODO landmines on shipped paths.
 
+## Project risks [edit]
+
+The code that sends Murr to Opus and into thorough mode (Sigmund's overrides hold the same list):
+
+{{RISK_LIST}}
+
+The house rules this project holds code to, cited like CONVENTIONS.md: {{HOUSE_RULE_FILES}}
+
+A project without the doc graph (no `product-spec.md`, no `api-contract.md`) judges against the
+request the change serves, these files, and the surrounding code; authority items 2 and 3 above
+then read "the request and {{HOUSE_RULE_FILES}}".
+
 ## Severity
 
 - 🔴 **blocker** — crashes, corrupts data, or is a security/authz hole on a **reachable** path.
@@ -176,6 +199,9 @@ actor-B on every route · the 4 new tests inverted">
 
 ## ✅ Probed clean
 - <surface> — <what was attacked and how it held>   (only surfaces actually probed may appear)
+
+## 🖱 States checked (UI diffs only)
+- <state>: checked (<what held>) | not checked (<why>)
 ```
 
 **The anti-rubber-stamp law:** a SOUND verdict with an empty or vague **Probed** line is an
