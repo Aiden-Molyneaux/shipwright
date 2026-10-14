@@ -480,3 +480,47 @@ agents, and the review lessons from InProgress's routing pilot.
 - A per-project checklist script for adoption (grep for `{{`, frontmatter shape). Greps in the
   build plan cover it for now.
 - InGame: the wrappers and Sigmund beside its existing skills, after InThink and InProgress.
+
+# Package 7a — Doctor Nick joins the roster (2026-10-14)
+
+Step #431. Aiden asked for a roster doctor before InProgress lands the roster; the source is
+InGame's `doctor-nick` skill and decision 0065, by way of the generic skill above.
+
+## What I chose
+
+- **Rebuilt in place, not added beside.** `skills/doctor-nick/SKILL.md` keeps its name and its
+  ladder (capture, automate at Hits 2 or more, law on the owner's say-so) and becomes a roster
+  template: `[edit]` sections for Preflight, the Runbook and Boundaries, and five new edit points
+  (`{{PREFLIGHT}}`, `{{DOCTOR_COMMAND}}`, `{{KNOWN_ISSUES_FILE}}`, `{{RUNBOOK}}`,
+  `{{PROTECTED_LANES}}`), listed in `docs/roster-build-plan.md`. Ported the way burt and parvati
+  were (Package 2): InGame's dev-stack script, its ports and its Metro lane became edit points.
+- **Wider lane.** InGame's skill covered QA-workflow friction only. Doctor Nick covers a broken
+  environment of any kind: a server that won't start, a red deploy or rollback, a check that
+  fails before it reaches the code, a runner that reports nonsense. Product bugs stay with
+  systematic-debugging.
+- **Three parts, two homes.** The runbook (symptom, first probe, where the fix lives) is an
+  `[edit]` section of the skill and changes only through the project's own session. The
+  known-issues log is a project file that any session appends to on the first solve, so it grows
+  without anyone editing a skill. That keeps the 2026-10-14 ruling: no agent edits agent files
+  on its own.
+- **No agent wrapper.** He runs inline in the session that hit the problem, which already holds
+  the error text; a dispatch would cost more than it saves. Subagents that hit a broken
+  environment stop and report the doctor's output.
+- **A doctor check is a change.** Promotion at Hits 2 or more is proposed in the receipt and runs
+  through Sigmund, instead of being added mid-triage.
+- **Wiring:** Parvati's capture preflight now names doctor-nick's Preflight section and tells her
+  to report a red as a blocker. Sigmund names Doctor Nick in the roster paragraph, at verify (UI
+  work starts with his preflight; an environment failure goes to him first), in the receipt, and
+  after the merge gate (a red deploy or rollback goes to him before any retry). The roster spec
+  gains his row. The retro question reads "environment friction this run?".
+
+## What I assumed
+
+- The starter kit's `docs/qa-runbook.md` stays the known-issues log under its old name, so
+  InGame keeps its file and new projects need no rename.
+
+## Deferred / needs owner input
+
+- A propose-only retro loop over the roster itself is #432, not this package.
+- InGame and InThink adopt the template through their own sessions; InProgress first, on
+  `roster-plan`.

@@ -2,7 +2,9 @@
 
 Four members of the roster run as Claude Code subagents, so their reasoning stays out of the main
 session's context. Sigmund (`skills/sigmund/`) dispatches them; each also works on its own. The
-spec is `docs/roster-spec.md`.
+spec is `docs/roster-spec.md`. Doctor Nick (`skills/doctor-nick/`) is on the roster too but has
+no wrapper: he triages the environment inline, in the session that hit the problem. A subagent
+that hits a broken environment stops and reports the doctor's output.
 
 ## The roster
 

@@ -16,6 +16,7 @@ are in r218 on #415 (`2026-10-13-agent-roster-decisions.md`).
 | **Moh** | Read-only lookup across files: callers, usages, inventories, pattern sweeps. | Subagent | `claude-haiku-5-5`, low | `.claude/agents/moh.md` |
 | **Murr** | Adversarial code review, runtime bugs first, then debt. | Thin agent wrapper + the `murr` skill | `claude-sonnet-5-5`, high | `.claude/agents/murr.md` + `.claude/skills/murr/` |
 | **Parvati** | A built screen against intent: Flag, Expected, Polish. | Thin agent wrapper + the `parvati` skill | `claude-sonnet-5-5`, medium | `.claude/agents/parvati.md` + `.claude/skills/parvati/` |
+| **Doctor Nick** | Triages a broken environment: preflight, a runbook by symptom, a known-issues log that grows with each fix. | Skill, loaded inline in the session that hit the problem; no wrapper | The session's own model | `.claude/skills/doctor-nick/SKILL.md` + the project's known-issues file |
 
 What each one never does:
 
@@ -31,6 +32,9 @@ What each one never does:
   probed. A diff-only review (call sites unopened) is not a valid Murr run.
 - **Parvati** never edits, never clicks anything that writes data, and never reviews code
   correctness. A screen reviewed only at rest is a partial review and is labelled as one.
+- **Doctor Nick** never debugs a product bug, never logs a guess as a known issue, and never
+  edits the doctor, his own skill or an agent file mid-triage: a new doctor check is a change and
+  runs through Sigmund. (Added 2026-10-14, step #431.)
 
 Shared law, unchanged from the reviewer trio: reviewers report, the main session fixes. Subagent
 claims are not evidence. Sigmund reruns Sev's checks and reads the diff, opens every Murr and
@@ -221,6 +225,8 @@ handoff that names Sigmund in its first line loads the local one on purpose. Wor
   before reading code; open every interactive surface; isolated-build mode).
 - `starter-kit/CLAUDE.md` gets the one Sigmund line; `starter-kit/AGENTS.md` gets the manual
   fallback for Sigmund, Sev and Moh.
+- `skills/doctor-nick/SKILL.md`: the existing QA-loop skill, rebuilt as a roster template
+  (2026-10-14, #431). No agent wrapper: he runs in the session that hit the problem.
 - `DECISIONS.md` gets one entry per template package, as usual.
 
 Rollout to InThink, InProgress and InGame goes through each project's own session, from the
