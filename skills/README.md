@@ -90,6 +90,22 @@ gate) · **parvati** + **murr** guard Stage 4 (every screen and every diff befor
 **acceptance-walkthrough** runs every owner gate from Stage 4 on — all staying on duty through
 Stage 6.
 
+## The facilitator — sigmund
+
+A fourth class with one member. **sigmund** is not a reviewer and not a cognitive skill: he is the
+lifecycle for one change, loaded into the main session, and he holds the model routing and the
+overrides that used to sit in a project's CLAUDE.md. Stages 1 to 3 (spec, design, plan) keep the
+playbook's routing; Sigmund covers code changes from Stage 4 on.
+
+| Skill | Does | Dispatches |
+|---|---|---|
+| **sigmund** | one change end to end: clarify → branch → plan → build → verify → review → ship to integration → present → merge on go-ahead; names where the superpowers skills fit inside those phases | **sev** (build), **moh** (lookup), **murr** (code), **parvati** (screen) from [`agents/`](../agents/README.md) |
+
+Projects adopt him by copying `sigmund/SKILL.md` and filling its `[edit]` sections (the edit
+points are listed in `docs/roster-build-plan.md`), then adding one line to their CLAUDE.md:
+*"Change work runs through Sigmund (`.claude/skills/sigmund/`). Routing, overrides and the ship
+gates live there."* The spec is [`docs/roster-spec.md`](../docs/roster-spec.md).
+
 ## Installing into a project
 
 ```
@@ -102,6 +118,7 @@ Stage 6.
   ui-craft/SKILL.md
   spec-elicitation/SKILL.md   (+ references/)
   failure-first/SKILL.md
+  sigmund/SKILL.md            (+ agents/ → .claude/agents/, see agents/README.md)
 ```
 
 `britch` runs *before* a repo exists, so it belongs in your **user** scope
