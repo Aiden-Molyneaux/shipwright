@@ -678,3 +678,69 @@ them with the roster, and that template changes reach projects by recorded commi
 - The session-title prefixes (#455) could become template prose once a second project wants
   them.
 - #420 (the session-cost script in the starter kit) stays out of scope.
+
+# Package 7e — The template sync: recorded commit, fills and `git merge-file` (2026-10-16)
+
+A workflow change made once in Shipwright now reaches every project that adopted the templates,
+through that project's own session (#457). Aiden chose approach B on 2026-10-16 (full filled
+copies per project, a recorded adoption commit, a three-way merge) over A (Shipwright as a
+plugin with per-project overlays), and approved this design the same day. Design and the first
+dry sync: `docs/template-sync.md`.
+
+## What I chose
+
+- **`scripts/template-sync.mjs`**, plain Node with no dependencies. It reads base and theirs
+  from Shipwright's object store (`git show <rev>:<template>`), so Shipwright's working tree and
+  branch never matter, and merges each with `git merge-file --diff3` into the project's copy.
+  It never commits; the project's session commits the merged files and the manifest together.
+  Modes: sync, `--dry-run` (writes only into a scratch folder), `--check` (exit 1 when behind),
+  `--accept` (moves a resolved file's base forward).
+- **`.claude/shipwright.json` holds a base per file**, not one per project. InProgress already
+  has two adoption commits (`24dabdb`, `9ced8b4`), and a per-file base lets clean files move
+  forward while a conflicted one waits as `pending`.
+- **Fills are recorded and rendered into both sides** before the merge. Without them every
+  template edit to a line holding a placeholder conflicts in every project. A placeholder the
+  template retires is left unfilled in base, so the project's text conflicts with the new default
+  instead of being replaced by it; the first build lost InProgress's "Across the session" to
+  #456's prose that way, and the dry run caught it.
+- **CRLF is read as LF and restored on write.** Without it each Windows copy was one whole-file
+  conflict.
+- **The "Adopting this template" section is dropped** from both sides, since every adopter
+  deletes it.
+- **`[edit]` sections still conflict** when both sides change them: that is the project
+  deliberately differing, and its session weighs the template's change with the old text shown.
+- **`templates.json`** lists the syncable templates, #456's context nudge and settings included.
+  A package that adds a template adds it there. The sync reports a listed template a project
+  neither maps nor skips.
+- **Murr's review (one major, eight minors) is folded in.** The manifest is saved even when a
+  later file fails, so a file written with markers never loses `pending`; entries are validated
+  per file; the sync refuses untracked, ignored or modified copies and fails closed when git
+  cannot answer; the Adopting drop ignores headings inside code fences; BOMs and the dominant line
+  ending are restored; `--check` reports templates gone upstream apart from "behind"; and a new
+  placeholder with no fill goes `pending` (his owner-call, which matches the design's promise
+  that `--accept` gates on `{{`). The manifest is written back with only the moved bases changed.
+- **`scripts/template-sync.test.mjs`**, `node --test scripts/`: Shipwright's first test file,
+  because this script writes into other repos. Throwaway repos in the OS temp folder, no
+  dependencies. Four of its guards were checked by mutating the script and watching the test fail.
+- `agents/README.md`'s install list gains step 6, record the manifest. Sigmund's and Doctor
+  Nick's "Adopting this template" sections are unchanged: they are dropped on adoption and would
+  need their own sync to change.
+
+## What I assumed
+
+- `git` 2.x with `merge-file --diff3` is on PATH wherever a project runs the sync.
+- One Shipwright clone per machine, named by the manifest's `shipwright` path.
+- Fills for a placeholder are the same across files unless a per-file override says otherwise.
+
+## Deferred / needs owner input
+
+- InProgress's backfill, its first real sync, and a "behind Shipwright" line in Mip's digest:
+  proposed as steps in project `inprogress`, for its own session.
+- A `--learn` mode that derives fills from a project's copies. The InProgress backfill used a
+  scratch version of it; InThink's adoption (#458) writes its manifest as it fills, so it does
+  not need one.
+- Retro's `{{WORKFLOW_FILES}}` repeats what the manifest records; pointing it at the manifest
+  waits for the retro's first real run.
+- `--accept` ignores a bare `=======`, which is also a setext heading underline, so a stray
+  separator from a careless resolution passes. Murr's review of the sync commit covers it.
+- Pushing `main` to origin stays with Aiden.

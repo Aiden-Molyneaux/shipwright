@@ -6,7 +6,8 @@ full filled copies, records what it adopted from, and a sync three-way merges th
 changes since then into its copies. The sync runs in the project's own session, and that
 project's Murr reviews the result. Nothing in Shipwright ever writes into a project.
 
-Status: design, for review on #457. Nothing below is built yet.
+Status: built (`scripts/template-sync.mjs`, `templates.json`); design approved by Aiden on
+2026-10-16 (#457). No project has a manifest yet.
 
 ## The manifest
 
@@ -56,11 +57,19 @@ Run from the project's session: `node <shipwright>/scripts/template-sync.mjs [--
 3. **ours** is the project's file with CRLF read as LF. The original line ending is written back.
 4. `git merge-file --diff3 ours base theirs`, so a conflict shows the old template text between
    the two sides and the resolver can see what each side changed.
-5. Clean merge: the file is written and its `base` moves to `<to>`. Conflict: the file is written
-   with markers and gets `"pending": "<to sha>"`; `base` stays.
+5. Clean merge: the file is written and its `base` moves to `<to>`. Conflict, or a new
+   placeholder with no fill: the file is written as merged and gets `"pending": "<to sha>"`;
+   `base` stays. The manifest is saved even when a later file fails, so a file already written
+   with markers never loses its `pending`.
 6. The report lists, per file: unchanged upstream, merged clean, conflicts (with hunk count), and
    any new placeholder in theirs that has no fill. Then templates that are new, renamed or gone
-   upstream.
+   upstream. It exits 1 when any file needs the session (a conflict, a fill, a skipped or failed
+   file).
+
+Before writing a file the sync checks that git can give the old version back: the local copy
+must be tracked and unmodified, or the file is skipped. Each entry is validated first (a `local`
+path inside the project, a `base` that is a commit), and a bad entry becomes an error row for
+that file, not a failed run.
 
 After the session resolves the markers (with Murr reviewing, as for any change),
 `template-sync.mjs --accept` checks each pending file has no markers and no `{{`, then moves its
@@ -69,8 +78,13 @@ merged files and the manifest together, through its own gates.
 
 **`--dry-run`** does steps 1 to 4 into a scratch folder and prints the report. It writes nothing
 in the project. **`--check`** prints, per file, how many Shipwright commits touched its template
-since `base`, plus the unmapped templates, and exits 1 when anything is behind. That is what a
-"behind Shipwright" line in Mip's digest would call.
+since `base`, plus templates gone upstream and the unmapped ones, and exits 1 when anything is
+behind, pending, gone or unmapped. That is what a "behind Shipwright" line in Mip's digest would
+call.
+
+Tests: `node --test scripts/` builds throwaway Shipwright and project repos under the OS temp
+folder and covers the merge, conflicts and `--accept`, CRLF and BOM, retired and new
+placeholders, the Adopting drop, the refusals, the dry run and `--check`.
 
 ## The cases
 
@@ -116,30 +130,84 @@ or take the template's with the fill. Em dashes are the same story: InProgress s
 its murr and parvati copies, so any template change to a line with an em dash conflicts. No
 mechanical transform is proposed for that; it recurs only where the template edits such a line.
 
+**Retired placeholders.** #456 replaced `{{SESSION_RHYTHM}}` with default prose. A project's
+fill for it is its own text, so rendering base with that fill would make the region look
+untouched locally, and the merge would silently swap the project's rhythm for the template's
+(the first build did exactly that to InProgress's Sigmund). A placeholder that is in base but
+gone from theirs is therefore left unfilled in base: the fill reads as a local edit, the
+template's new text conflicts with it, and the report names the retired placeholder.
+
+**New placeholders.** A placeholder in theirs that the project has no fill for stays as `{{X}}`
+in the merged file, the report says "no fill for {{X}}", and the file goes `pending` even when
+it merged clean. `--accept` refuses a file that still holds one, so the session records the fill
+in the manifest and fills the site before the base moves.
+
+**Line endings and BOMs.** Ours is read as LF with any BOM stripped, and written back with the
+BOM and whichever ending most of its lines used. Fill values are read as LF too.
+
+**Conflict markers left behind.** `--accept` looks for `<<<<<<<`, `|||||||` and `>>>>>>>`. It does
+not look for `=======`, which is also a setext heading underline, so a stray separator from a
+careless resolution passes; Murr's review of the sync commit is the check for that.
+
+**Settings files.** `starter-kit/.claude/settings.json` is listed, because a project started
+from the starter kit copied it whole and can sync it. A project that merged its two keys into
+its own settings by hand puts it in `skip`; a line merge into a different settings file would
+only make noise.
+
 **Local changes worth upstreaming.** A project's own improvements (InProgress's #442 and #455
 Sigmund title rules) survive the sync as local edits. Proposing them back to Shipwright stays
 the retro's job.
 
-## The first sync, from InProgress (dry, from the scratch run)
+## Backfilling a manifest
 
-Merging the eight InProgress files from their adoption commits to `6c95f0c`, with CRLF handled
-but without fills, gives 15 conflict hunks across all eight files. By cause: filled lines the
-template reworded (Moh, Sev, Murr wrapper, Parvati wrapper), convergent 7c fixes (Murr and
-Parvati report headings, Parvati's preflight line, Doctor Nick's protected-lanes bullet),
-`[edit]` sections both sides changed (Sigmund's risk statement and merge gate), and Sigmund's
-"Adopting this template" section. Fills and the section drop should remove the first and last
-groups; the build step reruns this with a backfilled manifest and records the numbers.
+A project that adopted before the manifest existed needs its bases and fills written once.
+Bases come from its adoption commits (InProgress's say "from Shipwright 24dabdb" and "From
+Shipwright 9ced8b4"). Fills come from its own copies: for a placeholder inside a line, match
+the template line with the placeholder as a wildcard; for a placeholder on its own line, take
+what sits between the nearest unique lines above and below it. That covered most of InProgress's
+fill sites mechanically; the rest were picked by hand. A fill site the project rewrote
+(InProgress's Parvati build line) is left without a fill: it is a local edit, and it conflicts
+when the template changes it.
+
+## The first sync, from InProgress (dry)
+
+`template-sync.mjs --dry-run --to template-sync` with a backfilled manifest, against
+InProgress `main` at `2658cc3`, read-only. Nine mapped files and three skipped: `parvati-shared`, the starter kit's `settings.json`, and
+the retro, which InProgress has not adopted yet.
+
+| Result | Files |
+|---|---|
+| merged clean | sev, moh, murr wrapper, doctor-nick |
+| unchanged upstream | `scripts/context-nudge.mjs` (adopted at #456's commit) |
+| conflict | parvati wrapper (2 hunks), sigmund (3), murr skill (2), parvati skill (2) |
+
+The nine hunks, by cause:
+
+- **Convergent 7c fixes** (6): InProgress fixed its copies, and Package 7c made the same fix in
+  the template with other words. The Parvati wrapper's build and preflight lines, the Murr and
+  Parvati report headings (InProgress swapped the em dash for a colon, the template dropped it),
+  Parvati's preflight sentence, and Murr's house-rules line.
+- **Template additions next to a local block** (2): Sigmund's "a check whose definition is
+  wrong" sentence after a paragraph InProgress kept, and his receipt item 6 after an item 5
+  InProgress rewrote.
+- **The retired `{{SESSION_RHYTHM}}`** (1): InProgress's "Across the session" against #456's
+  default prose.
+
+Before the fills and the section drop, the same merge gave 15 hunks; before CRLF handling,
+every file was one whole-file conflict. Two new fills are reported: `{{WORKFLOW_NOTES}}`
+(Sigmund's Workflow notes, from the retro loop) and `{{BUILD_AND_RUN}}` (the rewritten site).
 
 ## What changes in InProgress (through its own session)
 
 Proposed as steps in project `inprogress`, not done from here:
 
-1. Backfill `.claude/shipwright.json`: the eight files, their bases, the fills taken from its
-   copies, and `skip` for `parvati-shared` and `retro` (until it adopts the retro).
+1. Backfill `.claude/shipwright.json`: the nine files, their bases, the fills taken from its
+   copies, and `skip` for `parvati-shared`, the starter kit's `settings.json` and the retro (until
+   InProgress adopts it).
 2. Run the first real sync and resolve it with Murr.
 3. A "behind Shipwright" line in Mip's digest from `template-sync.mjs --check`.
 
-## Open for review
+## Decided on review (Aiden, 2026-10-16)
 
 1. Per-file `base` with `pending`, instead of one project commit that moves only when every file
    merged.
