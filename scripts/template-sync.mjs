@@ -208,12 +208,20 @@ function sync(opts, manifest, shipwright, to) {
       const rawOurs = fs.readFileSync(localPath, 'utf8');
       const crlf = rawOurs.includes('\r\n');
       const ours = toLf(rawOurs);
-      const base = render(baseRaw, fills);
+      // A placeholder the template retired (in base, gone from theirs) is not filled in base, so the
+      // project's fill reads as a local edit: the template's replacement text then conflicts with it
+      // instead of silently overwriting it.
+      const retired = unfilled(render(baseRaw, {})).filter((n) => !unfilled(render(theirsRaw, {})).includes(n) && n in fills);
+      const baseFills = Object.fromEntries(Object.entries(fills).filter(([n]) => !retired.includes(n)));
+      const base = render(baseRaw, baseFills);
       const theirs = render(theirsRaw, fills);
       const { merged, conflicts } = mergeFile(tmp, ours, base, theirs,
         [entry.local, `shipwright ${entry.base}`, `shipwright ${to}`]);
       const missingFills = unfilled(theirs).filter((n) => !unfilled(ours).includes(n));
-      const fillNote = missingFills.length ? `; no fill for ${missingFills.map((n) => `{{${n}}}`).join(', ')}` : '';
+      const notes = [];
+      if (missingFills.length) notes.push(`no fill for ${missingFills.map((n) => `{{${n}}}`).join(', ')}`);
+      if (retired.length) notes.push(`retired upstream: ${retired.map((n) => `{{${n}}}`).join(', ')}, its fill kept as a local edit`);
+      const fillNote = notes.map((n) => `; ${n}`).join('');
 
       const written = crlf ? merged.replace(/\n/g, '\r\n') : merged;
       if (dry) {
