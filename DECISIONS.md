@@ -810,7 +810,7 @@ form: 40a2a8c's Sigmund hunks, and b95656e with Murr's fixes 09c7fe5, 4c57418 an
 - InThink's dry run (`--to 078aa18`) conflicts in one hunk, Phase 7, where it rewrote "Then stop"
   for its two go-aheads; Phase 8 and the title rule merge clean. **Owner-call for Aiden before
   InThink syncs:** what "done" means for an InThink step, landed on `staging` or released to
-  `main`. The template's wording reads as "handed over", so the step's session marks it done
-  once the release PR is open; Phase 8 is `[edit]` if InThink wants otherwise.
+  `main`. "Handed over" fits either reading, so InThink's session writes the answer into its
+  Phase 8, which is `[edit]`.
 - InGame receives the rules on its next sync, through its own session.
 - Pushing `main` to origin stays with Aiden.

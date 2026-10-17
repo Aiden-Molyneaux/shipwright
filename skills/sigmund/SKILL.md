@@ -217,7 +217,7 @@ The go-ahead drops the `REVIEW` prefix (Session title, below).
 
 Once the gate above is through (merged, plus any deploy and push it names), or, where it ends
 on the owner's own action (a merge click, a batched release), once you have handed that action
-over: in a tracked session, mark your step done in InProgress with its outcome, and prefix this
+over: mark your step done in InProgress with its outcome (in a tracked session), and prefix this
 session's title with `DONE` (Session title, below).
 
 A red deploy or rollback goes to Doctor Nick before anything is retried. A retry that is itself a
