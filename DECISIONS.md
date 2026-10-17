@@ -744,3 +744,56 @@ dry sync: `docs/template-sync.md`.
 - `--accept` ignores a bare `=======`, which is also a setext heading underline, so a stray
   separator from a careless resolution passes. Murr's review of the sync commit covers it.
 - Pushing `main` to origin stays with Aiden.
+
+# Package 7f — InProgress's #442 and #455 Sigmund rules, upstream (2026-10-17)
+
+InProgress added these rules to its own Sigmund under #442 (one step, one session; a review ask
+at phase 7) and #455 (a status prefix on the session title), and Murr reviewed them there. #471
+brings them into `skills/sigmund/SKILL.md` so every project receives them through the template
+sync (#457). Aiden approved each rule's home on 2026-10-17. The source is InProgress's final
+form: 40a2a8c's Sigmund hunks, and b95656e with Murr's fixes 09c7fe5, 4c57418 and 7cf2d02.
+
+## What I chose
+
+- **All seven rules are template text; no new placeholder.** Each reads the same in every
+  project once "Aiden" becomes "the owner" and "brief the scribe" becomes "in InProgress", and
+  the template already names InProgress as the continuity layer. A new placeholder would go
+  `pending` in every project for text nobody needs to vary.
+- **Phase 7:** before stopping, raise a `review` ask on the step with one line on what is
+  ready, then set the `REVIEW` prefix. Phase 7 has no `[edit]` marker, so the rule merges clean
+  wherever a project left the section alone.
+- **Phase 8:** a line above `{{MERGE_GATE}}` says the go-ahead drops `REVIEW`, and a line after
+  it marks the step done with its outcome and sets `DONE`. They sit outside the fill so that no
+  project's fill has to change. "Merged, deployed and pushed" became "the gate above is through
+  (merged, plus any deploy and push it names)", since gates differ.
+- **"Across the session":** helper sessions claim without `--take-over`; a successor's handoff
+  opens `Claim #<id> --take-over`, is attached to its step, has its path printed and is offered
+  as a chip where the session can start one; Mip hears through InProgress only; and the session
+  title rule, whole: `REVIEW`, `BLOCKED` (which wins), `DONE`, no prefix while working, a handoff
+  clears its prefix, the two `ccd_session_mgmt` tools on `"self"`, main session only, silent
+  skip outside the desktop app. The chip line names no tool, because the desktop app's
+  session-starting tool has been renamed before.
+- **This reverses part of Package 7d,** which kept the Mip reports, `Claim --take-over` and the
+  title prefixes out as InProgress's own fill and deferred the prefixes until a second project
+  wanted them. The deciding facts: every project on the roster is tracked in InProgress, and
+  the title rule skips without comment outside the desktop app, so it costs nothing where it
+  does not apply.
+- **Kept out:** the rulings file in `docs/superpowers/rulings/` (InProgress only), and the
+  "through the scribe" wording, which the template already says as "in InProgress". The
+  compaction rhythm came over in 7d.
+- `docs/template-sync.md`'s "worth upstreaming" note now names #471, and the Sigmund row in
+  `skills/README.md` mentions the review ask and the title prefix.
+
+## What I assumed
+
+- Every project that adopts Sigmund tracks its steps in InProgress, whose ask kinds are
+  `question`, `permission` and `review`.
+- `mcp__ccd_session_mgmt__get_session` and `set_session_title` keep those names. Where they are
+  missing the rule skips without comment, so a rename costs a missed prefix, not an error.
+
+## Deferred / needs owner input
+
+- InProgress's next sync (#460) conflicts in Phase 7, Phase 8 and "Across the session", where
+  its text already holds these rules. Its session keeps its own wording.
+- InGame and InThink receive the rules on their next sync, through their own sessions.
+- Pushing `main` to origin stays with Aiden.
