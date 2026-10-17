@@ -49,7 +49,7 @@
 | `{{SIGN_IN}}` | How Parvati signs in to the shared preview, or "none" | Parvati shared wrapper |
 | `{{BUILD_AND_RUN}}` | How Parvati builds the branch and starts it on her port with scratch data, and how she seeds it | Parvati isolated wrapper |
 | `{{FORBIDDEN_COMMANDS}}` | Commands no agent runs (deploy, installers, destructive SQL) | Sev, Murr wrapper, both Parvati wrappers |
-| `{{SESSION_RHYTHM}}` | When a session cuts and what a clean point is, for projects that cut sessions | Sigmund "Across the session" |
+| ~~`{{SESSION_RHYTHM}}`~~ | Retired 2026-10-16 (#456): Sigmund's "Across the session" now ships InProgress's rhythm as default `[edit]` prose, paired with the starter kit's `scripts/context-nudge.mjs` and `.claude/settings.json` (autocompact at 250k). A project edits the prose where its rhythm differs | Sigmund "Across the session" |
 | `{{HANDOFF}}` | What a handoff holds and where it is saved | Sigmund "Across the session" |
 | `{{PREFLIGHT}}` | The commands that bring the environment up and check it before running-app work, per mode (live install, isolated build) | doctor-nick Preflight (added 2026-10-14, #431) |
 | `{{DOCTOR_COMMAND}}` | The read-only doctor: what it probes, and that it prints the fix and exits non-zero on a blocking red | doctor-nick ladder |
