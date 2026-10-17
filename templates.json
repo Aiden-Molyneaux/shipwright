@@ -10,6 +10,8 @@
     "skills/murr/SKILL.md",
     "skills/parvati/SKILL.md",
     "skills/doctor-nick/SKILL.md",
-    "skills/retro/SKILL.md"
+    "skills/retro/SKILL.md",
+    "starter-kit/scripts/context-nudge.mjs",
+    "starter-kit/.claude/settings.json"
   ]
 }
