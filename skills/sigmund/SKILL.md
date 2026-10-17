@@ -200,10 +200,11 @@ The receipt, leading with the outcome:
 6. The workflow notes this change wrote, and the retro trigger if one was hit. Leave the item out
    when there were none.
 
-Before you stop, raise a `review` ask on your step in InProgress, with one line on what is
-ready. The owner's go-ahead answers it and reaches you on your next prompt; the open ask keeps
-the step from reading as stalled. Then prefix this session's title with `REVIEW` (Session
-title, under "Across the session").
+Before you stop, in a tracked session, raise a `review` ask on your step in InProgress, with
+one line on what is ready. The owner's go-ahead answers it and reaches you on your next prompt;
+the open ask keeps the step from reading as stalled. Then prefix this session's title with
+`REVIEW`, or `BLOCKED` while another ask waits on the owner (Session title, under "Across the
+session").
 
 Then stop. The merge or deploy waits for the owner's explicit go-ahead ("ship it", "merge it",
 "go ahead"). Silence, or approval of the integration push, is never merge approval.
@@ -214,9 +215,10 @@ The go-ahead drops the `REVIEW` prefix (Session title, below).
 
 {{MERGE_GATE}}
 
-Once the gate above is through (merged, plus any deploy and push it names), mark your step done
-in InProgress with its outcome, and prefix this session's title with `DONE` (Session title,
-below).
+Once the gate above is through (merged, plus any deploy and push it names), or, where it ends
+on the owner's own action (a merge click, a batched release), once you have handed that action
+over: in a tracked session, mark your step done in InProgress with its outcome, and prefix this
+session's title with `DONE` (Session title, below).
 
 A red deploy or rollback goes to Doctor Nick before anything is retried. A retry that is itself a
 gated action (another deploy, a rollback, an installer) follows the gate above.
@@ -257,20 +259,21 @@ gated action (another deploy, a rollback, an installer) follows the gate above.
 - **Session title.** In the desktop app, keep a status prefix on this session's title so the
   sidebar shows where it stands:
   - `REVIEW`: set whenever you end a turn with the phase 7 receipt still open, its `review` ask
-    included. The go-ahead ("ship it", "merge it", "go ahead") drops it and phase 8 runs with
-    no prefix; a change request drops it until the next receipt.
+    included. The go-ahead ("ship it", "merge it", "go ahead") drops it and the gated phase
+    runs with no prefix; a change request drops it until the next receipt.
   - `BLOCKED`: set when you end a turn waiting on the owner for anything but the receipt: a
     `question` or `permission` ask on the step, or a question in your closing message. Drop it
     when the owner answers. If one is open while the receipt waits, `BLOCKED` wins: the answer
     comes before a ship. A question asked inside a turn (AskUserQuestion) sets nothing.
-  - `DONE`: set once phase 8's gate is through. It stays.
+  - `DONE`: set once phase 8's gate is through, or handed to the owner where it ends on the
+    owner's own action. It stays.
   - Otherwise no prefix: while you work, deploy retries included.
 
   A session that hands off clears its prefix before it stops; the successor sets its own. Read
   the title with `mcp__ccd_session_mgmt__get_session` on `"self"`, then set it with
   `mcp__ccd_session_mgmt__set_session_title` on `"self"`: one prefix and a space before the
-  title as it stands, replacing any prefix already there (`REVIEW #453 Filter the Backlog`,
-  then `DONE #453 Filter the Backlog`). Load both through ToolSearch when they are deferred.
+  title as it stands, replacing any prefix already there (`REVIEW #<id> <step title>`, then
+  `DONE #<id> <step title>`). Load both through ToolSearch when they are deferred.
   Only the main session renames: a subagent cannot rename the session it runs in. Where the
   tools are missing (outside the desktop app) or a rename is declined, skip it without comment.
 

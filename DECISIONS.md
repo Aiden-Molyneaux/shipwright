@@ -755,17 +755,24 @@ form: 40a2a8c's Sigmund hunks, and b95656e with Murr's fixes 09c7fe5, 4c57418 an
 
 ## What I chose
 
-- **All seven rules are template text; no new placeholder.** Each reads the same in every
-  project once "Aiden" becomes "the owner" and "brief the scribe" becomes "in InProgress", and
-  the template already names InProgress as the continuity layer. A new placeholder would go
-  `pending` in every project for text nobody needs to vary.
-- **Phase 7:** before stopping, raise a `review` ask on the step with one line on what is
-  ready, then set the `REVIEW` prefix. Phase 7 has no `[edit]` marker, so the rule merges clean
+- **All seven rules are template text; no new placeholder.** Once "Aiden" becomes "the owner"
+  and "brief the scribe" becomes "in InProgress", the wording fits every project; the template
+  already names InProgress as the continuity layer. A new placeholder would go `pending` in
+  every project for text nobody needs to vary. The one real difference between projects, where
+  the gate ends, is handled in the Phase 8 wording below.
+- **Phase 7:** before stopping, in a tracked session, raise a `review` ask on the step with one
+  line on what is ready, then set `REVIEW` (or `BLOCKED` while another ask waits, which the
+  title rule already says wins). Phase 7 has no `[edit]` marker, so the rule merges clean
   wherever a project left the section alone.
 - **Phase 8:** a line above `{{MERGE_GATE}}` says the go-ahead drops `REVIEW`, and a line after
   it marks the step done with its outcome and sets `DONE`. They sit outside the fill so that no
   project's fill has to change. "Merged, deployed and pushed" became "the gate above is through
-  (merged, plus any deploy and push it names)", since gates differ.
+  (merged, plus any deploy and push it names), or, where it ends on the owner's own action (a
+  merge click, a batched release), once you have handed that action over". Without the second
+  half a session whose gate ends on the owner's click (InThink's release PR) would sit with no
+  prefix until a merge days later, usually seen from another session (Murr).
+- **"In a tracked session"** qualifies the review ask and the mark-done line, as it already
+  does the template's other InProgress writes. The title prefix applies either way.
 - **"Across the session":** helper sessions claim without `--take-over`; a successor's handoff
   opens `Claim #<id> --take-over`, is attached to its step, has its path printed and is offered
   as a chip where the session can start one; Mip hears through InProgress only; and the session
@@ -793,7 +800,17 @@ form: 40a2a8c's Sigmund hunks, and b95656e with Murr's fixes 09c7fe5, 4c57418 an
 
 ## Deferred / needs owner input
 
-- InProgress's next sync (#460) conflicts in Phase 7, Phase 8 and "Across the session", where
-  its text already holds these rules. Its session keeps its own wording.
-- InGame and InThink receive the rules on their next sync, through their own sessions.
+- InProgress's next sync (#460) conflicts in Phase 7 and "Across the session", where its text
+  already holds these rules; its session keeps its own wording. Phase 8 can merge without a
+  marker: InProgress's `{{MERGE_GATE}}` fill already opens with the `REVIEW` drop and is
+  followed by its own `DONE` line, so the template's two lines may land clean beside them and
+  repeat the rule (Murr's simulation from bases `24dabdb` and `ef45c2b`). Its session deletes
+  the template's duplicates, or records a fill without those clauses. The fill table in
+  `docs/roster-build-plan.md` now says a fill holds neither.
+- InThink's dry run (`--to 078aa18`) conflicts in one hunk, Phase 7, where it rewrote "Then stop"
+  for its two go-aheads; Phase 8 and the title rule merge clean. **Owner-call for Aiden before
+  InThink syncs:** what "done" means for an InThink step, landed on `staging` or released to
+  `main`. The template's wording reads as "handed over", so the step's session marks it done
+  once the release PR is open; Phase 8 is `[edit]` if InThink wants otherwise.
+- InGame receives the rules on its next sync, through its own session.
 - Pushing `main` to origin stays with Aiden.

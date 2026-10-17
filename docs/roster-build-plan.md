@@ -40,7 +40,7 @@
 | `{{PLAN_HOME}}` | Where written plans and specs live | Sigmund phase 2 |
 | `{{BRANCH_MODEL}}` | Integration branch, or branch or worktree per change, and how to start one | Sigmund phase 1 |
 | `{{SHIP_POLICY}}` | When Sigmund pushes on his own judgment and when he asks first | Sigmund phase 6 |
-| `{{MERGE_GATE}}` | The project's gate, PR shape and who clicks merge or runs deploy | Sigmund phase 8 |
+| `{{MERGE_GATE}}` | The project's gate, PR shape and who clicks merge or runs deploy. Not the `REVIEW` drop or the mark-done and `DONE` step, which the template puts around it (#471) | Sigmund phase 8 |
 | `{{RISK_STATEMENT}}` | The unrecoverable thing, in one sentence | Sigmund prime law and phase 7 |
 | `{{RISK_LIST}}` | Paths and areas that send Murr to Opus | Sigmund overrides, `murr` skill Project risks |
 | `{{HARD_ORDERING_LIST}}` | Plan subjects that send Sev to Opus | Sigmund overrides |
