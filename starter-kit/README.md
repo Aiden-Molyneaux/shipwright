@@ -50,6 +50,8 @@ You do **not** need: a feature list (Stage 1's job), a design (Stage 2's), or a 
 | `docs/design/mockups/README.md` | The mockup convention (HTML-only, drafts → `*-states.html`) |
 | `lifecycle-playbook.md` | The Day One → launch → live spine: stages, guardrails, gates |
 | `scripts/health-check.mjs` | Deterministic doc-graph checks → generates `docs/HEALTH.md` |
+| `scripts/context-nudge.mjs` | `PostToolBatch` hook: tells the session at 150k and 200k tokens of context, and once after a compaction; the rhythm it cues is Sigmund's "Across the session" |
+| `.claude/settings.json` | Autocompact at 250k (`autoCompactWindow`) and the hook entry for `context-nudge.mjs`. An existing project merges these two keys into its own settings file instead of copying it |
 
 Nine living docs + a generated dashboard — plus the toolkit's **`dashboard/`** (the Owner
 cockpit: `node <shipwright>/dashboard/server.mjs` renders the whole graph human-readable — the owner
@@ -70,7 +72,7 @@ each.
 
 ## Day One — the scaffold procedure (agent-driven, ~one session)
 
-**1. Copy** this directory's contents into the new repo's root, and the toolkit's project-scoped
+**1. Copy** this directory's contents into the new repo's root (`.claude/settings.json` included), and the toolkit's project-scoped
 skills — `skills/{burt,parvati,murr,ac-author,acceptance-walkthrough,ui-craft,spec-elicitation,failure-first}`
 — into `.claude/skills/`. `git init`, first commit.
 

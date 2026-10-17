@@ -113,7 +113,10 @@ written plan for each one.
 Projects adopt him by copying `sigmund/SKILL.md` and filling its `[edit]` sections (the edit
 points are listed in `docs/roster-build-plan.md`), then adding one line to their CLAUDE.md:
 *"Change work runs through Sigmund (`.claude/skills/sigmund/`). Routing, overrides and the ship
-gates live there."* The spec is [`docs/roster-spec.md`](../docs/roster-spec.md).
+gates live there."* The spec is [`docs/roster-spec.md`](../docs/roster-spec.md). His "Across the
+session" is the compaction rhythm, and it pairs with the starter kit's context nudge
+(`scripts/context-nudge.mjs`) and its `.claude/settings.json` (autocompact at 250k): a project
+adopting Sigmund takes those two files too, or edits the section.
 
 ## The roster's retro: retro
 

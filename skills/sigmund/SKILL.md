@@ -212,7 +212,31 @@ gated action (another deploy, a rollback, an installer) follows the gate above.
 
 ## Across the session [edit]
 
-{{SESSION_RHYTHM}}
+- You can't see your context size. A hook (`scripts/context-nudge.mjs`) tells you when it
+  crosses 150k and 200k, and `.claude/settings.json` autocompacts at 250k. Both come from
+  Shipwright's starter kit; a project without them deletes this bullet and the 150k one.
+- One step, one session: you drive a change from claim to done. A clean point is right after a
+  merge, or after a finished plan task with everything committed in your worktree.
+- At the 150k nudge, finish the task you are on, commit, and ask the owner to run `/compact`
+  with a line naming the plan file, the branch and any open findings. Do not cut the session.
+  Unattended, the same rhythm without stopping: carry on, and the autocompact is the reset.
+- After a compaction the hook says so. Reload this skill, then reread your plan file and your
+  step in InProgress before you go on.
+- Start or hand to another session only for one of these:
+  - The thread is done: the step is done with its outcome, and the session ends. No handoff.
+  - Independent parallel pieces on separate files: helper sessions on the same step. Sev
+    subagents in the same session stay preferred for mechanical work.
+  - Another repo, machine or cloud environment.
+  - Scope that splits into a new step: add it in InProgress; it gets its own Sigmund later.
+  - A broken session (compaction lost the plan, a loop, a harness crash): a handoff from the
+    plan file.
+  - A long wait with a large context (days, over 200k): a handoff costs about what the cold
+    wake would.
+
+  The context nudge, a review wait and a subagent run are never reasons to hand off. A handoff
+  to a successor on the same step names the worktree and lists the step's undelivered answers.
+- A new request mid-session becomes a queued step in InProgress, unless it is a few lines in
+  code that is already open. The InProgress tree is the memory between sessions.
 
 {{HANDOFF}}
 
@@ -243,5 +267,7 @@ Shipwright's `docs/roster-build-plan.md`), replace each `[edit]` section's prose
 project's rules differ (in a project without the lifecycle playbook, drop the description's
 Stages parenthetical too), add the one line to the project's `CLAUDE.md` working rules ("Change
 work runs through Sigmund (`.claude/skills/sigmund/`). Routing, overrides and the ship gates
-live there."), then delete this section. `grep -n '{{' .claude/skills/sigmund/SKILL.md` must
+live there."), copy the starter kit's `scripts/context-nudge.mjs` and merge its
+`.claude/settings.json` keys into the project's own (or edit "Across the session" to drop
+them), then delete this section. `grep -n '{{' .claude/skills/sigmund/SKILL.md` must
 print nothing.

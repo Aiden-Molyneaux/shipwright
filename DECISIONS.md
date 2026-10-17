@@ -632,3 +632,49 @@ project to adopt does not hit the same things.
 
 - Sigmund's roster paragraph and phase 4 still name Doctor Nick as fixed text; a project that
   has not adopted him edits phase 4 (it is `[edit]`) and the paragraph by hand.
+
+# Package 7d — The session rhythm: context nudge, autocompact and Sigmund's "Across the session" (2026-10-16)
+
+InProgress's compaction rules become templates, so InThink (#458) and InGame adopt them from
+Shipwright instead of copying InProgress (#456). Aiden chose on 2026-10-16 that InThink takes
+them with the roster, and that template changes reach projects by recorded commit plus
+`git merge-file` (#457).
+
+## What I chose
+
+- **`starter-kit/scripts/context-nudge.mjs`** is InProgress's hook with a few words changed: the
+  lines say "the owner" where InProgress says Aiden, and the post-compaction line asks for the
+  plan file and "your step in the tracker" instead of InProgress's step block. Its mechanics
+  (state file, compaction detection, silence in subagents, exit 0) are unchanged. The lines cite
+  only Sigmund's skill path, never a CLAUDE.md section, after InProgress's copy cited a heading
+  its adoption removed (`docs/retro-worked-example.md`). The header marks `LINES` and
+  `COMPACTED` as the only edit points, so a sync merges the mechanics cleanly.
+- **The settings live in `starter-kit/.claude/settings.json`**, a real file holding only
+  `autoCompactWindow: 250000` and the `PostToolBatch` hook entry. A snippet in a doc was the
+  alternative; a file wins because Day One's "copy this directory" brings it along working, and
+  a later sync has a template file to merge against. An existing project merges the two keys
+  into its own settings by hand; the starter kit README says so.
+- **Sigmund's "Across the session" ships InProgress's rhythm as default prose**, still `[edit]`,
+  and `{{SESSION_RHYTHM}}` is retired (struck through in `docs/roster-build-plan.md`'s table,
+  with the date). Every project on the roster has the same context limits, so a placeholder
+  only made each adopter rewrite the same text. Kept: the nudge, one step one session, what a
+  clean point is, the 150k and post-compaction moves, the six reasons to hand off, mid-session
+  requests as queued steps. Dropped as InProgress's own fill: the scribe, Mip reports, the
+  rulings file, `Claim --take-over`, and the session-title prefixes (#455).
+- `{{HANDOFF}}` stays a placeholder: where a handoff is saved is per project.
+- No lane changes. `skills/README.md`'s facilitator section says the two files pair with
+  Sigmund, and his adoption paragraph says to take them.
+
+## What I assumed
+
+- The thresholds (150k, 200k, 250k) suit every project. They sit in one script and one
+  settings key; the script's header says to change them together.
+- `node` is on PATH wherever the hook runs, as InProgress already assumes.
+
+## Deferred / needs owner input
+
+- InProgress's own copies differ from the template only in its fill. When it records an
+  adoption commit for the sync (#457), the base is this package's commit.
+- The session-title prefixes (#455) could become template prose once a second project wants
+  them.
+- #420 (the session-cost script in the starter kit) stays out of scope.
