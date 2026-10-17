@@ -154,9 +154,12 @@ from the starter kit copied it whole and can sync it. A project that merged its 
 its own settings by hand puts it in `skip`; a line merge into a different settings file would
 only make noise.
 
-**Local changes worth upstreaming.** A project's own improvements (InProgress's #442 and #455
-Sigmund title rules) survive the sync as local edits. Proposing them back to Shipwright stays
-the retro's job.
+**Local changes worth upstreaming.** A project's own improvements survive the sync as local
+edits. Proposing them back to Shipwright stays the retro's job. InProgress's #442 and #455
+Sigmund rules (the review ask, the session title prefix) went upstream as a step of their own,
+#471 (Package 7f). InProgress's next sync conflicts on most of those lines, and keeping its own
+wording resolves them; in Phase 8 the template's two lines can merge clean beside its fill's
+own `REVIEW` and `DONE` clauses, so its session deletes the duplicates.
 
 ## Backfilling a manifest
 
