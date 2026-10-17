@@ -95,6 +95,7 @@ test('a retired placeholder conflicts instead of replacing the fill', () => {
   const r = run(s.project);
   assert.equal(r.code, 1, r.out);
   assert.match(r.out, /retired upstream: \{\{RHYTHM\}\}/);
+  assert.doesNotMatch(r.out, /no fill for/);
   assert.match(localOf(s.project), /our own rhythm[\s\S]*default rhythm prose/);
 });
 

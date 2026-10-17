@@ -275,7 +275,9 @@ function syncOne(ctx, template, entry) {
   const theirs = render(theirsRaw, fills);
   const { merged, conflicts } = mergeFile(tmp, ours, baseText, theirs,
     [entry.local, `shipwright ${base}`, `shipwright ${to}`]);
-  const missingFills = unfilled(merged).filter((n) => !unfilled(ours).includes(n));
+  // Placeholders the merged file gains, leaving out diff3's old-template sections of each conflict.
+  const resultText = merged.replace(/^\|{7}[^\n]*\n[\s\S]*?(?=^={7}$)/gm, '');
+  const missingFills = unfilled(resultText).filter((n) => !unfilled(ours).includes(n));
   const notes = [];
   if (conflicts > 0) notes.push(`${conflicts} hunk${conflicts === 1 ? '' : 's'}`);
   if (missingFills.length) notes.push(`no fill for ${missingFills.map((n) => `{{${n}}}`).join(', ')}`);
