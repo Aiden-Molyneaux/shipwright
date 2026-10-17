@@ -125,11 +125,16 @@ test('uncommitted or untracked local copies are refused', () => {
   assert.equal(localOf(s.project), 'a edited\n');
   git(s.project, 'rm', '-q', '--cached', '.claude/t.md');
   assert.match(run(s.project).out, /skipped .*not tracked/);
+  write(s.project, '.gitignore', '.claude/t.md\n');
+  assert.match(run(s.project).out, /skipped .*not tracked/);
+  fs.rmSync(path.join(s.project, '.git'), { recursive: true, force: true });
+  assert.match(run(s.project).out, /skipped .*not tracked/);
+  assert.equal(localOf(s.project), 'a edited\n');
 });
 
-test('a failing entry keeps an earlier conflict pending', () => {
-  const s = setup({ template: 'a\nrule\nc\n', local: 'a\nlocal rule\nc\n' });
-  commit(s.sw, { 't.md': 'a\nnew rule\nc\n' });
+test('a manifest entry with no local path is an error row, not a failed run', () => {
+  const s = setup({ template: 'a\n', local: 'a\n' });
+  commit(s.sw, { 't.md': 'a\nb\n' });
   const m = manifestOf(s.project);
   m.files['u.md'] = { loacl: 'x', base: m.files['t.md'].base };
   write(s.project, '.claude/shipwright.json', JSON.stringify(m));
@@ -137,7 +142,32 @@ test('a failing entry keeps an earlier conflict pending', () => {
   const r = run(s.project);
   assert.equal(r.code, 1);
   assert.match(r.out, /error +u\.md .*no "local"/);
+  assert.match(r.out, /merged +t\.md/);
+});
+
+test('a file that fails to write keeps an earlier conflict pending', () => {
+  const s = setup({ template: 'a\nrule\nc\n', local: 'a\nlocal rule\nc\n', extra: { 'u.md': 'x\n' } });
+  const m = manifestOf(s.project);
+  m.files['u.md'] = { local: '.claude/u.md', base: m.files['t.md'].base };
+  write(s.project, '.claude/shipwright.json', JSON.stringify(m));
+  commit(s.project, { '.claude/u.md': 'x\n' });
+  commit(s.sw, { 't.md': 'a\nnew rule\nc\n', 'u.md': 'x\ny\n' });
+  fs.chmodSync(path.join(s.project, '.claude/u.md'), 0o444);
+  const r = run(s.project);
+  fs.chmodSync(path.join(s.project, '.claude/u.md'), 0o644);
+  assert.equal(r.code, 1);
+  assert.match(r.out, /conflict +t\.md/);
+  assert.match(r.out, /error +u\.md/);
   assert.ok(manifestOf(s.project).files['t.md'].pending);
+  assert.match(localOf(s.project), /<<<<<<< /);
+});
+
+test('a fill missing from the manifest is not flagged when the copy already has its words', () => {
+  const s = setup({ template: 'Use {{FV}}\n\nb\n', local: 'Use our words\n\nb\n' });
+  commit(s.sw, { 't.md': 'Use {{FV}}\n\nb\nc\n' });
+  const r = run(s.project);
+  assert.equal(r.code, 0, r.out);
+  assert.equal(localOf(s.project), 'Use our words\n\nb\nc\n');
 });
 
 test('--dry-run writes nothing in the project', () => {

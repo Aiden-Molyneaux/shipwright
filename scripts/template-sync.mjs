@@ -159,7 +159,7 @@ function entryProblem(project, entry) {
   if (typeof entry.base !== 'string' || !entry.base) return 'no "base" commit';
   if (entry.fills !== undefined && (typeof entry.fills !== 'object' || entry.fills === null)) return '"fills" is not an object';
   const rel = path.relative(project, path.resolve(project, entry.local));
-  if (!rel || rel.startsWith('..') || path.isAbsolute(rel)) return `"local" ${entry.local} is outside the project`;
+  if (!rel || rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) return `"local" ${entry.local} is outside the project`;
   return null;
 }
 
@@ -275,7 +275,7 @@ function syncOne(ctx, template, entry) {
   const theirs = render(theirsRaw, fills);
   const { merged, conflicts } = mergeFile(tmp, ours, baseText, theirs,
     [entry.local, `shipwright ${base}`, `shipwright ${to}`]);
-  const missingFills = unfilled(theirs).filter((n) => !unfilled(ours).includes(n));
+  const missingFills = unfilled(merged).filter((n) => !unfilled(ours).includes(n));
   const notes = [];
   if (conflicts > 0) notes.push(`${conflicts} hunk${conflicts === 1 ? '' : 's'}`);
   if (missingFills.length) notes.push(`no fill for ${missingFills.map((n) => `{{${n}}}`).join(', ')}`);
