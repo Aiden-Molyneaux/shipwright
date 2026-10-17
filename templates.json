@@ -1,0 +1,15 @@
+{
+  "about": "Every file a project can adopt and keep in step with scripts/template-sync.mjs. A package that adds a template adds it here in the same commit. See docs/template-sync.md.",
+  "templates": [
+    "agents/sev.md",
+    "agents/moh.md",
+    "agents/murr.md",
+    "agents/parvati-isolated.md",
+    "agents/parvati-shared.md",
+    "skills/sigmund/SKILL.md",
+    "skills/murr/SKILL.md",
+    "skills/parvati/SKILL.md",
+    "skills/doctor-nick/SKILL.md",
+    "skills/retro/SKILL.md"
+  ]
+}
