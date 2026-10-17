@@ -57,6 +57,9 @@ a subagent. Where a skill holds the method (Murr, Parvati), the wrapper preloads
    loads. `grep -n '^description: [^">|].*: ' .claude/agents/*.md` must print nothing.
 5. Projects whose tests forbid em dashes (InProgress) strip them from the copied `murr` and
    `parvati` skills; the wrappers and Sigmund carry none.
+6. Record the adoption in `.claude/shipwright.json`: each copied file, the Shipwright commit it
+   came from, and the fills you wrote. Later template changes reach the copies through
+   `scripts/template-sync.mjs`, run from the project's own session (`docs/template-sync.md`).
 
 Adopt from these templates, never by copying another project's edited files (spec section 6).
 
