@@ -814,3 +814,69 @@ form: 40a2a8c's Sigmund hunks, and b95656e with Murr's fixes 09c7fe5, 4c57418 an
   Phase 8, which is `[edit]`.
 - InGame receives the rules on its next sync, through its own session.
 - Pushing `main` to origin stays with Aiden.
+
+# Package 7g — The owner's check in Sigmund's Definition of Done (#480, 2026-10-18)
+
+On #473 (InProgress, Open session on the Board) Sigmund marked the step done, with the `DONE`
+prefix, straight after merge and deploy. Aiden then tried it: 5 to 20 s, and clicks that opened
+sessions he had not clicked. It was reopened; the second round passed because Aiden checked it by
+hand on a scratch server from the branch (:4400, a copy of `~/.inprogress/inprogress.db`) before
+the merge. The template's phase 8 said done follows the gate, and nothing in Sigmund set a bar the
+owner checks. The playbook's acceptance walkthrough exists but is wired only to the doc graph's
+phase gates (G-4.n), which InProgress and InThink do not run. A Fable review of the roster (r319 on
+#480) ranked this first and added three related findings; Aiden adopted findings 1, 2, 4 and 5 as
+this one template step on 2026-10-18, with two changes to the first design (r317): the check runs
+on a scratch server before the merge, and there is no third owner gate.
+
+## What I chose
+
+- **Phase 0 sets the bar.** Two to five "do X, expect Y" criteria for a step the owner will see,
+  with timing and a repeated action where the step has a feel, and a depth (none, a list, a full
+  walkthrough), confirmed in the same AskUserQuestion batch. The criteria stand in for AC IDs, so
+  `acceptance-walkthrough` works in a project without the doc graph; its "When to run" names
+  Sigmund's receipt.
+- **Phase 4 checks every criterion** (e2e where later changes could break it, else Parvati or
+  Sigmund on a verify port, timed where it names a time) and declares the ones nothing can reach,
+  which become guided steps.
+- **Parvati runs on every step with a visible criterion she can reach**, briefed with the criteria,
+  and answers each PASS, FAIL or not reached (the routing row, phase 5 and both wrappers'
+  descriptions and reports). Before this she ran on "meaningful UI" only: 4 InProgress commits
+  name her since 2026-10-01 against Murr's 29, and Murr was finding screen defects from the code.
+- **Re-checks narrow, they never widen.** Murr's re-check is always briefed proportional on the
+  fix diff and its call sites; Parvati's covers the flagged states and failed criteria. Two rounds
+  each, then Sigmund fixes inline; an out-of-scope or behaviour-adding re-check finding is an
+  owner-call unless it is a blocker. `agents/murr.md`'s proportional line now covers any re-check
+  (#473's round 2 had three Murr passes, each finding new things in the previous fix).
+- **No third gate.** The walkthrough rides the phase 7 receipt and its `review` ask; a go-ahead is
+  the owner's PASS on every criterion it does not name as a FAIL or waiver. Done and `DONE` need
+  the gate through and every criterion passed or waived. Only criteria the check surface cannot
+  reach (*after the gate*) wait past the merge, as a `review` ask with later gate steps held.
+- **The check surface is one `[edit]` paragraph in phase 7, not a placeholder.** The default is the
+  #473 round 2 practice: a scratch server from the branch on a verify port with a copy of the live
+  data. A placeholder would go `pending` in every project for one sentence (7f's reasoning).
+- **FAILs feed the bar.** A FAIL on something no criterion named writes a `miss` note keyed
+  `.claude/skills/sigmund/SKILL.md#Phase 0`; a FAIL on a criterion a reviewer had passed writes
+  `miss` on that reviewer's agent file. The `miss` kind now covers phase 0's criteria too. The
+  retro reads them (#490 brings the alert that makes InProgress read them).
+- **Verification never acts on a surface the owner is using** without asking (Evidence): the
+  owner's ports, live data, the desktop app, the owner's sessions, a shared preview's data. In
+  #473 Sigmund's own Open session clicks switched Aiden's desktop app.
+- `docs/roster-spec.md` phases 0, 5, 7 and 8 note the change. `docs/roster-build-plan.md` keeps its
+  original text: it records how the roster was built.
+
+## What I assumed
+
+- The owner's go-ahead on a receipt is a fair PASS: the walkthrough is in front of the owner
+  before it. A project whose owner wants an explicit PASS line edits phase 7.
+- Two re-check rounds is enough before Sigmund takes a fix inline; it matches the existing
+  "twice on the same element" escalation for Sev.
+
+## Deferred / needs owner input
+
+- InProgress's fill (its check surface: a scratch server on its verify ports with a copy of
+  `~/.inprogress/inprogress.db`) and the template's Workflow notes section ride its sync, #460.
+- InThink's fill names the alt pair once the change is on `staging`, so its walk follows the
+  landing. That would settle 7f's open owner-call (what done means for an InThink step) as "the
+  owner passed it on staging"; InThink's own session confirms it with Aiden at its next sync.
+- Loop E from the review (passing Parvati's not-reached list to Murr and back) was not adopted.
+- Pushing `main` to origin stays with Aiden.

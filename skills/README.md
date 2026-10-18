@@ -28,7 +28,7 @@ and records** (but never rules, fixes, or waives).
 | Skill | Does | Feeds |
 |---|---|---|
 | **ac-author** | writes crisp, binary acceptance criteria with stable `AC-<SCOPE>-n` IDs — per surface (`ui-requirements.md` §3, **two passes: behavioral before design, presentation-borne at converge**), per phase (`roadmap.md` §3), inherited (`AC-GLOBAL-*`, §1) | the bar the design drafts are picked against, parvati verifies, the walkthrough demonstrates |
-| **acceptance-walkthrough** | turns a gate's AC into a guided owner sitting ("do X → expect Y — that's AC-n") and/or automated E2E flows named for the AC they demonstrate; records PASS/FAIL per criterion | every owner gate; failures route back to the build lanes as flags |
+| **acceptance-walkthrough** | turns a gate's AC into a guided owner sitting ("do X → expect Y — that's AC-n") and/or automated E2E flows named for the AC they demonstrate; records PASS/FAIL per criterion | every owner gate, Sigmund's phase 7 receipt included (phase 0's criteria stand in for AC IDs); failures route back to the build lanes as flags |
 
 The two standing behaviors they encode (also written into the playbook + CONVENTIONS DoD):
 **(1)** nothing surfaces to the owner until its AC are self-verified (burt/parvati/murr enforce
@@ -108,7 +108,7 @@ written plan for each one.
 
 | Skill | Does | Dispatches |
 |---|---|---|
-| **sigmund** | one change end to end: clarify → branch → plan → build → verify → review → ship to integration → present (a review ask) → merge on go-ahead; keeps a REVIEW, BLOCKED or DONE prefix on the session title; names where the superpowers skills fit inside those phases | **sev** (build), **moh** (lookup), **murr** (code), **parvati** (screen) from [`agents/`](../agents/README.md); loads **doctor-nick** inline when the environment breaks |
+| **sigmund** | one change end to end: clarify and set the bar (the owner's "do X, expect Y" criteria) → branch → plan → build → verify → review → ship to integration → present (the owner's walkthrough in a review ask) → merge on go-ahead, done only once every criterion passed; keeps a REVIEW, BLOCKED or DONE prefix on the session title; names where the superpowers skills fit inside those phases | **sev** (build), **moh** (lookup), **murr** (code), **parvati** (screen) from [`agents/`](../agents/README.md); loads **doctor-nick** inline when the environment breaks |
 
 Projects adopt him by copying `sigmund/SKILL.md` and filling its `[edit]` sections (the edit
 points are listed in `docs/roster-build-plan.md`), then adding one line to their CLAUDE.md:
