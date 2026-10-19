@@ -910,3 +910,72 @@ on a scratch server before the merge, and there is no third owner gate.
   ("click Open session twice") always comes back not reached and goes to the owner as a guided
   line. That is intended.
 - Pushing `main` to origin stays with Aiden.
+
+---
+
+# Package 7h: InProgress's first roster retro, upstream (#509, #510, 2026-10-19)
+
+InProgress ran its first roster retro (r329 on #508) on a `defect` trigger, with six workflow
+notes in the window. It made three proposals with a Shipwright home, and Aiden approved all three
+on 2026-10-19. Two came out of InProgress's #460 sync: Murr found its check surface trusting a
+health reply on a port another session's build could hold, and the Workflow notes paragraph
+still said phase 7 names "two cases" after 7g added a third. The third came out of #507, where
+InProgress adopted the retro skill: the template's input 1 is `{{WORKFLOW_NOTES}}`, a value
+shared with Sigmund and phrased for the writer, so the retro had no place to say how it reads the
+notes back.
+
+## What I chose
+
+- **The check surface confirms its own build (#509, proposal 1).** Sigmund's phase 7 paragraph
+  now has him confirm that what answers on the verify port is the build he started (a build id
+  or a pid file, not only a health reply) before the owner walks. The cause: a start on a taken
+  port can exit quietly and leave another session's build answering, so a health check passes
+  against the wrong code. `agents/parvati-isolated.md`'s Setup line carries the same check before
+  she drives anything. The paragraph stays `[edit]`; the line in Parvati's wrapper is generic,
+  and the project's `{{BUILD_AND_RUN}}` fill says how its build is identified.
+- **"phase 7 names the cases" (#509, proposal 2).** One word dropped from Sigmund's `miss` kind,
+  so it stays true however many cases phase 7 lists.
+- **`{{WORKFLOW_NOTES_READ}}`, the retro's own read path (#510, proposal 3).** A new line under
+  input 1 in `skills/retro/SKILL.md`, a sentence in its Adopting section, and a fill-table row in
+  `docs/roster-build-plan.md`. It is a separate placeholder, not a widened `{{WORKFLOW_NOTES}}`,
+  because that value must match Sigmund's word for word and Sigmund never reads notes back. The
+  fill names which steps or files the read covers, through what tool, and what it cannot reach
+  (a cap on entries, text a search misses). InProgress's local read path worked on r329 (one
+  scribe brief, every line verbatim), so its fill is that paragraph, moved.
+- One change for the three: the retro asked for proposals 1 and 2 together (they touch the same
+  file), and proposal 3 lands in Shipwright before any project, so all three come from one
+  approval and one review.
+- **The fill table says how a build is identified.** Murr's review: Package 7h leans on each
+  project's `{{BUILD_AND_RUN}}` fill to name the build check, so that row in
+  `docs/roster-build-plan.md` now asks for it, and the check-surface note under the table says a
+  project that kept the default paragraph reads it again at the sync that brings #509.
+
+## What I assumed
+
+- A build id or a pid file is something every adopting project can check. A project with neither
+  says what it checks instead in its fill or its `[edit]` paragraph.
+- The adoption check (`grep -n '{{' .claude/skills/retro/SKILL.md`) is enough to catch a project
+  that has not filled the new placeholder; the sync also reports it as a new fill.
+
+## Deferred / needs owner input
+
+- InProgress's rollout is its own step, #511: its sync moves the paragraph under its retro input 1
+  into `.claude/shipwright.json` as `WORKFLOW_NOTES_READ`, and adds to Parvati's `BUILD_AND_RUN`
+  fill that `/api/health` answers with `"app":"inprogress"` and a `build.sha` equal to
+  `git rev-parse --short HEAD`, as its check surface already does.
+- InThink syncs through its own session: its Sigmund line 120 still says "two cases", and its
+  `WORKFLOW_NOTES_READ` needs a read path written (its notes are on inthink-marathon-v3 step
+  logs, plus `docs/workflow-notes.md` for untracked sessions). Its check surface follows the
+  landing and it uses `parvati-shared`, so proposal 1 changes nothing there.
+- Murr still has no installed agent in this repo, so he runs as a general-purpose subagent that
+  loads `skills/murr/SKILL.md`. r329 watches `.claude/agents/murr.md` for a second dispatch note.
+  The dispatch for this package loaded the skill and completed, so it wrote no note.
+- Owner-call from Murr: the approved text says to confirm the build but not what to do when the
+  build answering is another session's, or that a restart is confirmed again. Kept verbatim as
+  approved; a follow-up step can add it.
+- For #511: InProgress's moved paragraph starts "The retro reads them through", so it renders as
+  "Reading them: The retro reads them..." unless its first words are trimmed, and its JSON value
+  needs the 3-space continuation indents the way `WORKFLOW_FILES` has them. The retro's new
+  Adopting sentence is dropped on render, so the sync shows only a missing fill for
+  `{{WORKFLOW_NOTES_READ}}`; the fill-table row says what goes in it.
+- Pushing `main` to origin stays with Aiden.

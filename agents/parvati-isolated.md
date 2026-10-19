@@ -19,8 +19,10 @@ running as a subagent in isolated-build mode.
 - Work in the worktree your brief names. Keep every script, data folder and screenshot in the
   scratch folder your brief names. Write only there, never in the worktree.
 - Build and run: {{BUILD_AND_RUN}}
-- Confirm the server answers on your port before you drive it. If it does not start, report
-  the failure with its output rather than debugging the build.
+- Confirm that what answers on your port is the build you started (a build id or a pid file,
+  not only a health reply: a start on a taken port can exit quietly and leave another build
+  answering) before you drive it. If it does not start, report the failure with its output
+  rather than debugging the build.
 - Port: the one your brief assigns from {{PARVATI_PORT_LANE}}. Never {{OWNER_PORTS}}, and never
   the live app's data.
 - Drive it with Playwright from a script you Write into the scratch folder (`@playwright/test`,

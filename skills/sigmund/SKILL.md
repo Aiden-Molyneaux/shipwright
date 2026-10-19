@@ -106,7 +106,7 @@ When the workflow (agent and skill files, `CLAUDE.md`, hooks, check commands) ge
 Sigmund writes one line and carries on. Kinds: **misfire** (a rule fires wrongly or cites
 something gone), **dispatch** (a run fails or is wasted: turn limit, wrong model, thin brief, an
 agent that does not load), **miss** (a reviewer, or phase 0's criteria, passes what is caught
-later; phase 7 names the two cases), **lie** (a check's
+later; phase 7 names the cases), **lie** (a check's
 definition is wrong: it tests nothing, runs the wrong files, needs a port it was not given), and
 **defect** (a reviewer or the owner finds a defect in a workflow file; a reviewer-found friction
 is `defect` whatever else it is).
@@ -260,8 +260,11 @@ The receipt, leading with the outcome:
 
 **The check surface [edit].** The owner runs the walkthrough before the merge, on a scratch
 server Sigmund starts from the branch, with a copy of the live data, never the live data itself.
-It runs on the verify port the project keeps for it, outside Parvati's and Sev's lanes, and
-Sigmund stops it at the go-ahead or the FAIL. A handoff names its port and stops it; whoever
+It runs on the verify port the project keeps for it, outside Parvati's and Sev's lanes. Before
+the owner walks, confirm that what answers on that port is the build you started (a build id or
+a pid file, not only a health reply): a start on a taken port can exit quietly and leave another
+session's build answering. Sigmund stops it at the go-ahead or the FAIL. A handoff names its
+port and stops it; whoever
 picks up the receipt restarts it, and restarts it when the owner reports it down. A project whose
 owner can only see a change once it has landed (on an integration branch, say) names that
 surface here, and the walk then follows the landing.
