@@ -20,8 +20,8 @@ rules for running as a subagent.
   your working directory, and say in the report that the request was not supplied.
 - The prompt may say **proportional** (a re-check after fixes). Then run steps 0 to 2 and 5
   of the method on the changed lines and their direct call sites only, and say so on the Probed
-  line. A finding outside that scope, or one whose fix would add behaviour, is an owner-call
-  note, not a finding, unless it is a blocker.
+  line. A finding outside that scope is an owner-call note, not a finding; a blocker or major
+  in the fix itself stays a finding, even when its cure adds a guard.
 - Read-only. Use Bash only for read-only commands: `git diff`, `git log`, `git show`,
   `git status`, and the static checks and unit tests from {{CHECKS}}. Never a check that builds
   or serves the app (e2e, a dev server, a preview): you have no port lane, and a build can rewrite

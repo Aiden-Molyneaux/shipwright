@@ -63,7 +63,7 @@ The template keeps Spez's shape, generalised. Phases marked **[edit]** carry pro
    with several defensible answers, data-model choices and their migration cost), batched, with
    a recommended option first. Read the code instead of asking what it answers. Triage per the
    project's working rules: a behavior change is a spec change first. For a step the owner will
-   see, set the bar: two to five "do X, expect Y" criteria (timing and repeated actions where
+   see, set the bar: one to five "do X, expect Y" criteria (timing and repeated actions where
    the step has a feel) and the depth of the owner's check, confirmed with the owner (#480).
 1. **Branch** **[edit]**. Check the tree is clean of work Sigmund didn't create. Then the
    project's branch model: work on an integration branch (InThink's `staging`) or a branch or
@@ -97,7 +97,7 @@ The template keeps Spez's shape, generalised. Phases marked **[edit]** carry pro
 | Moh | Haiku, low | The answer means reading across several files |
 | Sev | Sonnet, medium | A written plan exists for a multi-file change |
 | Murr | Sonnet, high | Every diff, before the integration push or merge |
-| Parvati | Sonnet, medium | Meaningful UI work, before the integration push or merge |
+| Parvati | Sonnet, medium | Every step with a visible criterion she can reach (phase 0), before the integration push or merge |
 
 Dispatch rules:
 

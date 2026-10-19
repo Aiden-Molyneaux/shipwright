@@ -54,6 +54,11 @@
 | `{{PREFLIGHT}}` | The commands that bring the environment up and check it before running-app work, per mode (live install, isolated build) | doctor-nick Preflight (added 2026-10-14, #431) |
 | `{{DOCTOR_COMMAND}}` | The read-only doctor: what it probes, and that it prints the fix and exits non-zero on a blocking red | doctor-nick ladder |
 | `{{KNOWN_ISSUES_FILE}}` | The known-issues log's path (the starter kit's `docs/qa-runbook.md`) | doctor-nick ladder, triage step 3, log section |
+
+Sigmund's phase 7 also carries **The check surface [edit]**, a default paragraph with no
+placeholder (#480): where the owner runs the walkthrough. Every project reads it by name at
+adoption and at the sync that first brings it, and rewrites it where its owner checks somewhere
+else (InThink: the alt pair, once the change is on `staging`).
 | `{{RUNBOOK}}` | The triage table: symptom, first probe, where the fix lives | doctor-nick Runbook |
 | `{{PROTECTED_LANES}}` | What Doctor Nick never stops, restarts or edits, and which fixes wait for the owner | doctor-nick Boundaries |
 | `{{WORKFLOW_NOTES}}` | Where a workflow note goes and how the session writes it with a write it already makes (a tracker brief, or for a project with no tracker one appended line in a file), and who reads the home for repeats. The same value in both files | Sigmund Workflow notes, retro Inputs and outputs (added 2026-10-14, #432) |

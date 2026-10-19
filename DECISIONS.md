@@ -830,11 +830,12 @@ on a scratch server before the merge, and there is no third owner gate.
 
 ## What I chose
 
-- **Phase 0 sets the bar.** Two to five "do X, expect Y" criteria for a step the owner will see,
+- **Phase 0 sets the bar.** One to five "do X, expect Y" criteria, numbered C1 to Cn, for a step the owner will see,
   with timing and a repeated action where the step has a feel, and a depth (none, a list, a full
   walkthrough), confirmed in the same AskUserQuestion batch. The criteria stand in for AC IDs, so
-  `acceptance-walkthrough` works in a project without the doc graph; its "When to run" names
-  Sigmund's receipt.
+  the walkthrough works in a project without the doc graph. Phase 7 spells out the script's
+  shape, because no adopting project has `acceptance-walkthrough` installed; that skill's "When
+  to run" names Sigmund's receipt and says not to run `ac-author` for these criteria.
 - **Phase 4 checks every criterion** (e2e where later changes could break it, else Parvati or
   Sigmund on a verify port, timed where it names a time) and declares the ones nothing can reach,
   which become guided steps.
@@ -848,12 +849,19 @@ on a scratch server before the merge, and there is no third owner gate.
   owner-call unless it is a blocker. `agents/murr.md`'s proportional line now covers any re-check
   (#473's round 2 had three Murr passes, each finding new things in the previous fix).
 - **No third gate.** The walkthrough rides the phase 7 receipt and its `review` ask; a go-ahead is
-  the owner's PASS on every criterion it does not name as a FAIL or waiver. Done and `DONE` need
+  the owner's PASS on every criterion it does not name as failed, waived or untried, and the
+  script asks for exactly that reply. A go-ahead that says the owner has not tried it is no PASS,
+  and where the check surface follows a landing the go-ahead authorizes the landing only (Murr's
+  review: otherwise a bare "ship it" repeats #473). Done and `DONE` need
   the gate through and every criterion passed or waived. Only criteria the check surface cannot
   reach (*after the gate*) wait past the merge, as a `review` ask with later gate steps held.
 - **The check surface is one `[edit]` paragraph in phase 7, not a placeholder.** The default is the
   #473 round 2 practice: a scratch server from the branch on a verify port with a copy of the live
   data. A placeholder would go `pending` in every project for one sentence (7f's reasoning).
+  Murr's review argued the other way: an inline `[edit]` paragraph merges clean, so InThink's
+  sync would report "merged clean" over a default that is wrong for it. Kept as prose, the call
+  Aiden adopted, and listed in the fill table (`docs/roster-build-plan.md`) and
+  `docs/template-sync.md` so each project's sync session reads it by name.
 - **FAILs feed the bar.** A FAIL on something no criterion named writes a `miss` note keyed
   `.claude/skills/sigmund/SKILL.md#Phase 0`; a FAIL on a criterion a reviewer had passed writes
   `miss` on that reviewer's agent file. The `miss` kind now covers phase 0's criteria too. The
@@ -879,4 +887,7 @@ on a scratch server before the merge, and there is no third owner gate.
   landing. That would settle 7f's open owner-call (what done means for an InThink step) as "the
   owner passed it on staging"; InThink's own session confirms it with Aiden at its next sync.
 - Loop E from the review (passing Parvati's not-reached list to Murr and back) was not adopted.
+- In shared-preview mode Parvati never clicks anything that writes, so a criterion that writes
+  ("click Open session twice") always comes back not reached and goes to the owner as a guided
+  line. That is intended.
 - Pushing `main` to origin stays with Aiden.

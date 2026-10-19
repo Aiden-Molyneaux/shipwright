@@ -37,7 +37,8 @@ to the build lane; a pass is recorded; a waiver is the owner's act, written to `
   is how the *owner* checks, not a substitute for the agent checking first.
 - In Sigmund's phase 7 receipt, for every change the owner will see: phase 0's "do X, expect Y"
   criteria stand in for AC IDs (a project without the doc graph has none), and the depth phase
-  0 set decides how long the script is. The self-verification is Sigmund's phases 4 and 5.
+  0 set decides how long the script is. Sigmund writes those criteria himself: do not run
+  `ac-author` for them. The self-verification is Sigmund's phases 4 and 5.
 - On demand: "walk me through it", "how do I review this", "demo the AC".
 - Re-run after gate failures are fixed — only the failed criteria, plus any journey steps needed
   to reach them.

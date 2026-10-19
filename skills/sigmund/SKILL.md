@@ -6,9 +6,9 @@ description: >-
   anything that will modify this repo's code, says "sigmund" or "run sigmund", or a handoff says
   "Run this through Sigmund". Even a one-line fix runs through him: the lifecycle (clarify and
   set the bar, branch, plan, build, verify, Murr and Parvati review, ship to integration,
-  present with the owner's walkthrough, merge on go-ahead) is the point, not the ceremony. Do
-  NOT use Sigmund for pure questions about the codebase ("how does auth work?"), for operating
-  the deployed app, for work in other repos, or
+  present the owner's walkthrough, merge on
+  go-ahead) is the point, not the ceremony. Do NOT use Sigmund for pure questions about the
+  codebase ("how does auth work?"), for operating the deployed app, for work in other repos, or
   for the project-level spec, design and architecture work that comes before any change (Stages
   1 to 3 of Shipwright's lifecycle playbook, where the project follows it), which keeps its own
   routing. The plan for a single change is his. He tracks no tickets and keeps no ledgers;
@@ -76,8 +76,8 @@ in the receipt (phase 7). A tracked session also logs it on its step.
 - **Murr to `haiku`**, brief says *proportional*, for the re-check after fixing his findings, when
   the fix diff is small and adds no code paths.
 - **Sev to `opus`**, or Sigmund takes the work back into the main session, when Murr returns a
-  blocker or major on the same element twice, or when the plan centres on anything on the
-  hard-ordering list below.
+  blocker or major on the same element twice (within phase 5's two rounds; after them Sigmund
+  has the fix), or when the plan centres on anything on the hard-ordering list below.
 - **Moh is never overridden upward.** A question that needs judgment goes to the main session.
 - **Parvati stays on Sonnet.** Her safeguard is listing every state first, not a bigger model.
 - **Fable** only when the owner asks.
@@ -143,9 +143,9 @@ answer: read the code, or send Moh. Do not ask about things the project's rules 
 If the request is unambiguous, say so in one line and go. A request that changes behaviour the
 project specs is a spec change first, per the project's working rules.
 
-**The bar.** For a step the owner will see or feel, write two to five criteria with the
-restatement, each in the form "do X, expect Y". Where the step has a feel, include how long it
-takes and what a repeated action does ("click Open session twice: one session opens, within two
+**The bar.** For a step the owner will see or feel, write one to five criteria with the
+restatement, numbered C1 to Cn, each in the form "do X, expect Y". Where the step has a feel,
+include how long it takes and what a repeated action does ("click Open session twice: one session opens, within two
 seconds"). With them, propose how deep the owner's check goes:
 
 - **none:** nothing the owner can see or feel (docs, a refactor, tests, internal scripts); say so
@@ -155,10 +155,12 @@ seconds"). With them, propose how deep the owner's check goes:
   screens, a new kind of write to live data, or a step that has already failed the owner's check
   once.
 
-Confirm the criteria and the depth in the same AskUserQuestion batch as the ambiguities. They are
-the bar the e2e, Parvati and the owner's walkthrough are held to, so a criterion nothing can
-check is still written, and declared in phase 4. When the change grows mid-build, add the
-criteria it adds and say so in the receipt.
+Confirm the criteria and the depth in the same AskUserQuestion batch as the ambiguities. On an
+unambiguous request, put them in the one-line restatement and go; ask only when the depth is a
+full walkthrough or the owner is likely to overrule it. Unattended, use the recommended depth
+and name it in the receipt. The criteria are the bar the e2e, Parvati and the owner's
+walkthrough are held to, so a criterion nothing can check is still written, and declared in
+phase 4. When the change grows mid-build, add the criteria it adds and say so in the receipt.
 
 Mid-build questions are welcome on the same bar: ask when a wrong guess is expensive, decide when
 it is not, and name the judgment calls in the receipt.
@@ -216,9 +218,10 @@ is a workflow note instead (Workflow notes, above).
   not reached. Her flags go back to the same Sev; carry her polish notes into the receipt.
 - **Re-checks narrow, they never widen.** After fixes, Murr's re-check is briefed *proportional*
   on the fix diff and its direct call sites, and Parvati's covers the flagged states and failed
-  criteria only. Two rounds each, then Sigmund takes the fix inline. A re-check finding outside
-  what it was sent to look at, or one whose fix adds behaviour (a new guard, a new branch), goes
-  in the receipt as an owner-call, not a third round, unless it is a blocker.
+  criteria only. A re-check finding outside what it was sent to look at is an owner-call in the
+  receipt, not another round; a blocker or major in the fix itself stays a finding, even when
+  its cure adds a guard. Two rounds each. After that Sigmund fixes the rest inline, reruns the
+  checks, and the receipt names the lines no reviewer has seen.
 
 ## Phase 6: ship to integration [edit]
 
@@ -238,18 +241,22 @@ The receipt, leading with the outcome:
    {{RISK_STATEMENT}} If yes, say plainly what the merge or deploy gate will require.
 6. The workflow notes this change wrote, and the retro trigger if one was hit. Leave the item out
    when there were none.
-7. **The walkthrough**, at the depth phase 0 set, in the `acceptance-walkthrough` skill's format
-   with phase 0's criteria standing in for AC IDs: the preconditions and where to run it; the
-   automated result for each mechanical criterion; a guided "do X, expect Y" step for each of the
-   rest, Parvati's not-reached states included; ☆ taste prompts, which carry no criterion. A
-   criterion the check surface cannot reach is marked *after the gate*. At depth none, one line
-   says there is nothing to try, and why.
+7. **The walkthrough**, at the depth phase 0 set, shaped like the `acceptance-walkthrough`
+   skill's script (a project without that skill needs nothing more than this):
+   - the preconditions and the check surface's URL;
+   - one line per criterion: `C<n> · do X · expect Y · automated PASS` for one a check already
+     proved, or `[ ]` for the owner to try, with Parvati's not-reached states as guided lines;
+     *after the gate* on one the check surface cannot reach;
+   - ☆ taste prompts, which carry no criterion;
+   - the reply it needs: "ship it" once walked, naming any criterion that failed, that the
+     owner waives, or that was not tried.
+   At depth none, one line says there is nothing to try, and why.
 
 **The check surface [edit].** The owner runs the walkthrough before the merge, on a scratch
-server Sigmund starts from the branch on a verify port, with a copy of the live data, never the
-live data itself; the walkthrough names its URL. A project whose owner can only see a change
-once it has landed (on an integration branch, say) names that surface here, and the walk then
-follows the landing.
+server Sigmund starts from the branch, with a copy of the live data, never the live data itself.
+It runs on a verify port Sigmund holds, not one in Parvati's or Sev's lane, and Sigmund stops it
+at the go-ahead or the FAIL. A project whose owner can only see a change once it has landed (on
+an integration branch, say) names that surface here, and the walk then follows the landing.
 
 Before you stop, in a tracked session, raise a `review` ask on your step in InProgress, with
 one line on what is ready and "walkthrough: <n> criteria" (or "nothing to try"). The owner's
@@ -258,13 +265,24 @@ as stalled. Then prefix this session's title with `REVIEW`, or `BLOCKED` while a
 on the owner (Session title, under "Across the session").
 
 Then stop. The merge or deploy waits for the owner's explicit go-ahead ("ship it", "merge it",
-"go ahead"). Silence, or approval of the integration push, is never merge approval. A go-ahead on
-a receipt with a walkthrough is the owner's PASS on every criterion it does not name as a FAIL or
-a waiver. A FAIL is a change request: back to phase 3, and the next walkthrough covers the failed
-criteria only. Each FAIL also writes a workflow note, kind `miss`: keyed
-`.claude/skills/sigmund/SKILL.md#Phase 0` when the FAIL is on something no criterion named (the
-dimension the bar missed, such as a time or a repeated click), or keyed to the reviewer's agent
-file when Parvati, Murr or the e2e had passed the criterion that failed.
+"go ahead"). Silence, or approval of the integration push, is never merge approval.
+
+The owner's answer to a walkthrough:
+
+- A go-ahead is the owner's PASS on every criterion it does not name as failed, waived or
+  untried. A go-ahead that says the walkthrough was not tried ("haven't tried it") is no PASS:
+  ask once which criteria to waive and which to hold *after the gate*, then go on. A reply that
+  passes some criteria and gives no go-ahead keeps the `REVIEW` prefix.
+- Where the check surface follows a landing, the go-ahead authorizes the landing only and is no
+  PASS: after the landing, hand the walkthrough over as in phase 8's *After the gate*.
+- A FAIL is a change request: back to phase 3, and the next walkthrough covers the failed
+  criteria only. It also writes a workflow note, kind `miss`: keyed
+  `.claude/skills/sigmund/SKILL.md#Phase 0` when the FAIL is on something no criterion named
+  (the dimension the bar missed, such as a time or a repeated click), or keyed to the reviewer's
+  agent file or the e2e file when Parvati, Murr or the e2e had passed the criterion that failed.
+  A FAIL on a criterion phase 4 declared unreachable writes no note: that is the owner's check
+  working.
+- Each waiver is named in the step's outcome.
 
 ## Phase 8: merge or deploy on go-ahead only [edit]
 
@@ -272,14 +290,16 @@ The go-ahead drops the `REVIEW` prefix (Session title, below).
 
 {{MERGE_GATE}}
 
-Criteria marked *after the gate*, or a walk that follows the landing (The check surface, phase
-7): once the landing or deploy puts the change in front of the owner, hand them over as a
-`review` ask with the `REVIEW` prefix, and hold any later step the gate names (a push, a release
-PR) until the owner passes them. A FAIL there goes back to phase 3 like any other.
+**After the gate.** Criteria marked *after the gate*, and a walkthrough whose check surface
+follows a landing: once the landing or deploy puts the change in front of the owner, hand them
+over as a `review` ask (in a tracked session; otherwise in your closing message) with the
+`REVIEW` prefix. Hold the gate's remaining steps (a push, a release PR, the hand-over of a merge
+click) until the owner passes them. A FAIL after a merge starts the fix from phase 1 on a new
+branch; whether to roll back first is the owner's call, so ask.
 
 Once the gate above is through (merged, plus any deploy and push it names), or, where it ends
 on the owner's own action (a merge click, a batched release), once you have handed that action
-over, and once every criterion has passed or been waived by name: mark your step done in
+over, and once every criterion has passed or been waived: mark your step done in
 InProgress with its outcome, naming how the owner checked it (in a tracked session), and prefix
 this session's title with `DONE` (Session title, below).
 
