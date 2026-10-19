@@ -969,7 +969,7 @@ notes back.
   landing and it uses `parvati-shared`, so proposal 1 changes nothing there.
 - Murr still has no installed agent in this repo, so he runs as a general-purpose subagent that
   loads `skills/murr/SKILL.md`. r329 watches `.claude/agents/murr.md` for a second dispatch note.
-  The dispatch for this package loaded the skill and ran clean, so it wrote no note.
+  The dispatch for this package loaded the skill and completed, so it wrote no note.
 - Owner-call from Murr: the approved text says to confirm the build but not what to do when the
   build answering is another session's, or that a restart is confirmed again. Kept verbatim as
   approved; a follow-up step can add it.
