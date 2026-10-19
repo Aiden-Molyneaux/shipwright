@@ -897,7 +897,9 @@ on a scratch server before the merge, and there is no third owner gate.
   owner passed it on staging"; InThink's own session confirms it with Aiden at its next sync.
 - Loop E from the review (passing Parvati's not-reached list to Murr and back) was not adopted.
 - InProgress's verify ports (4400 to 4419) are exactly Parvati's and Sev's lanes, so its fill
-  needs one more port for the check surface (4420, say) at #460. If InProgress wants the push to
+  needs one more port for the check surface (4420, say) at #460, and its Parvati wrappers' Rules
+  should name the controls a scratch build still drives the desktop app through (Open session,
+  Open in VS Code, Reveal), since she opens every state the diff adds. If InProgress wants the push to
   origin held while an after-the-gate criterion waits, that goes in its own fill, with the caveat
   that another session's phase 8 push carries the merge anyway.
 - Owner-calls left open by the Opus pass: a bare "ship it" from an owner who never walked still

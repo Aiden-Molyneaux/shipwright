@@ -405,7 +405,8 @@ effort high. Run this through Sigmund."
 Copy this file to `.claude/skills/sigmund/SKILL.md`. Fill every `{{…}}` (the list is in
 Shipwright's `docs/roster-build-plan.md`), replace each `[edit]` section's prose, and each
 inline `[edit]` paragraph the fill table lists, where the project's rules differ (in a project
-without the lifecycle playbook, drop the description's Stages parenthetical too), add the one line to the project's `CLAUDE.md` working rules ("Change
+without the lifecycle playbook, drop the description's Stages parenthetical too),
+add the one line to the project's `CLAUDE.md` working rules ("Change
 work runs through Sigmund (`.claude/skills/sigmund/`). Routing, overrides and the ship gates
 live there."), copy the starter kit's `scripts/context-nudge.mjs` and merge its
 `.claude/settings.json` keys into the project's own (or edit "Across the session" to drop
