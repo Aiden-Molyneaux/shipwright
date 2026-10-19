@@ -33,7 +33,7 @@
 | `{{HOUSE_RULE_FILES}}` | The files whose rules apply to code (`CLAUDE.md`, `web/CLAUDE.md`, `CONVENTIONS.md`) | Sev, `murr` skill Project risks |
 | `{{EXCLUDED_DIRS}}` | Directories a lookup skips (`dist`, `.build`, worktrees) | Moh |
 | `{{OWNER_PORTS}}` | Ports the owner's own servers use; agents never touch them | Sigmund verify, Sev ports, both Parvati wrappers |
-| `{{VERIFY_PORTS}}` | Ports Sigmund verifies UI on | Sigmund verify |
+| `{{VERIFY_PORTS}}` | Ports Sigmund verifies UI on, including one outside Sev's and Parvati's lanes for the owner's check surface (#480) | Sigmund verify |
 | `{{SEV_PORT_LANE}}` | The port range Sev's briefs assign from | Sev ports |
 | `{{PARVATI_PORT_LANE}}` | The port range (isolated) or the preview port (shared) Parvati uses | both Parvati wrappers |
 | `{{CHECKS}}` | The verify commands | Sigmund verify, Sev checks, Murr wrapper's read-only list |
@@ -64,6 +64,11 @@
 | `{{WORKFLOW_FILES}}` | Each workflow file (agents, skills, CLAUDE.md, hooks, check scripts), its note key (the repo path, plus `#<section>` for a rule), and the Shipwright template it was adopted from, or "project-only" | retro Inputs and method step 4 |
 | `{{PROPOSALS_HOME}}` | Where the retro saves its proposal files | retro Inputs and outputs |
 | `{{APPROVAL}}` | How the retro asks the owner to approve each proposal | retro Inputs and outputs |
+
+Sigmund's phase 7 also carries **The check surface [edit]**, a default paragraph with no
+placeholder (#480): where the owner runs the walkthrough. Every project reads it by name at
+adoption and at the sync that first brings it, and rewrites it where its owner checks somewhere
+else (InThink: the alt pair, once the change is on `staging`).
 
 ## File structure
 

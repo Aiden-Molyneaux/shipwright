@@ -62,7 +62,9 @@ The template keeps Spez's shape, generalised. Phases marked **[edit]** carry pro
 0. **Intake and clarify.** Restate the request. Ask only genuine ambiguities (scope, UX choices
    with several defensible answers, data-model choices and their migration cost), batched, with
    a recommended option first. Read the code instead of asking what it answers. Triage per the
-   project's working rules: a behavior change is a spec change first.
+   project's working rules: a behavior change is a spec change first. For a step the owner will
+   see, set the bar: one to five "do X, expect Y" criteria (timing and repeated actions where
+   the step has a feel) and the depth of the owner's check, confirmed with the owner (#480).
 1. **Branch** **[edit]**. Check the tree is clean of work Sigmund didn't create. Then the
    project's branch model: work on an integration branch (InThink's `staging`) or a branch or
    worktree per change (InProgress).
@@ -72,18 +74,21 @@ The template keeps Spez's shape, generalised. Phases marked **[edit]** carry pro
 3. **Build.** In the main session, or Sev with the plan, the scope and the port lane.
 4. **Verify** **[edit]**. Sigmund reruns the checks himself and reads the whole diff. The
    project's verify commands; UI verification only on the project's verify ports.
-5. **Review.** Murr on every diff, always. Parvati on meaningful UI work (a new page, section or
-   reworked layout; not trivial tweaks). Fix red and orange findings, re-run to clean. Debt,
+5. **Review.** Murr on every diff, always. Parvati on every step with a visible criterion she can
+   reach, briefed with the criteria (#480). Fix red and orange findings, re-run to clean;
+   re-checks cover only the fix and the failed states, two rounds, then inline. Debt,
    owner-calls and polish notes go in the receipt, not silently dropped.
 6. **Ship to integration** **[edit]**. The project's push policy: when Sigmund pushes on his own
    judgment and when he asks first (InThink: migrations, deletions, scope growth, auth and the
    data machinery).
 7. **Present and wait.** The receipt: what changed (files as links), evidence (check output,
    Murr's verdict, Parvati's verdict), judgment calls, any model override and its reason, and
-   the risk statement **[edit]**, present even when "none". Then stop.
+   the risk statement **[edit]**, present even when "none", and the owner's walkthrough of the
+   criteria on the project's check surface **[edit]** (#480). Then stop.
 8. **Merge or deploy on go-ahead only** **[edit]**. The project's gate (InThink's backup gate),
    PR shape and who clicks merge. Silence, or approval of the integration push, is never merge
-   approval.
+   approval. The step is done when the gate is through and every criterion has passed or been
+   waived (#480).
 
 ### Model routing (lives in Sigmund only)
 
@@ -92,7 +97,7 @@ The template keeps Spez's shape, generalised. Phases marked **[edit]** carry pro
 | Moh | Haiku, low | The answer means reading across several files |
 | Sev | Sonnet, medium | A written plan exists for a multi-file change |
 | Murr | Sonnet, high | Every diff, before the integration push or merge |
-| Parvati | Sonnet, medium | Meaningful UI work, before the integration push or merge |
+| Parvati | Sonnet, medium | Every step with a visible criterion she can reach (phase 0), before the integration push or merge |
 
 Dispatch rules:
 

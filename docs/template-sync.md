@@ -112,6 +112,12 @@ should weigh, with the old text shown by `--diff3`. A different rule (keep ours 
 the template diff as advice) would let real fixes slip past. The cost is the occasional
 adjacency conflict, where the template adds lines next to a rewritten block.
 
+**Inline `[edit]` paragraphs added upstream.** A paragraph marked `[edit]` inside a section that
+is not (Sigmund phase 7's check surface, #480) merges clean into any project copy that did not
+touch the lines around it, so the report says "merged clean" over a default the project may need
+to change. The session that runs the sync reads each such paragraph by name; the fill table in
+`docs/roster-build-plan.md` lists them.
+
 **Sections deleted on adoption.** Only Sigmund's "Adopting this template" is deleted by
 instruction today. The renderer drops any `## Adopting this template` section from base and
 theirs, so changes to it never reach the project. Any other section a project deleted on its

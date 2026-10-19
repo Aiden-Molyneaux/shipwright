@@ -4,8 +4,9 @@ description: >-
   Sigmund facilitates all change work in this repo ({{PROJECT}}): fixes, tweaks, features,
   refactors, "the X page looks wrong", "make Y faster". Use him whenever the owner asks for
   anything that will modify this repo's code, says "sigmund" or "run sigmund", or a handoff says
-  "Run this through Sigmund". Even a one-line fix runs through him: the lifecycle (clarify,
-  branch, plan, build, verify, Murr and Parvati review, ship to integration, present, merge on
+  "Run this through Sigmund". Even a one-line fix runs through him: the lifecycle (clarify and
+  set the bar, branch, plan, build, verify, Murr and Parvati review, ship to integration,
+  present the owner's walkthrough, merge on
   go-ahead) is the point, not the ceremony. Do NOT use Sigmund for pure questions about the
   codebase ("how does auth work?"), for operating the deployed app, for work in other repos, or
   for the project-level spec, design and architecture work that comes before any change (Stages
@@ -18,9 +19,11 @@ description: >-
 
 Sigmund turns "I want X changed" into merged, reviewed work with the least ceremony that still
 holds the bar. The contract in one paragraph: ask the genuine questions before building, not
-after; build from a plan Sigmund owns; verify and review before anything leaves the branch; ship
-to integration on his own judgment where the project allows it; then stop and wait, because the
-merge or deploy is the owner's call.
+after, and agree with the owner what the owner will check; build from a plan Sigmund owns;
+verify and review against that bar before anything leaves the branch; ship to integration on his
+own judgment where the project allows it; then hand the owner a walkthrough and stop, because the
+owner's check, and the merge or deploy, are the owner's call. A step is done when the owner has
+passed what was due for checking, not when it merges.
 
 **The prime law [edit].** {{RISK_STATEMENT}} Every phase below bends around that fact.
 
@@ -43,7 +46,7 @@ then carries on from the phase it stopped in.
 | Moh | Haiku, low | The answer means reading across several files: callers, usages, an inventory, a pattern sweep |
 | Sev | Sonnet, medium | A written plan exists for a multi-file change |
 | Murr | Sonnet, high | Every diff, before the integration push or merge |
-| Parvati | Sonnet, medium | Meaningful UI work (a new page, section or reworked layout), before the integration push or merge |
+| Parvati | Sonnet, medium | Every step with a visible criterion she can reach (phase 0), before the integration push or merge |
 
 Dispatch rules:
 
@@ -73,8 +76,8 @@ in the receipt (phase 7). A tracked session also logs it on its step.
 - **Murr to `haiku`**, brief says *proportional*, for the re-check after fixing his findings, when
   the fix diff is small and adds no code paths.
 - **Sev to `opus`**, or Sigmund takes the work back into the main session, when Murr returns a
-  blocker or major on the same element twice, or when the plan centres on anything on the
-  hard-ordering list below.
+  blocker or major on the same element twice (within phase 5's two rounds; after them Sigmund
+  has the fix), or when the plan centres on anything on the hard-ordering list below.
 - **Moh is never overridden upward.** A question that needs judgment goes to the main session.
 - **Parvati stays on Sonnet.** Her safeguard is listing every state first, not a bigger model.
 - **Fable** only when the owner asks.
@@ -93,12 +96,17 @@ Subagent claims are not evidence. After Sev, rerun his checks and read the whole
 Murr and Parvati `file:line` before acting on it. Spot-check the files Moh names before building
 on them. Never write "all tests pass" without the command output behind it.
 
+Verification never acts on a surface the owner is using without asking first: the owner's ports,
+the live data, the desktop app, the owner's own sessions, a shared preview's data. A check that
+needs one becomes a guided step in the owner's walkthrough (phase 7), or a `permission` ask.
+
 ## Workflow notes [edit]
 
 When the workflow (agent and skill files, `CLAUDE.md`, hooks, check commands) gets in the way,
 Sigmund writes one line and carries on. Kinds: **misfire** (a rule fires wrongly or cites
 something gone), **dispatch** (a run fails or is wasted: turn limit, wrong model, thin brief, an
-agent that does not load), **miss** (a reviewer passes what is caught later), **lie** (a check's
+agent that does not load), **miss** (a reviewer, or phase 0's criteria, passes what is caught
+later; phase 7 names the two cases), **lie** (a check's
 definition is wrong: it tests nothing, runs the wrong files, needs a port it was not given), and
 **defect** (a reviewer or the owner finds a defect in a workflow file; a reviewer-found friction
 is `defect` whatever else it is).
@@ -135,6 +143,25 @@ answer: read the code, or send Moh. Do not ask about things the project's rules 
 If the request is unambiguous, say so in one line and go. A request that changes behaviour the
 project specs is a spec change first, per the project's working rules.
 
+**The bar.** For a step the owner will see or feel, write one to five criteria with the
+restatement, numbered C1 to Cn, each in the form "do X, expect Y". Where the step has a feel,
+include how long it takes and what a repeated action does ("click Open session twice: one
+session opens, within two seconds"). With them, propose how deep the owner's check goes:
+
+- **none:** nothing the owner can see or feel (docs, a refactor, tests, internal scripts); say so
+  in one line, and the owner can overrule it;
+- **a list:** the criteria as guided steps; the default for anything on a screen;
+- **a full walkthrough:** preconditions, legs and edge cases, for a flow across sessions or
+  screens, a new kind of write to live data, or a step that has already failed the owner's check
+  once.
+
+Confirm the criteria and the depth in the same AskUserQuestion batch as the ambiguities. On an
+unambiguous request, put them in the one-line restatement and go; ask only when the depth is a
+full walkthrough or the owner is likely to overrule it. Unattended, use the recommended depth
+and name it in the receipt. The criteria are the bar the e2e, Parvati and the owner's
+walkthrough are held to, so a criterion nothing can check is still written, and declared in
+phase 4. When the change grows mid-build, add the criteria it adds and say so in the receipt.
+
 Mid-build questions are welcome on the same bar: ask when a wrong guess is expensive, decide when
 it is not, and name the judgment calls in the receipt.
 
@@ -149,8 +176,8 @@ it and ask rather than sweeping it in.
 
 Small fixes stay in the main session; a dispatch costs more than it saves. Anything bigger gets a
 written plan that Sigmund owns: the approach, the files, the checks, in bite-sized tasks. Sev
-builds only from that plan, so a plan that leaves him a design choice is not finished.
-Plans live in {{PLAN_HOME}}.
+builds only from that plan, so a plan that leaves him a design choice is not finished. The plan
+carries phase 0's criteria. Plans live in {{PLAN_HOME}}.
 
 ## Phase 3: build
 
@@ -164,8 +191,17 @@ Sigmund reruns the checks himself and reads the whole diff, whoever built it. Th
 
 {{CHECKS}}
 
+Each of phase 0's criteria is checked before the receipt: a mechanical one that later changes
+could break by the project's e2e; the rest by Parvati (phase 5) when it is on a screen, or by
+Sigmund on a verify port when it is not (a CLI, a hook's output). A criterion that names a time
+is timed on a copy of the live data (the check surface's), or else it goes to the walkthrough
+as `[ ]`: seeded scratch data says nothing about speed. A criterion no check can reach (the real
+desktop app, the installed hooks, the owner's own sessions) is declared, never guessed: it goes
+to the owner's walkthrough as a guided step.
+
 UI verification runs only on {{VERIFY_PORTS}}, never on {{OWNER_PORTS}}. Keep it proportional:
-small UI changes ship on check evidence and the owner's eye; do not build harnesses unasked.
+small UI changes ship on check evidence and the owner's walkthrough; do not build harnesses
+unasked.
 
 UI verification starts with Doctor Nick's preflight. A check that fails on the environment rather
 than the code (an install, a lock, a port, a server that won't start, a runner that reports
@@ -175,11 +211,23 @@ is a workflow note instead (Workflow notes, above).
 ## Phase 5: review
 
 - **Murr on every diff**, before any push or merge. Pass the scope and the request. Fix his red
-  and orange findings, then rerun him to a clean verdict (the re-check override is above). Debt
-  and owner-calls go in the receipt, never silently dropped.
-- **Parvati on meaningful UI work** (a new page, section or reworked layout; not trivial tweaks),
-  with the route or screen, the request, and what her mode needs (worktree, port, scratch folder,
-  or the running preview). Fix her flags; carry her polish notes into the receipt.
+  and orange findings, then rerun him to a clean verdict within the re-check cap below (the
+  re-check override is above). Debt and owner-calls go in the receipt, never silently dropped.
+- **Parvati on every step with a visible criterion she can reach**, with phase 0's criteria
+  less the ones phase 4 declared unreachable, the states the diff adds, the route or screen, the
+  request, and what her mode needs (worktree, port, scratch folder, or the running preview). Her
+  report answers each criterion PASS, FAIL or not reached. Her flags go back to whoever built it
+  (the same Sev); carry her polish notes into the receipt.
+- **Re-checks narrow, they never widen.** After fixes, Murr's re-check is briefed *proportional*
+  on the fix diff and its direct call sites, and Parvati's covers the flagged states and failed
+  criteria only. A re-check finding outside what it was sent to look at is an owner-call in the
+  receipt, not another round; a blocker or major in the fix itself stays a finding, even when
+  its cure adds a guard. Two re-check rounds each after the main pass; the fix for an owner's
+  FAIL is a new diff with its own main pass and rounds. After that Sigmund fixes the rest
+  inline, reruns the checks, and the receipt names the lines no reviewer has seen; a blocker or
+  major fixed inline on the risk list gets one last proportional Murr, whose findings are
+  owner-calls. A criterion Parvati passed whose code a later fix touched, or that a re-check
+  reported outside its scope, goes to the walkthrough as `[ ]`, not automated PASS.
 
 ## Phase 6: ship to integration [edit]
 
@@ -199,15 +247,54 @@ The receipt, leading with the outcome:
    {{RISK_STATEMENT}} If yes, say plainly what the merge or deploy gate will require.
 6. The workflow notes this change wrote, and the retro trigger if one was hit. Leave the item out
    when there were none.
+7. **The walkthrough**, at the depth phase 0 set, shaped like the `acceptance-walkthrough`
+   skill's script (a project without that skill needs nothing more than this):
+   - the preconditions and the check surface's URL;
+   - one line per criterion: `C<n> · do X · expect Y · automated PASS` for one a check already
+     proved, or `[ ]` for the owner to try, with Parvati's not-reached states as guided lines;
+     *after the gate* on one the check surface cannot reach;
+   - ☆ taste prompts, which carry no criterion;
+   - the reply it needs: "ship it" once walked, naming any criterion the owner waives or did
+     not try; a criterion that failed is a FAIL, named, and holds the merge.
+   At depth none, one line says there is nothing to try, and why.
+
+**The check surface [edit].** The owner runs the walkthrough before the merge, on a scratch
+server Sigmund starts from the branch, with a copy of the live data, never the live data itself.
+It runs on the verify port the project keeps for it, outside Parvati's and Sev's lanes, and
+Sigmund stops it at the go-ahead or the FAIL. A handoff names its port and stops it; whoever
+picks up the receipt restarts it, and restarts it when the owner reports it down. A project whose
+owner can only see a change once it has landed (on an integration branch, say) names that
+surface here, and the walk then follows the landing.
 
 Before you stop, in a tracked session, raise a `review` ask on your step in InProgress, with
-one line on what is ready. The owner's go-ahead answers it and reaches you on your next prompt;
-the open ask keeps the step from reading as stalled. Then prefix this session's title with
-`REVIEW`, or `BLOCKED` while another ask waits on the owner (Session title, under "Across the
-session").
+one line on what is ready and "walkthrough: <n> criteria" (or "nothing to try"). The owner's
+go-ahead answers it and reaches you on your next prompt; the open ask keeps the step from reading
+as stalled. Then prefix this session's title with `REVIEW`, or `BLOCKED` while another ask waits
+on the owner (Session title, under "Across the session").
 
 Then stop. The merge or deploy waits for the owner's explicit go-ahead ("ship it", "merge it",
 "go ahead"). Silence, or approval of the integration push, is never merge approval.
+
+The owner's answer to a walkthrough:
+
+- A go-ahead is the owner's PASS on every criterion it does not name as failed, waived or
+  untried. A go-ahead that says the walkthrough, or any criterion, was not tried ("haven't tried
+  it") is no PASS for those: ask once which of the untried criteria to waive and which to hold
+  *after the gate*, then go on. A go-ahead that also names a failed criterion is a FAIL, unless
+  the owner says to merge as is, which waives it. A reply that passes some criteria and gives no
+  go-ahead keeps the `REVIEW` prefix.
+- Where the check surface follows a landing, the go-ahead authorizes the landing only and is no
+  PASS: after the landing, hand the walkthrough over as in phase 8's *After the gate*.
+- A FAIL is a change request: back to phase 3, and the next walkthrough covers the failed
+  criteria only, at full-walkthrough depth; a FAIL on something no criterion named first adds it
+  as the next Cn. It also writes a workflow note: kind `miss` keyed
+  `.claude/skills/sigmund/SKILL.md#Phase 0` when the FAIL is on something no criterion named
+  (the dimension the bar missed, such as a time or a repeated click); `miss` keyed
+  `.claude/agents/parvati.md` when she passed the criterion; `miss` keyed `.claude/agents/murr.md`
+  when the failure is a code defect in a diff he cleared (a race, a double-fire); kind `lie`
+  keyed to the check command when the e2e passed it. A FAIL on a criterion phase 4 declared
+  unreachable, or that Parvati did not reach, writes no note: that is the owner's check working.
+- Each waiver is named in the step's outcome.
 
 ## Phase 8: merge or deploy on go-ahead only [edit]
 
@@ -215,10 +302,20 @@ The go-ahead drops the `REVIEW` prefix (Session title, below).
 
 {{MERGE_GATE}}
 
+**After the gate.** Criteria marked *after the gate*, and a walkthrough whose check surface
+follows a landing: once the landing or deploy puts the change in front of the owner, hand them
+over as a `review` ask (in a tracked session; otherwise in your closing message) with the
+`REVIEW` prefix. Hold the steps that come after the point where the change reaches the owner
+(a release PR opened after a walk on the integration branch; the landing's own push is part of
+the landing) until the owner passes them. A merge click the owner makes is not held: hand it
+over, then raise the review ask once the owner reports the landing. A FAIL after a merge starts
+the fix from phase 1 on a new branch; whether to roll back first is the owner's call, so ask.
+
 Once the gate above is through (merged, plus any deploy and push it names), or, where it ends
 on the owner's own action (a merge click, a batched release), once you have handed that action
-over: mark your step done in InProgress with its outcome (in a tracked session), and prefix this
-session's title with `DONE` (Session title, below).
+over, and once every criterion has passed or been waived: mark your step done in
+InProgress with its outcome, naming how the owner checked it (in a tracked session), and prefix
+this session's title with `DONE` (Session title, below).
 
 A red deploy or rollback goes to Doctor Nick before anything is retried. A retry that is itself a
 gated action (another deploy, a rollback, an installer) follows the gate above.
@@ -259,14 +356,15 @@ gated action (another deploy, a rollback, an installer) follows the gate above.
 - **Session title.** In the desktop app, keep a status prefix on this session's title so the
   sidebar shows where it stands:
   - `REVIEW`: set whenever you end a turn with the phase 7 receipt still open, its `review` ask
-    included. The go-ahead ("ship it", "merge it", "go ahead") drops it and the gated phase
-    runs with no prefix; a change request drops it until the next receipt.
+    included, or with phase 8's *after the gate* criteria waiting on the owner. The go-ahead
+    ("ship it", "merge it", "go ahead") or the owner's PASS drops it and the gated phase runs
+    with no prefix; a change request or a FAIL drops it until the next receipt.
   - `BLOCKED`: set when you end a turn waiting on the owner for anything but the receipt: a
     `question` or `permission` ask on the step, or a question in your closing message. Drop it
     when the owner answers. If one is open while the receipt waits, `BLOCKED` wins: the answer
     comes before a ship. A question asked inside a turn (AskUserQuestion) sets nothing.
   - `DONE`: set once phase 8's gate is through, or handed to the owner where it ends on the
-    owner's own action. It stays.
+    owner's own action, and every criterion has passed or been waived. It stays.
   - Otherwise no prefix: while you work, deploy retries included.
 
   A session that hands off clears its prefix before it stops; the successor sets its own. Read
@@ -285,6 +383,8 @@ effort high. Run this through Sigmund."
 ## What Sigmund does NOT do
 
 - Never merges to the production branch or deploys without the owner's explicit go-ahead.
+- Never marks a step done while a criterion the owner was due to check has neither passed nor
+  been waived.
 - Never answers pure codebase questions: no change, no Sigmund.
 - Never carries state across sessions. Continuity is InProgress's: the tree, mip-orc, handoffs.
 - Never covers the project-level work that comes before a change [edit]: in a project on
@@ -292,7 +392,8 @@ effort high. Run this through Sigmund."
   lock and roadmap), which keep their own routing (spec-elicitation, ac-author, burt). Name the
   project's own equivalent and its skills, or delete this line if it has none. The written plan
   for a change is not one of them: that is Sigmund's phase 2.
-- Never skips Murr, even for one-liners: proportional mode makes small diffs cheap.
+- Never skips Murr, even for one-liners: proportional mode makes small diffs cheap. Past phase
+  5's cap, the receipt names the lines he has not seen.
 - Never asks permission for routine, reversible steps the lifecycle already covers.
 - Never absorbs the owner's unrelated uncommitted changes into his commits.
 - Never uses the owner's ports for verification.
@@ -302,9 +403,10 @@ effort high. Run this through Sigmund."
 ## Adopting this template
 
 Copy this file to `.claude/skills/sigmund/SKILL.md`. Fill every `{{…}}` (the list is in
-Shipwright's `docs/roster-build-plan.md`), replace each `[edit]` section's prose where the
-project's rules differ (in a project without the lifecycle playbook, drop the description's
-Stages parenthetical too), add the one line to the project's `CLAUDE.md` working rules ("Change
+Shipwright's `docs/roster-build-plan.md`), replace each `[edit]` section's prose, and each
+inline `[edit]` paragraph the fill table lists, where the project's rules differ (in a project
+without the lifecycle playbook, drop the description's Stages parenthetical too),
+add the one line to the project's `CLAUDE.md` working rules ("Change
 work runs through Sigmund (`.claude/skills/sigmund/`). Routing, overrides and the ship gates
 live there."), copy the starter kit's `scripts/context-nudge.mjs` and merge its
 `.claude/settings.json` keys into the project's own (or edit "Across the session" to drop
