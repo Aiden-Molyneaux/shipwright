@@ -293,8 +293,10 @@ The go-ahead drops the `REVIEW` prefix (Session title, below).
 **After the gate.** Criteria marked *after the gate*, and a walkthrough whose check surface
 follows a landing: once the landing or deploy puts the change in front of the owner, hand them
 over as a `review` ask (in a tracked session; otherwise in your closing message) with the
-`REVIEW` prefix. Hold the gate's remaining steps (a push, a release PR, the hand-over of a merge
-click) until the owner passes them. A FAIL after a merge starts the fix from phase 1 on a new
+`REVIEW` prefix. Hold the steps that come after the point where the change reaches the owner
+(a push, or a release PR opened after a walk on the integration branch) until the owner passes
+them. A merge click the owner makes is not held: hand it over, then raise the review ask once
+the owner reports the landing. A FAIL after a merge starts the fix from phase 1 on a new
 branch; whether to roll back first is the owner's call, so ask.
 
 Once the gate above is through (merged, plus any deploy and push it names), or, where it ends
