@@ -47,7 +47,7 @@
 | `{{DESIGN_AUTHORITY}}` | What a screen is judged against when the project has no doc graph | `parvati` skill Design authority, Sev UI rule |
 | `{{VIEWPORTS}}` | The viewports Parvati captures at | both Parvati wrappers |
 | `{{SIGN_IN}}` | How Parvati signs in to the shared preview, or "none" | Parvati shared wrapper |
-| `{{BUILD_AND_RUN}}` | How Parvati builds the branch and starts it on her port with scratch data, and how she seeds it | Parvati isolated wrapper |
+| `{{BUILD_AND_RUN}}` | How Parvati builds the branch and starts it on her port with scratch data, and how she seeds it. Also how she confirms that what answers on her port is the build she started (a build id or a pid file, not only a health reply; #509) | Parvati isolated wrapper |
 | `{{FORBIDDEN_COMMANDS}}` | Commands no agent runs (deploy, installers, destructive SQL) | Sev, Murr wrapper, both Parvati wrappers |
 | ~~`{{SESSION_RHYTHM}}`~~ | Retired 2026-10-16 (#456): Sigmund's "Across the session" now ships InProgress's rhythm as default `[edit]` prose, paired with the starter kit's `scripts/context-nudge.mjs` and `.claude/settings.json` (autocompact at 250k). A project edits the prose where its rhythm differs | Sigmund "Across the session" |
 | `{{HANDOFF}}` | What a handoff holds and where it is saved | Sigmund "Across the session" |
@@ -69,7 +69,9 @@
 Sigmund's phase 7 also carries **The check surface [edit]**, a default paragraph with no
 placeholder (#480): where the owner runs the walkthrough. Every project reads it by name at
 adoption and at the sync that first brings it, and rewrites it where its owner checks somewhere
-else (InThink: the alt pair, once the change is on `staging`).
+else (InThink: the alt pair, once the change is on `staging`). #509 (2026-10-19) added the check
+that what answers on the verify port is the build Sigmund started; a project that kept the
+default merges it clean, and reads it again at that sync to say how its build is identified.
 
 ## File structure
 

@@ -942,8 +942,13 @@ notes back.
   fill names which steps or files the read covers, through what tool, and what it cannot reach
   (a cap on entries, text a search misses). InProgress's local read path worked on r329 (one
   scribe brief, every line verbatim), so its fill is that paragraph, moved.
-- One change for the three, as the retro asked: proposals 1 and 2 touch the same file, and all
-  three come from one approval.
+- One change for the three: the retro asked for proposals 1 and 2 together (they touch the same
+  file), and proposal 3 lands in Shipwright before any project, so all three come from one
+  approval and one review.
+- **The fill table says how a build is identified.** Murr's review: Package 7h leans on each
+  project's `{{BUILD_AND_RUN}}` fill to name the build check, so that row in
+  `docs/roster-build-plan.md` now asks for it, and the check-surface note under the table says a
+  project that kept the default paragraph reads it again at the sync that brings #509.
 
 ## What I assumed
 
@@ -964,4 +969,13 @@ notes back.
   landing and it uses `parvati-shared`, so proposal 1 changes nothing there.
 - Murr still has no installed agent in this repo, so he runs as a general-purpose subagent that
   loads `skills/murr/SKILL.md`. r329 watches `.claude/agents/murr.md` for a second dispatch note.
+  The dispatch for this package loaded the skill and ran clean, so it wrote no note.
+- Owner-call from Murr: the approved text says to confirm the build but not what to do when the
+  build answering is another session's, or that a restart is confirmed again. Kept verbatim as
+  approved; a follow-up step can add it.
+- For #511: InProgress's moved paragraph starts "The retro reads them through", so it renders as
+  "Reading them: The retro reads them..." unless its first words are trimmed, and its JSON value
+  needs the 3-space continuation indents the way `WORKFLOW_FILES` has them. The retro's new
+  Adopting sentence is dropped on render, so the sync shows only a missing fill for
+  `{{WORKFLOW_NOTES_READ}}`; the fill-table row says what goes in it.
 - Pushing `main` to origin stays with Aiden.
