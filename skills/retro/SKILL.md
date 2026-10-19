@@ -50,6 +50,7 @@ Never on a schedule. A retro with no trigger reads a quiet log and proposes nois
 Read the inputs in this order, cheapest first. Stop when the cause is clear.
 
 1. **Workflow notes:** {{WORKFLOW_NOTES}}
+   Reading them: {{WORKFLOW_NOTES_READ}}
 2. **Pilot log:** {{PILOT_LOG}}
 3. **Cost report:** {{COST_REPORT}}
 4. **Transcripts:** {{TRANSCRIPTS}} (method step 3).
@@ -153,5 +154,7 @@ roster review of 2026-10-14, is in Shipwright's `docs/retro-worked-example.md`.
 
 Copy this file to `.claude/skills/retro/SKILL.md` and fill every `{{…}}` (the list is in
 Shipwright's `docs/roster-build-plan.md`). `{{WORKFLOW_NOTES}}` must match the value filled into
-Sigmund's Workflow notes section. Then delete this section.
+Sigmund's Workflow notes section. `{{WORKFLOW_NOTES_READ}}` is the retro's own: how it gets back
+every note and ruling line in the window, verbatim, and what that read cannot reach. Then delete
+this section.
 `grep -n '{{' .claude/skills/retro/SKILL.md` must print nothing.

@@ -57,6 +57,7 @@
 | `{{RUNBOOK}}` | The triage table: symptom, first probe, where the fix lives | doctor-nick Runbook |
 | `{{PROTECTED_LANES}}` | What Doctor Nick never stops, restarts or edits, and which fixes wait for the owner | doctor-nick Boundaries |
 | `{{WORKFLOW_NOTES}}` | Where a workflow note goes and how the session writes it with a write it already makes (a tracker brief, or for a project with no tracker one appended line in a file), and who reads the home for repeats. The same value in both files | Sigmund Workflow notes, retro Inputs and outputs (added 2026-10-14, #432) |
+| `{{WORKFLOW_NOTES_READ}}` | How the retro reads every workflow note and ruling line in its window, verbatim (which steps or files, through what tool), and the read's limits (a cap on entries, text a search does not reach). The retro's alone, not shared with Sigmund | retro Inputs and outputs (added 2026-10-19, #510) |
 | `{{RETRO_TRIGGERS}}` | The project's triggers beyond the four the template lists, or "none" | retro Triggers |
 | `{{PILOT_LOG}}` | Where the pilot log lives and what it records, or "none" | retro Inputs and outputs |
 | `{{COST_REPORT}}` | The command that prices the window's sessions, or "none" | retro Inputs and outputs |
