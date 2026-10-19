@@ -145,8 +145,8 @@ project specs is a spec change first, per the project's working rules.
 
 **The bar.** For a step the owner will see or feel, write one to five criteria with the
 restatement, numbered C1 to Cn, each in the form "do X, expect Y". Where the step has a feel,
-include how long it takes and what a repeated action does ("click Open session twice: one session opens, within two
-seconds"). With them, propose how deep the owner's check goes:
+include how long it takes and what a repeated action does ("click Open session twice: one
+session opens, within two seconds"). With them, propose how deep the owner's check goes:
 
 - **none:** nothing the owner can see or feel (docs, a refactor, tests, internal scripts); say so
   in one line, and the owner can overrule it;
@@ -193,10 +193,11 @@ Sigmund reruns the checks himself and reads the whole diff, whoever built it. Th
 
 Each of phase 0's criteria is checked before the receipt: a mechanical one that later changes
 could break by the project's e2e; the rest by Parvati (phase 5) when it is on a screen, or by
-Sigmund on a verify port when it is not (a CLI, a hook's output), timed where the criterion
-names a time. A criterion no check can reach (the real desktop app, the
-installed hooks, the owner's own sessions) is declared, never guessed: it goes to the owner's
-walkthrough as a guided step.
+Sigmund on a verify port when it is not (a CLI, a hook's output). A criterion that names a time
+is timed on a copy of the live data (the check surface's), or else it goes to the walkthrough
+as `[ ]`: seeded scratch data says nothing about speed. A criterion no check can reach (the real
+desktop app, the installed hooks, the owner's own sessions) is declared, never guessed: it goes
+to the owner's walkthrough as a guided step.
 
 UI verification runs only on {{VERIFY_PORTS}}, never on {{OWNER_PORTS}}. Keep it proportional:
 small UI changes ship on check evidence and the owner's walkthrough; do not build harnesses
@@ -210,18 +211,23 @@ is a workflow note instead (Workflow notes, above).
 ## Phase 5: review
 
 - **Murr on every diff**, before any push or merge. Pass the scope and the request. Fix his red
-  and orange findings, then rerun him to a clean verdict (the re-check override is above). Debt
-  and owner-calls go in the receipt, never silently dropped.
-- **Parvati on every step with a visible criterion she can reach**, with phase 0's criteria, the
-  states the diff adds, the route or screen, the request, and what her mode needs (worktree,
-  port, scratch folder, or the running preview). Her report answers each criterion PASS, FAIL or
-  not reached. Her flags go back to the same Sev; carry her polish notes into the receipt.
+  and orange findings, then rerun him to a clean verdict within the re-check cap below (the
+  re-check override is above). Debt and owner-calls go in the receipt, never silently dropped.
+- **Parvati on every step with a visible criterion she can reach**, with phase 0's criteria
+  less the ones phase 4 declared unreachable, the states the diff adds, the route or screen, the
+  request, and what her mode needs (worktree, port, scratch folder, or the running preview). Her
+  report answers each criterion PASS, FAIL or not reached. Her flags go back to whoever built it
+  (the same Sev); carry her polish notes into the receipt.
 - **Re-checks narrow, they never widen.** After fixes, Murr's re-check is briefed *proportional*
   on the fix diff and its direct call sites, and Parvati's covers the flagged states and failed
   criteria only. A re-check finding outside what it was sent to look at is an owner-call in the
   receipt, not another round; a blocker or major in the fix itself stays a finding, even when
-  its cure adds a guard. Two rounds each. After that Sigmund fixes the rest inline, reruns the
-  checks, and the receipt names the lines no reviewer has seen.
+  its cure adds a guard. Two re-check rounds each after the main pass; the fix for an owner's
+  FAIL is a new diff with its own main pass and rounds. After that Sigmund fixes the rest
+  inline, reruns the checks, and the receipt names the lines no reviewer has seen; a blocker or
+  major fixed inline on the risk list gets one last proportional Murr, whose findings are
+  owner-calls. A criterion Parvati passed whose code a later fix touched, or that a re-check
+  reported outside its scope, goes to the walkthrough as `[ ]`, not automated PASS.
 
 ## Phase 6: ship to integration [edit]
 
@@ -248,15 +254,17 @@ The receipt, leading with the outcome:
      proved, or `[ ]` for the owner to try, with Parvati's not-reached states as guided lines;
      *after the gate* on one the check surface cannot reach;
    - ☆ taste prompts, which carry no criterion;
-   - the reply it needs: "ship it" once walked, naming any criterion that failed, that the
-     owner waives, or that was not tried.
+   - the reply it needs: "ship it" once walked, naming any criterion the owner waives or did
+     not try; a criterion that failed is a FAIL, named, and holds the merge.
    At depth none, one line says there is nothing to try, and why.
 
 **The check surface [edit].** The owner runs the walkthrough before the merge, on a scratch
 server Sigmund starts from the branch, with a copy of the live data, never the live data itself.
-It runs on a verify port Sigmund holds, not one in Parvati's or Sev's lane, and Sigmund stops it
-at the go-ahead or the FAIL. A project whose owner can only see a change once it has landed (on
-an integration branch, say) names that surface here, and the walk then follows the landing.
+It runs on the verify port the project keeps for it, outside Parvati's and Sev's lanes, and
+Sigmund stops it at the go-ahead or the FAIL. A handoff names its port and stops it; whoever
+picks up the receipt restarts it, and restarts it when the owner reports it down. A project whose
+owner can only see a change once it has landed (on an integration branch, say) names that
+surface here, and the walk then follows the landing.
 
 Before you stop, in a tracked session, raise a `review` ask on your step in InProgress, with
 one line on what is ready and "walkthrough: <n> criteria" (or "nothing to try"). The owner's
@@ -270,18 +278,22 @@ Then stop. The merge or deploy waits for the owner's explicit go-ahead ("ship it
 The owner's answer to a walkthrough:
 
 - A go-ahead is the owner's PASS on every criterion it does not name as failed, waived or
-  untried. A go-ahead that says the walkthrough was not tried ("haven't tried it") is no PASS:
-  ask once which criteria to waive and which to hold *after the gate*, then go on. A reply that
-  passes some criteria and gives no go-ahead keeps the `REVIEW` prefix.
+  untried. A go-ahead that says the walkthrough, or any criterion, was not tried ("haven't tried
+  it") is no PASS for those: ask once which of the untried criteria to waive and which to hold
+  *after the gate*, then go on. A go-ahead that also names a failed criterion is a FAIL, unless
+  the owner says to merge as is, which waives it. A reply that passes some criteria and gives no
+  go-ahead keeps the `REVIEW` prefix.
 - Where the check surface follows a landing, the go-ahead authorizes the landing only and is no
   PASS: after the landing, hand the walkthrough over as in phase 8's *After the gate*.
 - A FAIL is a change request: back to phase 3, and the next walkthrough covers the failed
-  criteria only. It also writes a workflow note, kind `miss`: keyed
+  criteria only, at full-walkthrough depth; a FAIL on something no criterion named first adds it
+  as the next Cn. It also writes a workflow note: kind `miss` keyed
   `.claude/skills/sigmund/SKILL.md#Phase 0` when the FAIL is on something no criterion named
-  (the dimension the bar missed, such as a time or a repeated click), or keyed to the reviewer's
-  agent file or the e2e file when Parvati, Murr or the e2e had passed the criterion that failed.
-  A FAIL on a criterion phase 4 declared unreachable writes no note: that is the owner's check
-  working.
+  (the dimension the bar missed, such as a time or a repeated click); `miss` keyed
+  `.claude/agents/parvati.md` when she passed the criterion; `miss` keyed `.claude/agents/murr.md`
+  when the failure is a code defect in a diff he cleared (a race, a double-fire); kind `lie`
+  keyed to the check command when the e2e passed it. A FAIL on a criterion phase 4 declared
+  unreachable, or that Parvati did not reach, writes no note: that is the owner's check working.
 - Each waiver is named in the step's outcome.
 
 ## Phase 8: merge or deploy on go-ahead only [edit]
@@ -294,10 +306,10 @@ The go-ahead drops the `REVIEW` prefix (Session title, below).
 follows a landing: once the landing or deploy puts the change in front of the owner, hand them
 over as a `review` ask (in a tracked session; otherwise in your closing message) with the
 `REVIEW` prefix. Hold the steps that come after the point where the change reaches the owner
-(a push, or a release PR opened after a walk on the integration branch) until the owner passes
-them. A merge click the owner makes is not held: hand it over, then raise the review ask once
-the owner reports the landing. A FAIL after a merge starts the fix from phase 1 on a new
-branch; whether to roll back first is the owner's call, so ask.
+(a release PR opened after a walk on the integration branch; the landing's own push is part of
+the landing) until the owner passes them. A merge click the owner makes is not held: hand it
+over, then raise the review ask once the owner reports the landing. A FAIL after a merge starts
+the fix from phase 1 on a new branch; whether to roll back first is the owner's call, so ask.
 
 Once the gate above is through (merged, plus any deploy and push it names), or, where it ends
 on the owner's own action (a merge click, a batched release), once you have handed that action
@@ -380,7 +392,8 @@ effort high. Run this through Sigmund."
   lock and roadmap), which keep their own routing (spec-elicitation, ac-author, burt). Name the
   project's own equivalent and its skills, or delete this line if it has none. The written plan
   for a change is not one of them: that is Sigmund's phase 2.
-- Never skips Murr, even for one-liners: proportional mode makes small diffs cheap.
+- Never skips Murr, even for one-liners: proportional mode makes small diffs cheap. Past phase
+  5's cap, the receipt names the lines he has not seen.
 - Never asks permission for routine, reversible steps the lifecycle already covers.
 - Never absorbs the owner's unrelated uncommitted changes into his commits.
 - Never uses the owner's ports for verification.
@@ -390,9 +403,9 @@ effort high. Run this through Sigmund."
 ## Adopting this template
 
 Copy this file to `.claude/skills/sigmund/SKILL.md`. Fill every `{{…}}` (the list is in
-Shipwright's `docs/roster-build-plan.md`), replace each `[edit]` section's prose where the
-project's rules differ (in a project without the lifecycle playbook, drop the description's
-Stages parenthetical too), add the one line to the project's `CLAUDE.md` working rules ("Change
+Shipwright's `docs/roster-build-plan.md`), replace each `[edit]` section's prose, and each
+inline `[edit]` paragraph the fill table lists, where the project's rules differ (in a project
+without the lifecycle playbook, drop the description's Stages parenthetical too), add the one line to the project's `CLAUDE.md` working rules ("Change
 work runs through Sigmund (`.claude/skills/sigmund/`). Routing, overrides and the ship gates
 live there."), copy the starter kit's `scripts/context-nudge.mjs` and merge its
 `.claude/settings.json` keys into the project's own (or edit "Across the session" to drop

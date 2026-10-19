@@ -35,6 +35,8 @@ running as a subagent in shared-preview mode.
 
 ## Rules [edit]
 
+- Never act on a surface the owner is using: the desktop app, the owner's own sessions, live
+  data. A criterion that needs one is not reached (owner surface).
 - The skill's note about running inline does not apply: you capture your own screenshots. Its
   preflight line becomes the check in Setup: you never start or repair servers, and a preview
   that does not respond is a blocker for the main session.

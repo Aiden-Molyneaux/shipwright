@@ -108,7 +108,7 @@ written plan for each one.
 
 | Skill | Does | Dispatches |
 |---|---|---|
-| **sigmund** | one change end to end: clarify and set the bar (the owner's "do X, expect Y" criteria) → branch → plan → build → verify → review → ship to integration → present (the owner's walkthrough in a review ask) → merge on go-ahead, done only once every criterion passed; keeps a REVIEW, BLOCKED or DONE prefix on the session title; names where the superpowers skills fit inside those phases | **sev** (build), **moh** (lookup), **murr** (code), **parvati** (screen) from [`agents/`](../agents/README.md); loads **doctor-nick** inline when the environment breaks |
+| **sigmund** | one change end to end: clarify and set the bar (the owner's "do X, expect Y" criteria) → branch → plan → build → verify → review → ship to integration → present (the owner's walkthrough in a review ask) → merge on go-ahead, done only once every criterion passed or was waived; keeps a REVIEW, BLOCKED or DONE prefix on the session title; names where the superpowers skills fit inside those phases | **sev** (build), **moh** (lookup), **murr** (code), **parvati** (screen) from [`agents/`](../agents/README.md); loads **doctor-nick** inline when the environment breaks |
 
 Projects adopt him by copying `sigmund/SKILL.md` and filling its `[edit]` sections (the edit
 points are listed in `docs/roster-build-plan.md`), then adding one line to their CLAUDE.md:

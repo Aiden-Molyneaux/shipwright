@@ -33,7 +33,7 @@
 | `{{HOUSE_RULE_FILES}}` | The files whose rules apply to code (`CLAUDE.md`, `web/CLAUDE.md`, `CONVENTIONS.md`) | Sev, `murr` skill Project risks |
 | `{{EXCLUDED_DIRS}}` | Directories a lookup skips (`dist`, `.build`, worktrees) | Moh |
 | `{{OWNER_PORTS}}` | Ports the owner's own servers use; agents never touch them | Sigmund verify, Sev ports, both Parvati wrappers |
-| `{{VERIFY_PORTS}}` | Ports Sigmund verifies UI on | Sigmund verify |
+| `{{VERIFY_PORTS}}` | Ports Sigmund verifies UI on, including one outside Sev's and Parvati's lanes for the owner's check surface (#480) | Sigmund verify |
 | `{{SEV_PORT_LANE}}` | The port range Sev's briefs assign from | Sev ports |
 | `{{PARVATI_PORT_LANE}}` | The port range (isolated) or the preview port (shared) Parvati uses | both Parvati wrappers |
 | `{{CHECKS}}` | The verify commands | Sigmund verify, Sev checks, Murr wrapper's read-only list |

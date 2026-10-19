@@ -41,6 +41,9 @@ running as a subagent in isolated-build mode.
 
 ## Rules [edit]
 
+- Never act on a surface the owner is using: the desktop app, the owner's own sessions, live
+  data. A criterion that needs one is not reached (owner surface), even in your scratch build:
+  a build of the app can still drive the owner's desktop app.
 - The skill's note about running inline does not apply: you capture your own screenshots. Nor
   does its preflight line: Setup above is your preflight. If the project's Doctor Nick has an
   isolated-build preflight, Build and run names its commands.

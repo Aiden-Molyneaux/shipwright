@@ -845,8 +845,8 @@ on a scratch server before the merge, and there is no third owner gate.
   name her since 2026-10-01 against Murr's 29, and Murr was finding screen defects from the code.
 - **Re-checks narrow, they never widen.** Murr's re-check is always briefed proportional on the
   fix diff and its call sites; Parvati's covers the flagged states and failed criteria. Two rounds
-  each, then Sigmund fixes inline; an out-of-scope or behaviour-adding re-check finding is an
-  owner-call unless it is a blocker. `agents/murr.md`'s proportional line now covers any re-check
+  each, then Sigmund fixes inline; a re-check finding outside its scope is an owner-call, and a
+  blocker or major in the fix itself stays a finding even when its cure adds a guard. `agents/murr.md`'s proportional line now covers any re-check
   (#473's round 2 had three Murr passes, each finding new things in the previous fix).
 - **No third gate.** The walkthrough rides the phase 7 receipt and its `review` ask; a go-ahead is
   the owner's PASS on every criterion it does not name as failed, waived or untried, and the
@@ -870,7 +870,16 @@ on a scratch server before the merge, and there is no third owner gate.
   owner's ports, live data, the desktop app, the owner's sessions, a shared preview's data. In
   #473 Sigmund's own Open session clicks switched Aiden's desktop app.
 - `docs/roster-spec.md` phases 0, 5, 7 and 8 note the change. `docs/roster-build-plan.md` keeps its
-  original text: it records how the roster was built.
+  original text, apart from the fill table's `{{VERIFY_PORTS}}` row and the check-surface note
+  under it: it records how the roster was built.
+- **Owner's Opus pass of Murr (same day).** Parvati is never briefed with an unreachable criterion
+  and her wrappers forbid owner surfaces (an InProgress scratch build's Open session still drives
+  the desktop app through `explorer.exe`); a go-ahead that names a FAIL is a FAIL; untried
+  criteria are asked about one by one; re-check rounds are counted after the main pass, an
+  owner FAIL's fix starts fresh, and an inline fix on the risk list gets one last proportional
+  Murr; a criterion a later fix touched loses its automated PASS; timed criteria are timed on a
+  copy of the live data; the after-the-gate hold no longer holds a landing's own push; miss keys
+  per reviewer, and `lie` for an e2e that passed a failing criterion.
 
 ## What I assumed
 
@@ -887,6 +896,14 @@ on a scratch server before the merge, and there is no third owner gate.
   landing. That would settle 7f's open owner-call (what done means for an InThink step) as "the
   owner passed it on staging"; InThink's own session confirms it with Aiden at its next sync.
 - Loop E from the review (passing Parvati's not-reached list to Murr and back) was not adopted.
+- InProgress's verify ports (4400 to 4419) are exactly Parvati's and Sev's lanes, so its fill
+  needs one more port for the check surface (4420, say) at #460. If InProgress wants the push to
+  origin held while an after-the-gate criterion waits, that goes in its own fill, with the caveat
+  that another session's phase 8 push carries the merge anyway.
+- Owner-calls left open by the Opus pass: a bare "ship it" from an owner who never walked still
+  reads as PASS (only "once walked" in the script guards it; the alternative is an explicit PASS
+  token); InProgress takes no retro skill (`docs/template-sync.md`), so its `miss` notes need
+  #490's alert and a retro adoption to be acted on.
 - In shared-preview mode Parvati never clicks anything that writes, so a criterion that writes
   ("click Open session twice") always comes back not reached and goes to the owner as a guided
   line. That is intended.
