@@ -87,9 +87,8 @@ Placeholders in `agents/sev.md`:
 
 Sev has no skill, so there is no `/sev`. Name him in a request or @-mention him, and give him a
 written plan with the one task (or grouped run of small tasks) to build, the files he owns, and
-a worktree or branch and a port.
-A subagent run is the only way to use him: running him inline would be the main session doing
-the work itself. The description tells the caller to send fixes back to the same Sev with
-SendMessage.
+a worktree or branch and a port. A subagent run is the only way to use him: running him inline
+would be the main session doing the work itself. The description tells the caller to send fixes
+back to the same Sev with SendMessage.
 
 See the [roster](roster.md) for every member on one page.
