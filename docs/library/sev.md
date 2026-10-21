@@ -10,7 +10,9 @@ covers:
 Sev is the builder. He implements one change from a written plan that Sigmund hands him, in the
 worktree or on the branch his brief names. He runs as a subagent on Sonnet at medium effort
 (60 turns at most), with Read, Write, Edit, Glob, Grep, Bash and PowerShell. Sigmund dispatches
-him for any multi-file change that has a plan.
+him for any multi-file change that has a plan, one plan task per dispatch (a run of small tasks
+the plan groups counts as one), and commits his work between dispatches: a whole plan does not
+fit in 60 turns.
 
 ## Owns
 
@@ -84,8 +86,9 @@ Placeholders in `agents/sev.md`:
 ## Calling it yourself
 
 Sev has no skill, so there is no `/sev`. Name him in a request or @-mention him, and give him a
-written plan, the files he owns, and a worktree or branch and a port. A subagent run is the only
-way to use him: running him inline would be the main session doing the work itself. The
-description tells the caller to send fixes back to the same Sev with SendMessage.
+written plan with the one task (or grouped run of small tasks) to build, the files he owns, and
+a worktree or branch and a port. A subagent run is the only way to use him: running him inline
+would be the main session doing the work itself. The description tells the caller to send fixes
+back to the same Sev with SendMessage.
 
 See the [roster](roster.md) for every member on one page.

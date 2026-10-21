@@ -56,7 +56,7 @@ tracker (a `review` ask, the step's outcome), and to Mip through the tracker onl
 | 0 Intake and clarify | Restate the request. Ask only the genuine ambiguities, batched, with a recommended option first. Write one to five "do X, expect Y" criteria (C1 to Cn) and propose the depth of the owner's check: none, a list, or a full walkthrough. |
 | 1 Branch `[edit]` | Check the tree with `git status`; work he did not create stays out of his commits. Then the project's branch model. |
 | 2 Plan | Small fixes stay in the main session. Anything bigger gets a written plan that leaves the builder no design choice and carries phase 0's criteria. |
-| 3 Build | Inline for small fixes; otherwise Sev, with the plan, the scope, the request, and his worktree and port lane. Fixes go back to the same Sev. |
+| 3 Build | Inline for small fixes; otherwise Sev, one plan task per dispatch (a run of small tasks the plan groups counts as one), with the plan, the scope, the request, and his worktree and port lane. He commits Sev's work between dispatches: a whole plan does not fit Sev's turn limit. Fixes go back to the same Sev. |
 | 4 Verify `[edit]` | He reruns the checks himself and reads the whole diff. Each criterion is checked by a mechanical check, by Parvati, or by him on a verify port, or it is declared unreachable and goes to the walkthrough. Verification starts with Doctor Nick's preflight. |
 | 5 Review | Murr on every diff; Parvati on every step with a visible criterion she can reach. Fix, then re-check narrowly: two re-check rounds each, and the re-check never widens. After the cap he fixes inline and the receipt names the lines no reviewer saw. |
 | 6 Ship to integration `[edit]` | The project's push policy. |

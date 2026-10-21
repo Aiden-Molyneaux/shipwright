@@ -71,7 +71,8 @@ The template keeps Spez's shape, generalised. Phases marked **[edit]** carry pro
 2. **Plan.** Small fixes stay in the main session; a dispatch costs more than it saves. Anything
    bigger gets a written plan that Sigmund owns: the approach, the files, the checks. Sev builds
    only from that plan.
-3. **Build.** In the main session, or Sev with the plan, the scope and the port lane.
+3. **Build.** In the main session, or Sev with the plan, the scope and the port lane, one plan
+   task (or a grouped run of small ones) per dispatch, committed between dispatches (#563).
 4. **Verify** **[edit]**. Sigmund reruns the checks himself and reads the whole diff. The
    project's verify commands; UI verification only on the project's verify ports.
 5. **Review.** Murr on every diff, always. Parvati on every step with a visible criterion she can
