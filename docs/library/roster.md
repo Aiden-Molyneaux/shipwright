@@ -34,7 +34,7 @@ and keeps in step through the template sync.
 | **Murr** | Subagent wrapper plus the `murr` skill (Sonnet, high; Opus on the risk list) | Adversarial code review of every diff: runtime bugs first, then refactorability debt. | Edits. Reviews visuals. Passes a diff without naming what he probed. | Sigmund |
 | **Parvati** | Subagent wrapper plus the `parvati` skill (Sonnet, medium) | A built screen against intent: every state listed first, each driven at every viewport, a FLAG / EXPECTED / POLISH punch-list and PASS or FAIL per criterion. | Edits. Clicks anything that writes data. Reviews code correctness. | Sigmund |
 | **Doctor Nick** | Skill, inline in the session that hit the problem | A broken environment: preflight, a runbook by symptom, the known-issues log, a doctor check proposed at the second hit. | Debugs a product bug. Logs a guess as a known issue. Edits the doctor, his own skill or an agent file mid-triage. | The session that loaded him, which carries on from where it stopped |
-| **Retro** | Skill, in a session of its own, on a trigger | Reading the workflow notes Sigmund logs (plus the pilot log, session cost, transcripts) and proposing the smallest diff to the workflow files. | Edits any workflow file, here or in a project, approved or not. Runs on a schedule or inside a change. | The owner, who approves each proposal |
+| **Retro** | Skill, in a session of its own, on a trigger (Opus, high) | Reading the workflow notes Sigmund logs (plus the pilot log, session cost, transcripts) and proposing the smallest diff to the workflow files. | Edits any workflow file, here or in a project, approved or not. Runs on a schedule or inside a change. | The owner, who approves each proposal |
 
 ## The reviewers and gates
 
