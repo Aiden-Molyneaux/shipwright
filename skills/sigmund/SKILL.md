@@ -181,9 +181,11 @@ carries phase 0's criteria. Plans live in {{PLAN_HOME}}.
 
 ## Phase 3: build
 
-In the main session for small fixes. Otherwise Sev, with the plan, the scope (files he owns and
-files he must not touch), the request, and his worktree or branch and port lane. Fixes go back to
-the same Sev. Follow the house rules yourself when building inline.
+In the main session for small fixes. Otherwise Sev, one plan task per dispatch (a run of small
+tasks the plan groups counts as one), with the plan, the scope (files he owns and files he must
+not touch), the request, and his worktree or branch and port lane. Commit his work between
+dispatches: a whole plan does not fit his turn limit. Fixes go back to the same Sev. Follow the
+house rules yourself when building inline.
 
 ## Phase 4: verify [edit]
 

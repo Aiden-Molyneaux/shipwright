@@ -1096,3 +1096,37 @@ owns the roster, the lifecycle and the template sync, so their pages live here, 
 - Registration happens after the merge, through InProgress's scribe, with the main checkout's
   paths and `purpose: library`.
 - Pushing `main` to origin stays with Aiden.
+
+---
+
+# Package 7j: one plan task per Sev dispatch (#563, 2026-10-21)
+
+InProgress's retro on 2026-10-21 counted Sev's runs since 2026-10-19. Handed a whole plan in one
+dispatch, he hit his 60-turn limit in 5 of 11 runs; given one task or a small batch per dispatch,
+in 0 of 13. Aiden approved the retro's proposal 1 the same day.
+
+## What I chose
+
+- **Sigmund's phase 3 dispatches Sev one plan task at a time.** A run of small tasks the plan
+  groups counts as one task. Sigmund commits Sev's work between dispatches, since Sev never
+  commits and a whole plan does not fit his turn limit. The text is the approved proposal,
+  verbatim.
+- **`maxTurns` stays 60.** The runs that fit show the limit is right for one task; raising it
+  would only let a whole-plan dispatch run longer before it stops.
+- **Two Library pages follow.** `docs/library/sigmund.md`'s phase 3 row and
+  `docs/library/sev.md` (the dispatch sentence and Calling it yourself) said to hand Sev the
+  plan, which now reads as the whole plan in one run. `agents/sev.md` already says he implements
+  "one change from the plan in your brief", which holds for one task, so the wrapper is
+  unchanged.
+
+## What I assumed
+
+- `docs/roster-spec.md` and `docs/roster-build-plan.md` are the approved spec and the build plan
+  of record, so their phase 3 lines stay as written. `docs/library/lifecycle.md`'s "otherwise
+  Sev, from the plan" does not say how much of it per run, so it stays too.
+
+## Deferred / needs owner input
+
+- InProgress and InThink pick this up at their next template sync, each in its own session.
+  Phase 3 has no `[edit]` marker, so the sync carries the paragraph over unchanged.
+- Pushing `main` to origin stays with Aiden.
