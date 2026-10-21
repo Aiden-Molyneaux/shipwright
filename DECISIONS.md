@@ -1121,9 +1121,10 @@ in 0 of 13. Aiden approved the retro's proposal 1 the same day.
 
 ## What I assumed
 
-- `docs/roster-spec.md` and `docs/roster-build-plan.md` are the approved spec and the build plan
-  of record, so their phase 3 lines stay as written. `docs/library/lifecycle.md`'s "otherwise
-  Sev, from the plan" does not say how much of it per run, so it stays too.
+- `docs/roster-build-plan.md` records how the roster was built, so its phase 3 paragraph stays
+  as written, as 7g left it. `docs/roster-spec.md` is the living spec, so its phase 3 line gets
+  a `(#563)` note the way 7g noted #480. `docs/library/lifecycle.md`'s "otherwise Sev, from the
+  plan" does not say how much of it per run, so it stays.
 
 ## Deferred / needs owner input
 
