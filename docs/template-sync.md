@@ -1,3 +1,9 @@
+---
+covers:
+  - scripts/template-sync.mjs
+  - templates.json
+---
+
 # Template sync
 
 How a workflow change made once in Shipwright reaches every project that adopted the templates
@@ -7,7 +13,40 @@ changes since then into its copies. The sync runs in the project's own session, 
 project's Murr reviews the result. Nothing in Shipwright ever writes into a project.
 
 Status: built (`scripts/template-sync.mjs`, `templates.json`); design approved by Aiden on
-2026-10-16 (#457). No project has a manifest yet.
+2026-10-16 (#457). InProgress and InThink keep manifests; InGame is next.
+
+## How a change reaches a project
+
+1. **The template changes in Shipwright first.** A Shipwright session makes the change, Murr
+   reviews it, it merges on the owner's go-ahead, and `DECISIONS.md` records it.
+2. **Each project keeps a manifest**, `.claude/shipwright.json` (below): per adopted file, the
+   template it came from, its `base` (the Shipwright commit it was last synced from), the
+   project's fills, and a `skip` list.
+3. **A sync step in the project's own session** runs
+   `node <shipwright>/scripts/template-sync.mjs`. Per file it fills the old and the new template
+   with the project's recorded values, so lines that hold a fill do not conflict, then runs
+   `git merge-file --diff3` against the project's copy. A clean merge moves the file's `base`
+   forward; a conflict, or a new placeholder with no fill, marks the file `pending`.
+4. **The session resolves the conflicts and the project's Murr reviews the result.** `--accept`
+   moves each pending file's `base` once no conflict markers or unfilled placeholders are left.
+   The project commits the merged files and the manifest together and ships them through its own
+   gates (for InProgress and InThink, Sigmund).
+
+The modes: `--dry-run` previews the merge into a scratch folder; `--check` reports how many
+Shipwright commits each file is behind. `--check --json` and `--diff <template> --json` land
+with #532: the first prints the per-file state, the commits behind, the fills and the last sync
+for a project; the second prints the adaptation and upstream diffs and the conflicting hunks of
+a dry-run merge. InProgress's Library reads both for its Sync view, so "which projects are
+behind" is a page rather than a command.
+
+Where it still falls short:
+
+- **Nothing syncs on its own.** A Shipwright change reaches a project only when someone files a
+  sync step for it there. The Library's Sync view (and, with #461, Mip's digest) shows who is
+  behind; neither runs the sync.
+- **Default paragraphs can slip through.** An `[edit]` paragraph the template adds inside a
+  section can merge clean over a default the project needs to change, so the sync session reads
+  each one by name. The fill table in `docs/roster-build-plan.md` lists them.
 
 ## The manifest
 
