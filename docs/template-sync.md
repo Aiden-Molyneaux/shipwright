@@ -46,9 +46,9 @@ Where it still falls short:
   behind; neither runs the sync.
 - **Default paragraphs can slip through.** An `[edit]` paragraph the template adds inside a
   section can merge clean over a default the project needs to change, so the sync session reads
-  each one by name: the check surface in Sigmund's phase 7 is the one the fill
-  table in `docs/roster-build-plan.md` names, and the prime law, the risk statement and the
-  "Never covers" line are the others.
+  each one by name. In Sigmund they are the prime law and phase 7's risk statement (the fill
+  table's `{{RISK_STATEMENT}}` row in `docs/roster-build-plan.md`), phase 7's check surface (named
+  in the prose under that table) and the "Never covers" line (named nowhere yet).
 
 ## The manifest
 
@@ -156,8 +156,8 @@ adjacency conflict, where the template adds lines next to a rewritten block.
 **Inline `[edit]` paragraphs added upstream.** A paragraph marked `[edit]` inside a section that
 is not (Sigmund phase 7's check surface, #480) merges clean into any project copy that did not
 touch the lines around it, so the report says "merged clean" over a default the project may need
-to change. The session that runs the sync reads each such paragraph by name; the fill table in
-`docs/roster-build-plan.md` lists them.
+to change. The session that runs the sync reads each such paragraph by name; "How a change reaches a
+project" above lists Sigmund's four.
 
 **Sections deleted on adoption.** Only Sigmund's "Adopting this template" is deleted by
 instruction today. The renderer drops any `## Adopting this template` section from base and

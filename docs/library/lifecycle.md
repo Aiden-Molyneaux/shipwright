@@ -69,8 +69,8 @@ The [roster page](roster.md) lists every member with what it owns and never does
 
 - **Before code**: britch, spec-elicitation, ac-author, ui-craft, burt.
 - **Every change**: Sigmund, who dispatches Sev to build, Moh to look things up, Murr and Parvati
-  to review, and loads Doctor Nick when the environment breaks; ui-craft and failure-first load
-  while the work happens.
+  to review, and loads Doctor Nick when the environment breaks; ui-craft loads when the work is UI,
+  and failure-first when it can fail or race.
 - **Every gate**: acceptance-walkthrough.
 - **When the workflow itself needs fixing**: retro.
 
