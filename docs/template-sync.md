@@ -33,11 +33,11 @@ Status: built (`scripts/template-sync.mjs`, `templates.json`); design approved b
    gates (for InProgress and InThink, Sigmund).
 
 The modes: `--dry-run` previews the merge into a scratch folder; `--check` reports how many
-Shipwright commits each file is behind. With `--json` (#532), `--check` prints the per-file state, the commits behind, the fills and the last sync
-for a project as JSON, and `--diff <template>` prints the adaptation and upstream diffs and the conflicting hunks of
-a dry-run merge. Both exit 0 whenever they could report, and 2 with the reason when they could
-not. InProgress's Library reads both for its Sync view, so "which projects are
-behind" is a page rather than a command.
+Shipwright commits each file is behind. With `--json` (#532), `--check` prints the per-file state,
+the commits behind, the fills and the last sync for a project as JSON, and `--diff <template>`
+prints the adaptation and upstream diffs and the conflicting hunks of a dry-run merge. Both exit 0
+whenever they could report, and 2 with the reason when they could not. InProgress's Library reads
+both for its Sync view, so "which projects are behind" is a page rather than a command.
 
 Where it still falls short:
 
