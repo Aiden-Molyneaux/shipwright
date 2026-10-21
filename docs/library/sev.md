@@ -30,7 +30,8 @@ him for any multi-file change that has a plan.
 
 ## Reports to
 
-Sigmund, or whichever main session dispatched him. He never briefs the tracker.
+Sigmund, or whichever main session dispatched him. He has no Agent tool, so he never briefs the
+tracker himself.
 
 ## How it works
 

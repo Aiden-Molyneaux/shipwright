@@ -92,8 +92,8 @@ one), opens each at every viewport and screenshots each, and checks `document.ac
 each close. A state she could not reach goes at the top of the report with the reason; a screen
 reviewed only at rest is labelled a partial review. Her wrapper overrides the skill's "run inline"
 note, because she captures her own screenshots. Her report puts the criteria first (PASS, FAIL
-with what she saw, or not reached with why), then the states, console errors verbatim, and in
-isolated mode the servers and browsers she stopped. On a re-check she covers only the flagged
+with what she saw, or not reached with why), then the states; in isolated mode it adds console
+errors verbatim and the servers and browsers she stopped. On a re-check she covers only the flagged
 states and failed criteria her brief names.
 
 ## What a project fills in
@@ -102,7 +102,7 @@ Placeholders:
 
 | File | Placeholder | Holds |
 |---|---|---|
-| all three | `{{PROJECT}}` | The project's name (descriptions). |
+| both wrappers | `{{PROJECT}}` | The project's name (descriptions). |
 | both wrappers, skill | `{{VIEWPORTS}}` | The viewports she captures at. |
 | both wrappers | `{{PARVATI_PORT_LANE}}` | The port range (isolated) or the preview port (shared). |
 | both wrappers | `{{OWNER_PORTS}}` | The owner's ports, which she never touches. |

@@ -15,9 +15,10 @@ answer "who does X?" without opening them.
 
 **Who updates the InProgress scribe?** The main session, and nobody else. In change work that
 is Sigmund (phase 7's review ask, the done outcome, workflow notes); in planning it is Mip. Both
-brief the `inprogress-scribe` agent in the background, and the scribe is the only thing that
-writes the task tree. Sev, Moh, Murr and Parvati never brief it: they report to Sigmund, and
-Sigmund decides what reaches the tree. The rules for when to brief come from two places: the
+brief the `inprogress-scribe` agent in the background, and the scribe is the only agent that
+edits the plan steps (working tasks, focus and claims go through hooks and CLI commands, and Aiden
+edits in the window). Sev, Moh, Murr and Parvati never brief it: they have no Agent tool, so they
+report to Sigmund, and Sigmund decides what reaches the tree. The rules for when to brief come from two places: the
 InProgress session briefing (every tracked session) and the tracked-session lines in the
 project's filled Sigmund. See [Tracking in InProgress](#tracking-in-inprogress) below.
 
@@ -77,8 +78,9 @@ Who briefs the scribe, and when:
   resource.
 - **Sigmund** adds the change lifecycle's own briefs on top: workflow notes logged on the step,
   the `review` ask in phase 7, and the done outcome after the merge.
-- **Mip** briefs it for the reconcile batch the owner approves.
-- **Subagents never do.** Their reports reach the main session, which briefs.
+- **Mip** briefs it for the reconcile batch the owner approves, handoffs and queue changes.
+- **Subagents never do.** The roster's subagents have no Agent tool; their reports reach the
+  main session, which briefs.
 
 To change how Sigmund briefs the scribe, the edit goes in the tracked-session parts of a
 project's filled Sigmund (its Workflow notes, phase 7 and phase 8 sections) or in the InProgress

@@ -7,7 +7,7 @@ covers:
 # Template sync
 
 How a workflow change made once in Shipwright reaches every project that adopted the templates
-(InProgress now, InThink and InGame next). Approach B (Aiden, 2026-10-16): each project keeps
+(InProgress and InThink now, InGame next). Approach B (Aiden, 2026-10-16): each project keeps
 full filled copies, records what it adopted from, and a sync three-way merges the template
 changes since then into its copies. The sync runs in the project's own session, and that
 project's Murr reviews the result. Nothing in Shipwright ever writes into a project.
@@ -46,7 +46,9 @@ Where it still falls short:
   behind; neither runs the sync.
 - **Default paragraphs can slip through.** An `[edit]` paragraph the template adds inside a
   section can merge clean over a default the project needs to change, so the sync session reads
-  each one by name. The fill table in `docs/roster-build-plan.md` lists them.
+  each one by name: the check surface in Sigmund's phase 7 is the one the fill
+  table in `docs/roster-build-plan.md` names, and the prime law, the risk statement and the
+  "Never covers" line are the others.
 
 ## The manifest
 
@@ -79,8 +81,8 @@ Each project holds `.claude/shipwright.json`:
 
 ## Which templates sync
 
-`templates.json` at Shipwright's root lists every file a project can adopt and sync: the four
-agent wrappers, the roster skills (sigmund, murr, parvati, doctor-nick, retro), and the starter
+`templates.json` at Shipwright's root lists every file a project can adopt and sync: the five
+agent wrappers (sev, moh, murr and both Parvati modes), the roster skills (sigmund, murr, parvati, doctor-nick, retro), and the starter
 kit files #456 adds. A package that adds a template adds it there in the same commit. The sync
 uses the list only to report templates a project has not mapped or skipped.
 
