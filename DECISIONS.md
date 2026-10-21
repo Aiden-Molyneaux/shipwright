@@ -980,6 +980,8 @@ notes back.
   `{{WORKFLOW_NOTES_READ}}`; the fill-table row says what goes in it.
 - Pushing `main` to origin stays with Aiden.
 
+---
+
 # Package 7i: `--check --json` and `--diff` for InProgress's Sync dashboard (#532, 2026-10-20)
 
 InProgress's Library phase (#525) adds a Sync dashboard (#515) that shows every project's state
@@ -1055,3 +1057,42 @@ InProgress. The shapes are in InProgress's spec,
 - The state, `lastSync` and conflict logic run only through the script (its `main()` runs on
   import), so every test spawns it. An `import.meta.url` guard would let them be unit tested;
   left for a change that needs it.
+
+---
+
+# Package 8a: the Library's first pages (#527, 2026-10-20)
+
+InProgress's Library (#525) lists doc pages read live from the repo that owns them. Shipwright
+owns the roster, the lifecycle and the template sync, so their pages live here, under
+`docs/library/`, and register on the Shipwright project after they merge.
+
+## What I chose
+
+- **One page per roster member, not per template file** (Aiden, 2026-10-20). Seven pages:
+  Sigmund (with the starter kit's `context-nudge.mjs` and `settings.json`, which pair with his
+  Across the session), Sev, Moh, Murr (wrapper and skill), Parvati (both wrappers and the skill),
+  Doctor Nick and Retro. Each page's `templates` names every file it explains, so every entry in
+  `templates.json` is named by exactly one page.
+- **A roster page** with `shelf: roster`: every agent and skill Shipwright ships, one row each
+  (owns, never does, reports to), plus a Tracking in InProgress block for the scribe and Mip, so
+  "who updates the InProgress scribe" is answered on the page (Aiden, 2026-10-20).
+- **A lifecycle page** that sets the project lifecycle (Stages 0 to 6) beside Sigmund's change
+  lifecycle (phases 0 to 8) and says where each roster member sits.
+- **`docs/template-sync.md` is the sync page**, with front matter added, its stale status line
+  corrected (InProgress and InThink keep manifests), and the 2026-10-19 process note folded in as
+  "How a change reaches a project".
+- Every page carries `covers` naming the files it describes. No page covers itself, so editing a
+  page never marks it stale.
+
+## What I assumed
+
+- The sync page describes `--check --json` and `--diff` as #532 built them (merged first, Package
+  7i); `scripts/template-sync.mjs` is #532's and untouched here.
+- `starter-kit/lifecycle-playbook.md` stays the lifecycle's source; the page summarises it and
+  does not replace it.
+
+## Deferred / needs owner input
+
+- Registration happens after the merge, through InProgress's scribe, with the main checkout's
+  paths and `purpose: library`.
+- Pushing `main` to origin stays with Aiden.

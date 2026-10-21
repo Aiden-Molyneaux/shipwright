@@ -1,13 +1,54 @@
+---
+covers:
+  - scripts/template-sync.mjs
+  - templates.json
+---
+
 # Template sync
 
 How a workflow change made once in Shipwright reaches every project that adopted the templates
-(InProgress now, InThink and InGame next). Approach B (Aiden, 2026-10-16): each project keeps
+(InProgress and InThink now, InGame next). Approach B (Aiden, 2026-10-16): each project keeps
 full filled copies, records what it adopted from, and a sync three-way merges the template
 changes since then into its copies. The sync runs in the project's own session, and that
 project's Murr reviews the result. Nothing in Shipwright ever writes into a project.
 
 Status: built (`scripts/template-sync.mjs`, `templates.json`); design approved by Aiden on
-2026-10-16 (#457). No project has a manifest yet.
+2026-10-16 (#457). InProgress and InThink keep manifests; InGame is next.
+
+## How a change reaches a project
+
+1. **The template changes in Shipwright first.** A Shipwright session makes the change, Murr
+   reviews it, it merges on the owner's go-ahead, and `DECISIONS.md` records it.
+2. **Each project keeps a manifest**, `.claude/shipwright.json` (below): per adopted file, the
+   template it came from, its `base` (the Shipwright commit it was last synced from), the
+   project's fills, and a `skip` list.
+3. **A sync step in the project's own session** runs
+   `node <shipwright>/scripts/template-sync.mjs`. Per file it fills the old and the new template
+   with the project's recorded values, so lines that hold a fill do not conflict, then runs
+   `git merge-file --diff3` against the project's copy. A clean merge moves the file's `base`
+   forward; a conflict, or a new placeholder with no fill, marks the file `pending`.
+4. **The session resolves the conflicts and the project's Murr reviews the result.** `--accept`
+   moves each pending file's `base` once no conflict markers or unfilled placeholders are left.
+   The project commits the merged files and the manifest together and ships them through its own
+   gates (for InProgress and InThink, Sigmund).
+
+The modes: `--dry-run` previews the merge into a scratch folder; `--check` reports how many
+Shipwright commits each file is behind. With `--json` (#532), `--check` prints the per-file state,
+the commits behind, the fills and the last sync for a project as JSON, and `--diff <template>`
+prints the adaptation and upstream diffs and the conflicting hunks of a dry-run merge. Both exit 0
+whenever they could report, and 2 with the reason when they could not. InProgress's Library reads
+both for its Sync view, so "which projects are behind" is a page rather than a command.
+
+Where it still falls short:
+
+- **Nothing syncs on its own.** A Shipwright change reaches a project only when someone files a
+  sync step for it there. The Library's Sync view (and, with #461, Mip's digest) shows who is
+  behind; neither runs the sync.
+- **Default paragraphs can slip through.** An `[edit]` paragraph the template adds inside a
+  section can merge clean over a default the project needs to change, so the sync session reads
+  each one by name. In Sigmund they are the prime law and phase 7's risk statement (the fill
+  table's `{{RISK_STATEMENT}}` row in `docs/roster-build-plan.md`), phase 7's check surface (named
+  in the prose under that table) and the "Never covers" line (named nowhere yet).
 
 ## The manifest
 
@@ -40,8 +81,8 @@ Each project holds `.claude/shipwright.json`:
 
 ## Which templates sync
 
-`templates.json` at Shipwright's root lists every file a project can adopt and sync: the four
-agent wrappers, the roster skills (sigmund, murr, parvati, doctor-nick, retro), and the starter
+`templates.json` at Shipwright's root lists every file a project can adopt and sync: the five
+agent wrappers (sev, moh, murr and both Parvati modes), the roster skills (sigmund, murr, parvati, doctor-nick, retro), and the starter
 kit files #456 adds. A package that adds a template adds it there in the same commit. The sync
 uses the list only to report templates a project has not mapped or skipped.
 
@@ -115,8 +156,8 @@ adjacency conflict, where the template adds lines next to a rewritten block.
 **Inline `[edit]` paragraphs added upstream.** A paragraph marked `[edit]` inside a section that
 is not (Sigmund phase 7's check surface, #480) merges clean into any project copy that did not
 touch the lines around it, so the report says "merged clean" over a default the project may need
-to change. The session that runs the sync reads each such paragraph by name; the fill table in
-`docs/roster-build-plan.md` lists them.
+to change. The session that runs the sync reads each such paragraph by name; "How a change reaches a
+project" above lists Sigmund's four.
 
 **Sections deleted on adoption.** Only Sigmund's "Adopting this template" is deleted by
 instruction today. The renderer drops any `## Adopting this template` section from base and
