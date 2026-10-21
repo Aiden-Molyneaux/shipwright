@@ -982,6 +982,84 @@ notes back.
 
 ---
 
+# Package 7i: `--check --json` and `--diff` for InProgress's Sync dashboard (#532, 2026-10-20)
+
+InProgress's Library phase (#525) adds a Sync dashboard (#515) that shows every project's state
+against these templates, and Mip's digest (#461) reuses its summary. Aiden ruled with the Fable
+review on 2026-10-20 that the data comes from this script as JSON, never a copy of its logic in
+InProgress. The shapes are in InProgress's spec,
+`docs/superpowers/specs/2026-10-20-library-and-docs-design.md` (What #532 provides).
+
+## What I chose
+
+- **One state function for both checks.** `--check` and `--check --json` read each file's state
+  from the same `fileState`: error, gone, missing, pending, behind or current, in that order of
+  precedence. `missing` (the manifest maps a local file that is not there) is new in the text
+  check too, so both report the same states. A pending file still carries its `behind` count.
+- **`lastSync` is the newest non-merge commit in the project that moved a base**: an entry in both
+  that commit's manifest and its parent's, with a different `base`. A manifest edit that leaves
+  every base alone (InProgress's style refactor, f89f03a) is not a sync, and neither is an
+  adoption (an entry the parent did not have, such as InProgress's retro skill in cc15fa4). Merges
+  are skipped because the sync is the commit on the branch. For InProgress it names 6ea1bbe, the
+  18 Oct sync; for InThink, e7ed968. The text check prints it as a `Last sync:` line.
+- **`--check --json` exits 0 whenever it could report**, behind or not, and 2 with the reason on
+  stderr when it could not, with nothing on stdout. InProgress reads any non-zero exit as "check
+  failed", so "behind" cannot share an exit code with a failure. The text check keeps its exit 1.
+- **`--diff <template> [--json]`** prints `{ adaptation, upstream, conflicts }`. It renders the
+  same texts the sync merges: `upstream` is base to `--to`, both filled (a retired placeholder
+  left unfilled in base, as the merge does); `adaptation` is the local copy against base filled
+  with every fill, so a filled placeholder never reads as a local change. Both are unified diffs
+  labelled `<template> @ <sha>` and the local path.
+- **`conflicts` from a merge in a temp folder.** `git merge-file` runs there on the same three
+  texts and decides whether anything conflicts. The ranges come from grouping the two sides'
+  zero-context changes the way merge-file does: changes from both sides that overlap or touch are
+  one conflict, and a group both sides changed the same way is dropped. Each conflict gives its
+  `base`, `upstream` and `local` ranges as `{ start, lines }` (1-based; with `lines` 0 the range
+  sits just before `start`) and `hunks`, the indexes of the `upstream` diff's hunks that hold its
+  upstream changes (not every hunk whose context a long local edit reaches), which is what the
+  dashboard marks "expect a conflict". For InThink's Sigmund at 34ef8b7 it reports one conflict,
+  the check surface paragraph (base 276+7), and the real dry run agrees line for line.
+- **A conflict never reads as clean.** If merge-file reports a conflict that no range accounts
+  for, `--diff` exits 2 rather than printing `conflicts: []` with exit 0, since InProgress reads
+  exit 0 as an answer and ignores stderr.
+- **Spawns are budgeted.** A git spawn costs a quarter to half a second on this machine and
+  InProgress kills a check at 20 seconds, so the check reads each base's sha once, `<to>`'s tree
+  once (`ls-tree`) for gone files, and every manifest version for `lastSync` through one
+  `cat-file --batch`. That leaves one `git log` per file. InProgress's 10 files went from about
+  10 seconds to about 5.
+- Both modes write only under the OS temp folder, which a test checks by snapshotting every file
+  in the project, `.git` included.
+- Murr reviewed the diff (fuzzing the grouping against `git merge-file` on 1,160 cases with no
+  mismatch). His two majors (a line starting `++` dropped from the hunks, and the spawn count)
+  and three minors (the hunk mapping, temp cleanup on Windows, `lastSync` failing silently) are
+  fixed, each with a test where a test could show it.
+
+## What I assumed
+
+- Myers without the indent heuristic is what `git merge-file` diffs with, so the ranges line up
+  with its hunks. If a later git changes that, `--diff` fails loudly (above) rather than inventing
+  a range.
+- A sync that sits uncommitted in the project's manifest is not a sync yet: `lastSync` reads
+  history only. A sync that only set `pending` moves its base at `--accept`, so `lastSync` names
+  the accept commit.
+- When git cannot read the manifest's history (no repo, an untracked manifest, dubious
+  ownership), `lastSync` is null with a warning on stderr, and the rest of the check still runs.
+
+## Deferred / needs owner input
+
+- `--diff` on an error, missing or gone file exits 2 with the reason; the dashboard already has
+  the reason from `--check --json`'s `detail`. An adaptation for a gone file could be added later.
+- The docs page for these flags belongs to #527, which owns `docs/`; the flags are in the
+  script's usage text and header.
+- The number of conflicts can differ from merge-file's marker blocks: its zealous mode can split
+  one group in two, and joins conflicts fewer than 3 lines apart into one. Every marked conflict
+  still sits inside a reported range, and the dashboard marks hunks, so that is enough there.
+- The state, `lastSync` and conflict logic run only through the script (its `main()` runs on
+  import), so every test spawns it. An `import.meta.url` guard would let them be unit tested;
+  left for a change that needs it.
+
+---
+
 # Package 8a: the Library's first pages (#527, 2026-10-20)
 
 InProgress's Library (#525) lists doc pages read live from the repo that owns them. Shipwright
@@ -1008,8 +1086,8 @@ owns the roster, the lifecycle and the template sync, so their pages live here, 
 
 ## What I assumed
 
-- The sync page describes `--check --json` and `--diff --json` from the Library spec and says
-  they land with #532; `scripts/template-sync.mjs` is #532's and untouched here.
+- The sync page describes `--check --json` and `--diff` as #532 built them (merged first, Package
+  7i); `scripts/template-sync.mjs` is #532's and untouched here.
 - `starter-kit/lifecycle-playbook.md` stays the lifecycle's source; the page summarises it and
   does not replace it.
 
