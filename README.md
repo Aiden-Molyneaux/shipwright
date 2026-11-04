@@ -21,6 +21,9 @@ app through a ten-question Day-One profile interview, and with nothing hardcoded
 I now use it across my own projects, which adopt its templates and pull later changes
 through the template sync.
 
+<p align="center"><img src="docs/images/dashboard.jpg" width="720" alt="The shipwright dashboard on a sample project mid-build"></p>
+<p align="center"><em>The local dashboard for a sample project in its third phase.</em></p>
+
 ## The packages
 
 | Package | What it is | Start at |
